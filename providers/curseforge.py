@@ -2,184 +2,180 @@ import os
 import time
 import json
 import requests
-from pathlib import Path
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
-
-# -----------------------------
-# Load environment
-# -----------------------------
-load_dotenv()
 
 API_BASE = "https://api.curseforge.com/v1"
+GAME_ID = 432  # Minecraft
+CACHE_DIR = os.path.join("cache", "curseforge")
+CACHE_TTL = timedelta(hours=24)
+
+# Load CurseForge API key from .env
+from dotenv import load_dotenv
+load_dotenv()
 API_KEY = os.getenv("CF_API_KEY")
-DEBUG = os.getenv("DEBUG", "false").lower() == "true"
+
+DEBUG = os.getenv("DEBUG")
+if not API_KEY:
+    raise EnvironmentError("Missing CF_API_KEY in environment (.env not loaded)")
+
+if DEBUG=="true":
+    print(f"[DEBUG] Using CurseForge API key: {API_KEY[:6]}... (truncated)")
 
 HEADERS = {
     "Accept": "application/json",
-    "x-api-key": API_KEY or "",
+    "x-api-key": API_KEY,
 }
 
-if not API_KEY:
-    raise RuntimeError("CF_API_KEY missing in your .env file!")
 
-CACHE_DIR = Path("cache")
-CACHE_EXPIRY_HOURS = 24
-SESSION = requests.Session()
-
-# -----------------------------
-# Debug helper
-# -----------------------------
-def debug(msg: str):
-    if DEBUG:
-        print(f"[DEBUG] {msg}")
-
-# -----------------------------
-# Safe requests with retry
-# -----------------------------
-def safe_request(url, headers=None, params=None, max_retries=5, timeout=20):
-    retries = 0
-    while retries < max_retries:
+# ---------- Helper: Safe request with retries ----------
+def safe_request(url, params=None, retries=5, delay=1):
+    for attempt in range(1, retries + 1):
         try:
-            r = SESSION.get(url, headers=headers, params=params, timeout=timeout)
-            r.raise_for_status()
-            return r
-        except requests.exceptions.SSLError as e:
-            debug(f"[SSL WARN] {e}. Retrying ({retries+1}/{max_retries})...")
-        except requests.exceptions.RequestException as e:
-            debug(f"[WARN] Request failed: {e}. Retrying ({retries+1}/{max_retries})...")
-        retries += 1
-        time.sleep(2 ** retries)  # exponential backoff
-    raise RuntimeError(f"Failed to fetch {url} after {max_retries} retries.")
+            response = requests.get(url, headers=HEADERS, params=params, timeout=10)
+            response.raise_for_status()
+            return response
+        except requests.RequestException as e:
+            print(f"[DEBUG] Request failed: {e}. Retrying ({attempt}/{retries})...")
+            time.sleep(delay)
+    raise RuntimeError(f"Failed to fetch {url} after {retries} retries.")
 
-# -----------------------------
-# Cache helpers (multi-provider)
-# -----------------------------
-def get_cache_path(provider: str, mod_id: int, page: int) -> Path:
-    dir_path = CACHE_DIR / provider / str(mod_id)
-    dir_path.mkdir(parents=True, exist_ok=True)
-    return dir_path / f"page-{page}.json"
 
-def load_cached_page(provider: str, mod_id: int, page: int) -> list | None:
-    path = get_cache_path(provider, mod_id, page)
-    if path.exists():
-        mtime = datetime.fromtimestamp(path.stat().st_mtime)
-        if datetime.now() - mtime < timedelta(hours=CACHE_EXPIRY_HOURS):
-            debug(f"Loading cached page {page} for mod {mod_id} (provider={provider})")
-            with open(path, "r", encoding="utf-8") as f:
+# ---------- Helper: Cached fetch ----------
+def cached_fetch(mod_id, page, url, params):
+    """
+    Fetch and cache CurseForge API page data.
+    """
+    mod_cache_dir = os.path.join(CACHE_DIR, str(mod_id))
+    os.makedirs(mod_cache_dir, exist_ok=True)
+
+    cache_path = os.path.join(mod_cache_dir, f"page-{page}.json")
+
+    # Check for valid cache
+    if os.path.exists(cache_path):
+        mtime = datetime.fromtimestamp(os.path.getmtime(cache_path))
+        if datetime.now() - mtime < CACHE_TTL:
+            with open(cache_path, "r", encoding="utf-8") as f:
                 return json.load(f)
-    return None
 
-def save_cached_page(provider: str, mod_id: int, page: int, data: list):
-    path = get_cache_path(provider, mod_id, page)
-    with open(path, "w", encoding="utf-8") as f:
+    # Fetch and cache new data
+    response = safe_request(url, params=params)
+    data = response.json()
+    with open(cache_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
+    return data
 
-# -----------------------------
-# URL / slug helpers
-# -----------------------------
-def extract_slug(url: str) -> str | None:
-    parts = url.strip("/").split("/")
-    if len(parts) >= 2 and parts[-2] == "mc-mods":
-        return parts[-1]
-    return None
 
-def get_mod_id_from_slug(slug: str) -> int | None:
+# ---------- Main provider function ----------
+def get_mod_data(url: str):
+    print(f"[DEBUG] Extracting mod slug from URL: {url}")
+    slug = url.rstrip("/").split("/")[-1]
+
+    # Step 1: Resolve mod slug → mod ID
     search_url = f"{API_BASE}/mods/search"
-    params = {"gameId": 432, "slug": slug}
-    debug(f"Searching for slug '{slug}' via {search_url} params={params}")
-    r = safe_request(search_url, headers=HEADERS, params=params)
-    data = r.json().get("data", [])
-    if data:
-        return data[0]["id"]
-    return None
+    params = {"gameId": GAME_ID, "slug": slug}
+    print(f"[DEBUG] Searching for slug '{slug}' via {search_url} params={params}")
+    resp = safe_request(search_url, params)
+    mods = resp.json().get("data", [])
+    if not mods:
+        raise ValueError(f"Mod '{slug}' not found on CurseForge.")
 
-# -----------------------------
-# Fetch all files with pagination + cache
-# -----------------------------
-def fetch_all_files(mod_id: int, provider="curseforge") -> list:
+    # Pick the most likely one (most recent / most downloaded)
+    for m in mods:
+        print(f"[DEBUG] Candidate mod: {m['name']} (ID={m['id']}, downloads={m['downloadCount']})")
+    best_mod = max(mods, key=lambda m: (m.get("dateReleased", ""), m.get("downloadCount", 0)))
+    mod_id = best_mod["id"]
+    mod_name = best_mod["name"]
+    print(f"[DEBUG] Found mod ID: {mod_id} for slug: {slug} ({mod_name}, {best_mod['downloadCount']} downloads)")
+
+    # Step 2: Fetch all file pages (with cache)
     all_files = []
-    page_size = 50
     page = 0
+    page_size = 50
+    consecutive_misses = 0  # stop when N empty pages in a row
 
     while True:
-        # Check cache first
-        cached = load_cached_page(provider, mod_id, page)
-        if cached is not None:
-            debug(f"Using cached page {page} for mod {mod_id} (provider={provider})")
-            all_files.extend(cached)
-        else:
-            url = f"{API_BASE}/mods/{mod_id}/files"
-            params = {"index": page * page_size, "pageSize": page_size}
-            debug(f"Fetching page {page} for mod {mod_id} (provider={provider})")
-            try:
-                r = safe_request(url, headers=HEADERS, params=params)
-            except RuntimeError as e:
-                debug(f"Failed to fetch page {page}, skipping rest: {e}")
-                break
-            data = r.json().get("data", [])
-            if not data:
-                break
-            all_files.extend(data)
-            save_cached_page(provider, mod_id, page, data)
-            time.sleep(1)  # delay to reduce SSL/rate-limit issues
+        files_url = f"{API_BASE}/mods/{mod_id}/files"
+        params = {"index": page * page_size, "pageSize": page_size, "sortOrder": "asc"}
 
-        # Stop if last page
-        if len(all_files) < (page + 1) * page_size:
+        print(f"[DEBUG] Fetching page {page} for mod {mod_id} (index={params['index']})")
+        try:
+            data = cached_fetch(mod_id, page, files_url, params)
+        except Exception as e:
+            print(f"[WARN] Failed to fetch page {page}: {e}")
+            consecutive_misses += 1
+            if consecutive_misses >= 3:
+                break
+            page += 1
+            continue
+
+        files = data.get("data", [])
+        if not files:
+            print(f"[DEBUG] No files in page {page}, stopping.")
+            break
+
+        all_files.extend(files)
+
+        if len(files) < page_size:
+            print(f"[DEBUG] Last page reached at {page}.")
             break
         page += 1
+        time.sleep(0.3)
 
-    debug(f"Fetched {len(all_files)} total files for mod {mod_id} (provider={provider})")
-    return all_files
+    print(f"[DEBUG] Fetched {len(all_files)} files total for mod {mod_name}")
 
-# -----------------------------
-# Main provider function
-# -----------------------------
-def get_mod_data(url: str, provider="curseforge") -> dict:
-    slug = extract_slug(url)
-    if not slug:
-        raise ValueError(f"Invalid CurseForge mod URL: {url}")
+    # Step 3: Extract Minecraft version ↔ mod loader pairs
+    version_loader_pairs = set()
 
-    mod_id = get_mod_id_from_slug(slug)
-    if not mod_id:
-        raise ValueError(f"Could not extract mod ID from URL: {url}")
+    for f in all_files:
+        game_versions = [v for v in f.get("gameVersions", []) if v.startswith("1.")]
+        lower_versions = [v.lower() for v in f.get("gameVersions", [])]
+        file_name = f.get("fileName", "").lower()
 
-    debug(f"Found mod ID: {mod_id} for slug: {slug} (provider={provider})")
-    files = fetch_all_files(mod_id, provider=provider)
+        # --- Detect all possible loaders ---
+        detected_loaders = set()
 
-    game_versions = set()
-    mod_loaders = set()
+        # Direct detection from gameVersions list
+        for token in lower_versions:
+            if "neoforge" in token or "neo-forge" in token:
+                detected_loaders.add("NeoForge")
+            elif "fabric" in token:
+                detected_loaders.add("Fabric")
+            elif "forge" in token:
+                detected_loaders.add("Forge")
+            elif "quilt" in token:
+                detected_loaders.add("Quilt")
 
-    for f in files:
-        for v in f.get("gameVersions", []):
-            if v.startswith("1."):
-                game_versions.add(v)
-        loader = f.get("modLoader", None)
-        if loader:
-            mod_loaders.add(loader)
-        
-        loader = f.get("modLoader")
-        if loader is None:
-          # fallback based on filename
-          filename = f.get("fileName", "").lower()
-          if "forge" in filename:
-            loader = "Forge"
-          elif "fabric" in filename:
-            loader = "Fabric"
-          elif "neoforge" in filename:
-            loader = "NeoForge"
-          elif "quilt" in filename:
-            loader = "Quilt"
-          else:
-            loader = "Unknown"
-        mod_loaders.add(loader)
+        # Filename-based hints (if still empty)
+        if not detected_loaders:
+            if "neoforge" in file_name or "neo-forge" in file_name:
+                detected_loaders.add("NeoForge")
+            elif "fabric" in file_name:
+                detected_loaders.add("Fabric")
+            elif "forge" in file_name:
+                detected_loaders.add("Forge")
+            elif "quilt" in file_name:
+                detected_loaders.add("Quilt")
 
+        # Default fallback
+        if not detected_loaders:
+            detected_loaders.add("Unknown")
+
+        # --- Debug: detect multi-loader combinations ---
+        if len(detected_loaders) > 1 and game_versions:
+            print(f"[DEBUG] Multi-loader file detected: "
+                  f"{game_versions} → {', '.join(sorted(detected_loaders))}")
+
+        # --- Add all version/loader combinations ---
+        for v in game_versions:
+            for loader in detected_loaders:
+                version_loader_pairs.add((v, loader))
+
+    # Step 4: Return structured data
+    sorted_pairs = sorted(version_loader_pairs, key=lambda x: (x[0], x[1]))
 
     return {
-        "name": slug,
+        "provider": "curseforge",
         "mod_id": mod_id,
-        "url": url,
-        "platform": provider,
-        "versions": sorted(list(game_versions)),
-        "loaders": sorted(list(mod_loaders)),
+        "name": mod_name,
+        "versions": sorted_pairs
     }
