@@ -1,14 +1,16 @@
-from .curseforge import get_mod_data as curseforge_get
+from .curseforge import get_mod_data as curseforge
+from .modrinth import get_mod_data as modrinth
 
-PROVIDERS = {
-    "curseforge": curseforge_get,
-    # "modrinth": modrinth_get,  # will be added later
-}
-
-def detect_provider(url: str) -> str:
+def detect_provider(url: str):
     if "curseforge.com" in url:
         return "curseforge"
     elif "modrinth.com" in url:
         return "modrinth"
     else:
-        raise ValueError(f"Unknown provider for URL: {url}")
+        raise ValueError("Unsupported provider in URL.")
+
+PROVIDERS = {
+    "curseforge": curseforge,
+    "modrinth": modrinth
+}
+

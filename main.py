@@ -1,31 +1,33 @@
 from providers import PROVIDERS, detect_provider
 from tabulate import tabulate
 
+from providers import PROVIDERS, detect_provider
+from tabulate import tabulate
+
 def main():
-    url = input("Enter mod URL (CurseForge or Modrinth): ").strip()
-    provider_name = detect_provider(url)
-    get_mod_data = PROVIDERS[provider_name]
+    print("Enter one or more mod URLs (one per line). Empty line to start:")
+    urls = []
+    while True:
+        line = input().strip()
+        if not line:
+            break
+        urls.append(line)
 
-    try:
-        mod_info = get_mod_data(url)
-    except Exception as e:
-        print(f"Error: {e}")
-        return
+    all_rows = []
+    for url in urls:
+        provider_name = detect_provider(url)
+        get_mod_data = PROVIDERS[provider_name]
+        try:
+            mod_info = get_mod_data(url)
+        except Exception as e:
+            print(f"[ERROR] {url}: {e}")
+            continue
 
-    print(f"\n=== {mod_info['name']} ({mod_info['provider']}) ===")
-    print(f"Mod ID: {mod_info['mod_id']}\n")
+        for version, loader in mod_info["versions"]:
+            all_rows.append([mod_info["name"], version, loader])
 
-    table = [
-        [version, loader]
-        for version, loader in mod_info["versions"]
-    ]
-
-    if not table:
-        print("No version/loader data found.")
-    else:
-        print(f"[DEBUG] Total versions found: {len(mod_info['versions'])}")
-        print(tabulate(table, headers=["Minecraft Version", "Mod Loader"], tablefmt="grid"))
-
+    print("\n=== Summary ===")
+    print(tabulate(all_rows, headers=["Mod Name", "MC Version", "Mod Loader"], tablefmt="grid"))
 
 if __name__ == "__main__":
     main()

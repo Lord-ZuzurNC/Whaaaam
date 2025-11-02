@@ -1,0 +1,144 @@
+// === THEME SWITCHER ===
+const themeToggle = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+  document.body.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+  themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
+}
+themeToggle.addEventListener("click", () => {
+  const newTheme =
+    document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  applyTheme(newTheme);
+});
+applyTheme(localStorage.getItem("theme") || "dark");
+
+// === DOM ELEMENTS ===
+const analyzeBtn = document.getElementById("analyzeBtn");
+const urlInput = document.getElementById("urlInput");
+const loading = document.getElementById("loading");
+const tableContainer = document.getElementById("tableContainer");
+const tbody = document.querySelector("#resultTable tbody");
+const exportButtons = document.getElementById("exportButtons");
+
+// === ANALYZE FUNCTION ===
+analyzeBtn.addEventListener("click", async () => {
+  const input = urlInput.value.trim();
+  if (!input) return alert("Please enter at least one URL.");
+
+  const urls = input
+    .split("\n")
+    .map((u) => u.trim())
+    .filter(Boolean);
+
+  loading.classList.remove("hidden");
+  tableContainer.classList.add("hidden");
+  exportButtons.classList.add("hidden");
+  tbody.innerHTML = "";
+
+  try {
+    const res = await fetch("/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ urls }),
+    });
+    const data = await res.json();
+    loading.classList.add("hidden");
+
+    const allRows = [];
+
+    for (const mod of data) {
+      if (mod.error) {
+        tbody.insertAdjacentHTML(
+          "beforeend",
+          `
+          <tr><td colspan="2" style="color:#f55">${mod.url || mod.name}: ${
+            mod.error
+          }</td></tr>
+        `
+        );
+        continue;
+      }
+
+      // Flatten for export
+      mod.versions.forEach(([version, loader]) =>
+        allRows.push({ name: mod.name, version, loader, url: mod.url })
+      );
+
+      // Create the dropdown with nested table
+      const versionRows = mod.versions
+        .map(
+          ([version, loader]) => `
+        <tr><td>${version}</td><td>${loader}</td></tr>
+      `
+        )
+        .join("");
+
+      const rowHTML = `
+        <tr>
+          <td><a href="${mod.url}" target="_blank" rel="noopener">${mod.name}</a></td>
+          <td class="details-cell">
+            <button class="details-toggle">Show ${mod.versions.length} versions</button>
+            <div class="details-content">
+              <table>
+                <thead><tr><th>Version</th><th>Loader</th></tr></thead>
+                <tbody>${versionRows}</tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      `;
+      tbody.insertAdjacentHTML("beforeend", rowHTML);
+    }
+
+    tableContainer.classList.remove("hidden");
+    exportButtons.classList.remove("hidden");
+
+    // Attach dropdown handlers
+    document.querySelectorAll(".details-toggle").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const content = btn.nextElementSibling;
+        const open = content.classList.toggle("show");
+        btn.textContent = open
+          ? "Hide versions"
+          : `Show ${content.querySelectorAll("tbody tr").length} versions`;
+      });
+    });
+
+    // Export buttons
+    document.getElementById("exportCSV").onclick = () => exportCSV(allRows);
+    document.getElementById("exportMD").onclick = () => exportMD(allRows);
+  } catch (err) {
+    console.error(err);
+    alert("An error occurred. Check console for details.");
+    loading.classList.add("hidden");
+  }
+});
+
+// === EXPORT FUNCTIONS ===
+function exportCSV(rows) {
+  if (!rows.length) return alert("No data to export!");
+  const header = "Mod Name,Version,Loader,URL\n";
+  const csv = rows
+    .map((r) => `"${r.name}","${r.version}","${r.loader}","${r.url}"`)
+    .join("\n");
+  downloadFile("mods.csv", header + csv);
+}
+
+function exportMD(rows) {
+  if (!rows.length) return alert("No data to export!");
+  let md =
+    "| Mod Name | Version | Loader |\n|-----------|----------|---------|\n";
+  for (const r of rows) {
+    md += `| [${r.name}](${r.url}) | ${r.version} | ${r.loader} |\n`;
+  }
+  downloadFile("mods.md", md);
+}
+
+function downloadFile(filename, content) {
+  const blob = new Blob([content], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+}

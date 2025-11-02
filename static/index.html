@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minecraft Mod Matrix</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <button id="themeToggle" title="Toggle theme">🌙</button>
+
+    <div class="app fade-in">
+      <h1>Minecraft Mod Matrix</h1>
+      <p>Paste one or more CurseForge or Modrinth URLs (one per line):</p>
+
+      <textarea
+        id="urlInput"
+        placeholder="https://www.curseforge.com/minecraft/mc-mods/jei"
+      ></textarea>
+      <button id="analyzeBtn">Analyze</button>
+
+      <div id="loading" class="hidden">⏳ Fetching data...</div>
+
+      <div class="export-buttons hidden" id="exportButtons">
+        <button id="exportCSV">📄 Export CSV</button>
+        <button id="exportMD">🧾 Export Markdown</button>
+      </div>
+
+      <div class="table-container hidden" id="tableContainer">
+        <table id="resultTable">
+          <thead>
+            <tr>
+              <th>Mod Name</th>
+              <th>Versions / Loaders</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
