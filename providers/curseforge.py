@@ -3,6 +3,8 @@ import time
 import json
 import requests
 from datetime import datetime, timedelta
+from dateutil.parser import parse
+from re import sub
 
 API_BASE = "https://api.curseforge.com/v1"
 GAME_ID = 432  # Minecraft
@@ -18,34 +20,35 @@ DEBUG = os.getenv("DEBUG")
 if not API_KEY:
     raise EnvironmentError("Missing CF_API_KEY in environment (.env not loaded)")
 
-if DEBUG=="true":
-    print(f"[DEBUG] Using CurseForge API key: {API_KEY[:6]}... (truncated)")
+def debug(msg):
+    if os.getenv("DEBUG", "false").lower() == "true":
+        print("[DEBUG] ", msg)
 
 HEADERS = {
     "Accept": "application/json",
     "x-api-key": API_KEY,
 }
 
-
 # ---------- Helper: Safe request with retries ----------
 def safe_request(url, params=None, retries=5, delay=1):
     for attempt in range(1, retries + 1):
         try:
-            response = requests.get(url, headers=HEADERS, params=params, timeout=10)
+            timeout = int(os.getenv("REQUEST_TIMEOUT", 10))
+            response = requests.get(url, headers=HEADERS, params=params, timeout=timeout)
             response.raise_for_status()
             return response
         except requests.RequestException as e:
-            print(f"[DEBUG] Request failed: {e}. Retrying ({attempt}/{retries})...")
+            debug(f"Request failed: {e}. Retrying ({attempt}/{retries})...")
             time.sleep(delay)
     raise RuntimeError(f"Failed to fetch {url} after {retries} retries.")
-
 
 # ---------- Helper: Cached fetch ----------
 def cached_fetch(mod_id, page, url, params):
     """
     Fetch and cache CurseForge API page data.
     """
-    mod_cache_dir = os.path.join(CACHE_DIR, str(mod_id))
+    safe_mod_id = sub(r'[^a-zA-Z0-9_-]', '_', mod_id)
+    mod_cache_dir = os.path.join(CACHE_DIR, str(safe_mod_id))
     os.makedirs(mod_cache_dir, exist_ok=True)
 
     cache_path = os.path.join(mod_cache_dir, f"page-{page}.json")
@@ -64,16 +67,15 @@ def cached_fetch(mod_id, page, url, params):
         json.dump(data, f, indent=2)
     return data
 
-
 # ---------- Main provider function ----------
 def get_mod_data(url: str):
-    print(f"[DEBUG] Extracting mod slug from URL: {url}")
+    debug(f"Extracting mod slug from URL: {url}")
     slug = url.rstrip("/").split("/")[-1]
 
     # Step 1: Resolve mod slug → mod ID
     search_url = f"{API_BASE}/mods/search"
     params = {"gameId": GAME_ID, "slug": slug}
-    print(f"[DEBUG] Searching for slug '{slug}' via {search_url} params={params}")
+    debug(f"Searching for slug '{slug}' via {search_url} params={params}")
     resp = safe_request(search_url, params)
     mods = resp.json().get("data", [])
     if not mods:
@@ -81,11 +83,14 @@ def get_mod_data(url: str):
 
     # Pick the most likely one (most recent / most downloaded)
     for m in mods:
-        print(f"[DEBUG] Candidate mod: {m['name']} (ID={m['id']}, downloads={m['downloadCount']})")
-    best_mod = max(mods, key=lambda m: (m.get("dateReleased", ""), m.get("downloadCount", 0)))
+        debug(f"Candidate mod: {m['name']} (ID={m['id']}, downloads={m['downloadCount']})")
+    best_mod = max(mods, key=lambda m: (
+        parse(m.get("dateReleased", "1970-01-01")),
+        m.get("downloadCount", 0)
+    ))
     mod_id = best_mod["id"]
     mod_name = best_mod["name"]
-    print(f"[DEBUG] Found mod ID: {mod_id} for slug: {slug} ({mod_name}, {best_mod['downloadCount']} downloads)")
+    debug(f"Found mod ID: {mod_id} for slug: {slug} ({mod_name}, {best_mod['downloadCount']} downloads)")
 
     # Step 2: Fetch all file pages (with cache)
     all_files = []
@@ -97,11 +102,11 @@ def get_mod_data(url: str):
         files_url = f"{API_BASE}/mods/{mod_id}/files"
         params = {"index": page * page_size, "pageSize": page_size, "sortOrder": "asc"}
 
-        print(f"[DEBUG] Fetching page {page} for mod {mod_id} (index={params['index']})")
+        debug(f"Fetching page {page} for mod {mod_id} (index={params['index']})")
         try:
             data = cached_fetch(mod_id, page, files_url, params)
         except Exception as e:
-            print(f"[WARN] Failed to fetch page {page}: {e}")
+            debug(f"[WARN] Failed to fetch page {page}: {e}")
             consecutive_misses += 1
             if consecutive_misses >= 3:
                 break
@@ -110,18 +115,18 @@ def get_mod_data(url: str):
 
         files = data.get("data", [])
         if not files:
-            print(f"[DEBUG] No files in page {page}, stopping.")
+            debug(f"No files in page {page}, stopping.")
             break
 
         all_files.extend(files)
 
         if len(files) < page_size:
-            print(f"[DEBUG] Last page reached at {page}.")
+            debug(f"Last page reached at {page}.")
             break
         page += 1
         time.sleep(0.3)
 
-    print(f"[DEBUG] Fetched {len(all_files)} files total for mod {mod_name}")
+    debug(f"Fetched {len(all_files)} files total for mod {mod_name}")
 
     # Step 3: Extract Minecraft version ↔ mod loader pairs
     version_loader_pairs = set()
@@ -138,7 +143,7 @@ def get_mod_data(url: str):
         for token in lower_versions:
             if "neoforge" in token or "neo-forge" in token:
                 detected_loaders.add("NeoForge")
-            elif "fabric" in token:
+            elif "fabric" in token and not "fabrication" in token:
                 detected_loaders.add("Fabric")
             elif "forge" in token:
                 detected_loaders.add("Forge")
@@ -149,7 +154,7 @@ def get_mod_data(url: str):
         if not detected_loaders:
             if "neoforge" in file_name or "neo-forge" in file_name:
                 detected_loaders.add("NeoForge")
-            elif "fabric" in file_name:
+            elif "fabric" in file_name and not "fabrication" in file_name:
                 detected_loaders.add("Fabric")
             elif "forge" in file_name:
                 detected_loaders.add("Forge")
@@ -162,7 +167,7 @@ def get_mod_data(url: str):
 
         # --- Debug: detect multi-loader combinations ---
         if len(detected_loaders) > 1 and game_versions:
-            print(f"[DEBUG] Multi-loader file detected: "
+            debug(f"Multi-loader file detected: "
                   f"{game_versions} → {', '.join(sorted(detected_loaders))}")
 
         # --- Add all version/loader combinations ---
@@ -177,5 +182,6 @@ def get_mod_data(url: str):
         "provider": "curseforge",
         "mod_id": mod_id,
         "name": mod_name,
+        "url": url,
         "versions": sorted_pairs
     }

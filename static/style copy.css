@@ -1,33 +1,19 @@
+/* === THEME VARIABLES === */
 :root {
-  --radius: 8px;
-
   --bg: #fdf6e3;
   --bg-secondary: #f5deb3;
   --text: #2b2b2b;
-
   --button-bg: #c49b63;
   --button-bg-hover: #b5854d;
-  --button-text: #ffffff;
-
-  --card-bg: #fff8e6;
-  --input-bg: #fffaf0;
-  --border-color: #bca77b;
   --table-border: #bca77b;
 }
 
-/* dark theme variables */
 body[data-theme="dark"] {
   --bg: #202225;
   --bg-secondary: #2f3136;
   --text: #f5f5f5;
-
   --button-bg: #5865f2;
   --button-bg-hover: #4752c4;
-  --button-text: #ffffff;
-
-  --card-bg: #2b2d31;
-  --input-bg: #202226;
-  --border-color: #555;
   --table-border: #555;
 }
 
@@ -49,7 +35,7 @@ body {
   padding: 2rem;
   max-width: 900px;
   width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   transition: background 0.3s;
 }
 
@@ -61,9 +47,9 @@ h1 {
 textarea {
   width: 100%;
   height: 120px;
-  background: var(--input-bg);
+  background: var(--bg);
   color: var(--text);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--table-border);
   border-radius: 8px;
   padding: 0.5rem;
   font-family: monospace;
@@ -73,7 +59,7 @@ textarea {
 
 button {
   background: var(--button-bg);
-  color: var(--button-text);
+  color: #fff;
   border: none;
   border-radius: 6px;
   padding: 0.6rem 1.2rem;
@@ -93,25 +79,24 @@ button:hover {
   margin-top: 1rem;
   text-align: center;
 }
+
 .hidden {
   display: none;
 }
 
-/* TABLE + CONTAINER */
+/* === TABLE STYLES === */
 .table-container {
   margin-top: 1.5rem;
   overflow-x: auto;
   border-radius: 10px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.5s ease;
-  background: var(--card-bg);
-  padding: 0.5rem;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 360px;
+  min-width: 400px;
 }
 
 th,
@@ -128,14 +113,13 @@ th {
   z-index: 2;
 }
 
-/* mod name scroll area */
 td:first-child {
   max-width: 220px;
   overflow-x: auto;
   white-space: nowrap;
 }
 
-/* small scrollbar for mod name cell */
+/* Scrollbar for mod name */
 td:first-child::-webkit-scrollbar {
   height: 6px;
 }
@@ -144,13 +128,13 @@ td:first-child::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
-/* THEME TOGGLE */
+/* === THEME TOGGLE === */
 #themeToggle {
   position: fixed;
   top: 1rem;
   right: 1rem;
   background: var(--button-bg);
-  color: var(--button-text);
+  color: #fff;
   border: none;
   border-radius: 50%;
   width: 42px;
@@ -162,48 +146,138 @@ td:first-child::-webkit-scrollbar-thumb {
   align-items: center;
   justify-content: center;
 }
+
 #themeToggle:hover {
   background: var(--button-bg-hover);
 }
 
-/* COLLAPSIBLE */
+/* === ANIMATIONS === */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  .app {
+    padding: 1rem;
+  }
+
+  th,
+  td {
+    font-size: 0.9rem;
+  }
+
+  td:first-child {
+    max-width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  button {
+    padding: 0.5rem;
+  }
+
+  td:first-child {
+    max-width: 120px;
+  }
+}
+
+/* === EXPORT BUTTONS === */
+.export-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.export-buttons button {
+  flex: 1;
+  max-width: 200px;
+}
+
+/* === LINK STYLES === */
+td a {
+  color: var(--button-bg);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+td a:hover {
+  text-decoration: underline;
+}
+
+/* === RESPONSIVE FIXES === */
+@media (max-width: 768px) {
+  .export-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* === COLLAPSIBLE TABLE === */
 .details-cell {
   text-align: left;
 }
+
 .details-toggle {
   cursor: pointer;
   background: var(--button-bg);
   color: var(--button-text);
   border: none;
   padding: 6px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-weight: 600;
   transition: background 0.2s;
 }
+
 .details-toggle:hover {
-  background: var(--button-bg-hover);
+  background: var(--button-hover);
 }
 
 .details-content {
   display: none;
   margin-top: 0.5rem;
   padding: 0.5rem;
-  background: var(--bg);
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   max-height: 250px;
   overflow-y: auto;
 }
+
 .details-content table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95em;
+  font-size: 0.9em;
 }
+
 .details-content th,
 .details-content td {
   padding: 4px 8px;
   border-bottom: 1px solid var(--border-color);
 }
+
+.details-content tr:last-child td {
+  border-bottom: none;
+}
+
 .details-content.show {
   display: block;
   animation: slideDown 0.2s ease-in-out;
@@ -216,15 +290,15 @@ td:first-child::-webkit-scrollbar-thumb {
   }
   to {
     opacity: 1;
-    transform: none;
+    transform: translateY(0);
   }
 }
 
-/* COMPATIBILITY SUMMARY */
+/* === COMPATIBILITY SUMMARY === */
 .compatibility {
   margin: 1rem 0;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-weight: bold;
   text-align: center;
 }
@@ -241,25 +315,13 @@ td:first-child::-webkit-scrollbar-thumb {
   color: white;
 }
 
-/* EXPORT BUTTONS */
-.export-buttons {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  justify-content: flex-end;
-}
-.export-buttons button {
-  flex: 1;
-  max-width: 200px;
-}
-
-/* FILTERS */
+/* === FILTERS === */
 .filters {
   margin: 1rem 0;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-  flex-wrap: wrap;
 }
 .filters label {
   display: flex;
@@ -270,29 +332,8 @@ td:first-child::-webkit-scrollbar-thumb {
 .filters select {
   margin-top: 4px;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 1px solid var(--border-color);
   background: var(--input-bg);
   color: var(--text);
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  body {
-    padding: 1rem;
-  }
-  .app {
-    padding: 1rem;
-  }
-  td:first-child {
-    max-width: 160px;
-  }
-}
-@media (max-width: 480px) {
-  h1 {
-    font-size: 1.3rem;
-  }
-  td:first-child {
-    max-width: 120px;
-  }
 }

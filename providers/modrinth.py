@@ -2,82 +2,111 @@ import os
 import time
 import json
 import requests
+from pathlib import Path
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+import re
+from re import sub
+
+load_dotenv()
 
 API_BASE = "https://api.modrinth.com/v2"
-CACHE_DIR = os.path.join("cache", "modrinth")
+CACHE_DIR = Path("cache") / "modrinth"
 CACHE_TTL = timedelta(hours=24)
+CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
-os.makedirs(CACHE_DIR, exist_ok=True)
+def debug(msg: str):
+    if os.getenv("DEBUG", "false").lower() == "true":
+        print("[DEBUG] ", msg)
 
-# ---------- Helper: Safe request with retries ----------
-def safe_request(url, retries=5, delay=1):
+def safe_request(url, retries=5, timeout=10):
     for attempt in range(1, retries + 1):
         try:
-            r = requests.get(url, timeout=10)
+            timeout = int(os.getenv("REQUEST_TIMEOUT", 10))
+            r = requests.get(url, timeout=timeout)
             r.raise_for_status()
+            # try parse JSON here; if it fails we'll raise with useful info
+            try:
+                _ = r.json()
+            except ValueError:
+                debug(f"Non-JSON response for {url}: {r.text[:200]!r}")
+                raise RuntimeError(f"Non-JSON response from Modrinth API for {url}")
             return r
         except requests.RequestException as e:
-            print(f"[DEBUG] Request failed: {e}. Retrying ({attempt}/{retries})...")
-            time.sleep(delay)
+            debug(f"Request failed: {e}. Retrying ({attempt}/{retries})...")
+            time.sleep(1 * attempt)
     raise RuntimeError(f"Failed to fetch {url} after {retries} retries.")
 
-# ---------- Helper: Cached fetch ----------
-def cached_fetch(slug, mod_id, name, url):
-    """
-    Fetch and cache CurseForge API page data.
-    """
-    mod_cache_dir = os.path.join(CACHE_DIR, mod_id)
-    os.makedirs(mod_cache_dir, exist_ok=True)
-    cache_path = os.path.join(mod_cache_dir, "versions.json")
+def slug_from_modrinth_url(url: str) -> str | None:
+    # Accept many forms: https://modrinth.com/mods/sodium, /project/<id>, etc.
+    if not url:
+        return None
+    url = url.strip().rstrip("/")
+    # If URL contains /project/ or /mod/ or /mods/ or /modpack/
+    m = re.search(r"/(project|mod|mods)/([^/?#]+)$", url)
+    if m:
+        return m.group(2)
+    # fallback: last path segment
+    parts = url.split("/")
+    if parts:
+        return parts[-1]
+    return None
 
-    # Check for valid cache
-    if os.path.exists(cache_path):
-        mtime = datetime.fromtimestamp(os.path.getmtime(cache_path))
+def cache_path_for(slug: str):
+    safe_slug = sub(r'[^a-zA-Z0-9_-]', '_', slug)
+    d = CACHE_DIR / safe_slug
+    d.mkdir(parents=True, exist_ok=True)
+    return d / "versions.json"
+
+def cached_fetch_versions(safe_slug: str, slug: str, url: str):
+    p = cache_path_for(safe_slug)
+    if p.exists():
+        mtime = datetime.fromtimestamp(p.stat().st_mtime)
         if datetime.now() - mtime < CACHE_TTL:
-            with open(cache_path, "r", encoding="utf-8") as f:
-                return json.load(f)
-
-    # Fetch and cache new data
-    data = safe_request(url).json()
-    with open(cache_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+            debug(f"Loading cached Modrinth versions for {slug}")
+            return json.loads(p.read_text(encoding="utf-8"))
+    r = safe_request(url)
+    data = r.json()
+    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
     return data
 
-# ---------- Main provider function ----------
-def get_mod_data(url: str):
-    slug = url.rstrip("/").split("/")[-1]
-    print(f"[DEBUG] Extracting Modrinth slug: {slug}")
+def get_mod_data(url: str) -> dict:
+    slug = slug_from_modrinth_url(url)
+    if not slug:
+        raise ValueError(f"Could not extract Modrinth slug from URL: {url}")
 
-    # Step 1: Resolve mod slug → mod ID
     project_url = f"{API_BASE}/project/{slug}"
-    proj_data = safe_request(project_url).json()
-    mod_name = proj_data.get("title", slug)
-    mod_id = proj_data.get("id")
+    debug(f"Fetching Modrinth project: {project_url}")
+    try:
+        proj = safe_request(project_url).json()
+    except Exception as e:
+        raise RuntimeError(f"Failed to fetch Modrinth project for slug '{slug}': {e}")
 
-    # Step 2: Fetch all file pages (with cache)
+    mod_name = proj.get("title") or proj.get("name") or slug
+    mod_id = proj.get("id")
+
     versions_url = f"{API_BASE}/project/{slug}/version"
-    data = cached_fetch(slug, mod_name, versions_url, url)
+    try:
+        versions = cached_fetch_versions(slug, versions_url, url)
+    except Exception as e:
+        raise RuntimeError(f"Failed to fetch Modrinth versions for '{slug}': {e}")
 
-    # Step 3: Extract Minecraft version ↔ mod loader pairs
-    version_loader_pairs = set()
-    for v in data:
+    pairs = set()
+    for v in versions:
         game_versions = v.get("game_versions", [])
         loaders = v.get("loaders", [])
         for gv in game_versions:
+            if not gv.startswith("1."):
+                continue
             for loader in loaders:
-                if gv.startswith("1."):
-                    version_loader_pairs.add((gv, loader.capitalize()))
+                pairs.add((gv, loader.capitalize()))
 
-
-    # Step 4: Return structured data
-    sorted_pairs = sorted(version_loader_pairs, key=lambda x: (x[0], x[1]))
-
-    print(f"[DEBUG] Fetched {len(sorted_pairs)} unique versions for {mod_name}")
+    sorted_pairs = sorted(pairs, key=lambda x: (x[0], x[1]))
 
     return {
         "provider": "modrinth",
         "mod_id": mod_id,
         "name": mod_name,
+        "url": url,
         "versions": sorted_pairs
     }
