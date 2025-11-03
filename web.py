@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template_string
+from flask import Flask, request, jsonify, send_from_directory, render_template, render_template_string
 from flask_cors import CORS
 import os
 from providers import PROVIDERS, detect_provider
@@ -8,7 +8,7 @@ CORS(app)
 
 @app.route("/")
 def index():
-    return send_from_directory("static", "index.html")
+    return render_template("index.html")
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -35,5 +35,4 @@ def analyze():
     return jsonify(results)
 
 if __name__ == "__main__":
-    os.makedirs("static", exist_ok=True)
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", debug=True)
