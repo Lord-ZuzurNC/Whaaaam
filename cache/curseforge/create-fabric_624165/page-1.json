@@ -1,0 +1,1762 @@
+{
+  "data": [
+    {
+      "id": 3963086,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.5.0d",
+      "fileName": "create-fabric-1.18.2-0.5.0d-728.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "cc1d4f69ee773893f5f304a478c8965a3e537899",
+          "algo": 1
+        },
+        {
+          "value": "5c1eaab7f2693bfc0831e897f522da63",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-09-02T02:29:16.753Z",
+      "fileLength": 15854821,
+      "downloadCount": 6027,
+      "downloadUrl": "https://edge.forgecdn.net/files/3963/86/create-fabric-1.18.2-0.5.0d-728.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 711525201,
+      "modules": [
+        {
+          "name": "assets",
+          "fingerprint": 1199072682
+        },
+        {
+          "name": "create-fabric-1.18.2-refmap.json",
+          "fingerprint": 316073596
+        },
+        {
+          "name": "resourcepacks",
+          "fingerprint": 1636862921
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 199455359
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 382632252
+        },
+        {
+          "name": "data",
+          "fingerprint": 2720846840
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3310685438
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 3986098786
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 509002930
+        },
+        {
+          "name": "LICENSE_create-fabric-1.18.2",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "com",
+          "fingerprint": 3356109484
+        }
+      ]
+    },
+    {
+      "id": 3913786,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.5.0c",
+      "fileName": "create-1.18.2-0.5.0c-708.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "57898d9d6be6dde0b9ed857487d8c6178774cc1a",
+          "algo": 1
+        },
+        {
+          "value": "63c8bdfe1b97b5dc28938d23f9c85366",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-08-03T04:25:33.59Z",
+      "fileLength": 15618355,
+      "downloadCount": 216004,
+      "downloadUrl": "https://edge.forgecdn.net/files/3913/786/create-1.18.2-0.5.0c-708.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 508589586,
+      "modules": [
+        {
+          "name": "META-INF",
+          "fingerprint": 2074084490
+        },
+        {
+          "name": "data",
+          "fingerprint": 571792200
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 2913784759
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 742405866
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": "com",
+          "fingerprint": 3119585136
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1556359056
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3310685438
+        },
+        {
+          "name": "assets",
+          "fingerprint": 2775895129
+        },
+        {
+          "name": "resourcepacks",
+          "fingerprint": 1636862921
+        },
+        {
+          "name": "create-1.18.2-refmap.json",
+          "fingerprint": 1646878921
+        },
+        {
+          "name": "LICENSE_create-1.18.2",
+          "fingerprint": 1927476733
+        }
+      ]
+    },
+    {
+      "id": 3848372,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 13",
+      "fileName": "create-mc1.18.2_v0.4.1+637.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "aecad84b43649edc50a7ee471be8668e22073c91",
+          "algo": 1
+        },
+        {
+          "value": "c09fd84eaf7f50c855181cf396b35f92",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-26T09:07:31.553Z",
+      "fileLength": 13930047,
+      "downloadCount": 242989,
+      "downloadUrl": "https://edge.forgecdn.net/files/3848/372/create-mc1.18.2_v0.4.1%2b637.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 639835312,
+      "modules": [
+        {
+          "name": "data",
+          "fingerprint": 3505150702
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 2347946154
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1799863376
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "assets",
+          "fingerprint": 332176947
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 3637094215
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 2260977496
+        },
+        {
+          "name": "com",
+          "fingerprint": 3461859947
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        }
+      ]
+    },
+    {
+      "id": 3846046,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 12",
+      "fileName": "create-mc1.18.2_v0.4.1+635.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "0d75861ca7dc213efc9cbe04265d56a4fd86bf49",
+          "algo": 1
+        },
+        {
+          "value": "989306ff2b1a20e07b5b58da8ca1f7e0",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-24T06:16:04.27Z",
+      "fileLength": 13929579,
+      "downloadCount": 3385,
+      "downloadUrl": "https://edge.forgecdn.net/files/3846/46/create-mc1.18.2_v0.4.1%2b635.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 889575618,
+      "modules": [
+        {
+          "name": "data",
+          "fingerprint": 3505150702
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 3016032106
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1799863376
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "assets",
+          "fingerprint": 332176947
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 1271249446
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 2260977496
+        },
+        {
+          "name": "com",
+          "fingerprint": 443001042
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        }
+      ]
+    },
+    {
+      "id": 3835278,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 11",
+      "fileName": "create-mc1.18.2_v0.4.1+631.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "38b3eb18cfc804b3ee15beed751762629a8b7576",
+          "algo": 1
+        },
+        {
+          "value": "78f3146ac0f8aa8c7c1dc4c8f7748b56",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-16T22:36:51.467Z",
+      "fileLength": 13938013,
+      "downloadCount": 107803,
+      "downloadUrl": "https://edge.forgecdn.net/files/3835/278/create-mc1.18.2_v0.4.1%2b631.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 2483440339,
+      "modules": [
+        {
+          "name": "com",
+          "fingerprint": 3556341569
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1799863376
+        },
+        {
+          "name": "assets",
+          "fingerprint": 332176947
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 1421621302
+        },
+        {
+          "name": "data",
+          "fingerprint": 1411996034
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 1460233300
+        }
+      ]
+    },
+    {
+      "id": 3835007,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 10",
+      "fileName": "create-mc1.18.2_v0.4.1+629.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "084b3969dff9f4450f5a85f41882482d9cdb589d",
+          "algo": 1
+        },
+        {
+          "value": "9838017e53887048de142b4db7f5653a",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-16T19:11:03.097Z",
+      "fileLength": 13938018,
+      "downloadCount": 481,
+      "downloadUrl": "https://edge.forgecdn.net/files/3835/7/create-mc1.18.2_v0.4.1%2b629.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 4005845563,
+      "modules": [
+        {
+          "name": "com",
+          "fingerprint": 937135300
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1799863376
+        },
+        {
+          "name": "assets",
+          "fingerprint": 332176947
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 8406667
+        },
+        {
+          "name": "data",
+          "fingerprint": 1411996034
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 3528711557
+        }
+      ]
+    },
+    {
+      "id": 3834192,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 9",
+      "fileName": "create-mc1.18.2_v0.4.1+628.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "4c981d32df33570898256292b1c9de88a174161e",
+          "algo": 1
+        },
+        {
+          "value": "7cdd676ff7968da470a08c99eb45c9ba",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-16T04:36:23.643Z",
+      "fileLength": 13932772,
+      "downloadCount": 8648,
+      "downloadUrl": "https://edge.forgecdn.net/files/3834/192/create-mc1.18.2_v0.4.1%2b628.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 915017220,
+      "modules": [
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "com",
+          "fingerprint": 3038576524
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1799863376
+        },
+        {
+          "name": "data",
+          "fingerprint": 1411996034
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 3653739309
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 2537161403
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "assets",
+          "fingerprint": 332176947
+        }
+      ]
+    },
+    {
+      "id": 3820156,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 8",
+      "fileName": "create-mc1.18.2_v0.4.1+601.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "526e61079fa03f48a75fd81c7c5305c501fccf11",
+          "algo": 1
+        },
+        {
+          "value": "69692481018fbd0663b7fc1dc41637ea",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-06T23:24:46.403Z",
+      "fileLength": 13813457,
+      "downloadCount": 8747,
+      "downloadUrl": "https://edge.forgecdn.net/files/3820/156/create-mc1.18.2_v0.4.1%2b601.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 4293542239,
+      "modules": [
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "com",
+          "fingerprint": 3960923855
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1685071227
+        },
+        {
+          "name": "data",
+          "fingerprint": 4024746512
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 573729999
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 2651726547
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "assets",
+          "fingerprint": 3915262827
+        }
+      ]
+    },
+    {
+      "id": 3817916,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 7",
+      "fileName": "create-mc1.18.2_v0.4.1+600.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "35d4adc0a46b25be39e7123b602538733758ad47",
+          "algo": 1
+        },
+        {
+          "value": "35fa8327245efbdcabcbbbfc2b6e6210",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-05T04:35:55.187Z",
+      "fileLength": 13816219,
+      "downloadCount": 5089,
+      "downloadUrl": "https://edge.forgecdn.net/files/3817/916/create-mc1.18.2_v0.4.1%2b600.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 4168453863,
+      "modules": [
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "com",
+          "fingerprint": 929064324
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1685071227
+        },
+        {
+          "name": "data",
+          "fingerprint": 4024746512
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 3468682912
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 1142389435
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "assets",
+          "fingerprint": 3915262827
+        }
+      ]
+    },
+    {
+      "id": 3817569,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 6",
+      "fileName": "create-mc1.18.2_v0.4.1+599.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "9e3e8176773646b417435b4c1f656062abc099b7",
+          "algo": 1
+        },
+        {
+          "value": "028de7861d40ea5741c4c6c4d879b5ce",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-04T21:42:03.367Z",
+      "fileLength": 13815436,
+      "downloadCount": 567,
+      "downloadUrl": "https://edge.forgecdn.net/files/3817/569/create-mc1.18.2_v0.4.1%2b599.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 3146363180,
+      "modules": [
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "com",
+          "fingerprint": 3214247914
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1685071227
+        },
+        {
+          "name": "data",
+          "fingerprint": 4024746512
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 3460136666
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 1760028512
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "assets",
+          "fingerprint": 3915262827
+        }
+      ]
+    },
+    {
+      "id": 3815636,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 5",
+      "fileName": "create-mc1.18.2_v0.4.1+596.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "9232eeb403e21cd6bf3975e405ef4d4b6ebdc63e",
+          "algo": 1
+        },
+        {
+          "value": "f728f32185a4665474d609bdc7121f1b",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-03T08:49:11.747Z",
+      "fileLength": 13815588,
+      "downloadCount": 2222,
+      "downloadUrl": "https://edge.forgecdn.net/files/3815/636/create-mc1.18.2_v0.4.1%2b596.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 4101502101,
+      "modules": [
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "com",
+          "fingerprint": 136799000
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1685071227
+        },
+        {
+          "name": "data",
+          "fingerprint": 4024746512
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 3837027276
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 3784248107
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "assets",
+          "fingerprint": 3915262827
+        }
+      ]
+    },
+    {
+      "id": 3815503,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 4",
+      "fileName": "create-mc1.18.2_v0.4.1+595.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "612e96abb63b47ffca7ce6861406760445d5ee2a",
+          "algo": 1
+        },
+        {
+          "value": "d3735cfdc45d34a6ecac9301f57ed3fb",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-03T04:05:31.693Z",
+      "fileLength": 13815424,
+      "downloadCount": 420,
+      "downloadUrl": "https://edge.forgecdn.net/files/3815/503/create-mc1.18.2_v0.4.1%2b595.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 4137388740,
+      "modules": [
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "com",
+          "fingerprint": 136799000
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1685071227
+        },
+        {
+          "name": "data",
+          "fingerprint": 4024746512
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 1345561659
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 1954988937
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "assets",
+          "fingerprint": 3915262827
+        }
+      ]
+    },
+    {
+      "id": 3815442,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 3",
+      "fileName": "create-mc1.18.2_v0.4.1+594.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "56077ec1e91cffea52c9280cc58486fd4b9f914d",
+          "algo": 1
+        },
+        {
+          "value": "916be6e695f9e5a954a08e4020905b95",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-06-03T02:09:09.567Z",
+      "fileLength": 13796192,
+      "downloadCount": 349,
+      "downloadUrl": "https://edge.forgecdn.net/files/3815/442/create-mc1.18.2_v0.4.1%2b594.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2",
+        "Quilt"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        },
+        {
+          "gameVersionName": "Quilt",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-05-26T00:00:00Z",
+          "gameVersionTypeId": 68441
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 4008043393,
+      "modules": [
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "com",
+          "fingerprint": 136799000
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 3341206328
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1685071227
+        },
+        {
+          "name": "data",
+          "fingerprint": 4024746512
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 1054084313
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 2681921482
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "assets",
+          "fingerprint": 3915262827
+        }
+      ]
+    },
+    {
+      "id": 3802017,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 2",
+      "fileName": "create-mc1.18.2_v0.4.1+586.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "d6e7f9074c74e12063025c5a0de72f5d2c6c7595",
+          "algo": 1
+        },
+        {
+          "value": "b510fed0552769d2b41e0d053eb34b46",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-05-22T23:29:18.657Z",
+      "fileLength": 13744483,
+      "downloadCount": 150184,
+      "downloadUrl": "https://edge.forgecdn.net/files/3802/17/create-mc1.18.2_v0.4.1%2b586.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 553959536,
+      "modules": [
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 3720425529
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 2260977496
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "data",
+          "fingerprint": 3582725967
+        },
+        {
+          "name": "com",
+          "fingerprint": 2021143278
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "assets",
+          "fingerprint": 2746442967
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 4244684718
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 1158623570
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 1444286310
+        }
+      ]
+    },
+    {
+      "id": 3798590,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1 Patch 1",
+      "fileName": "create-mc1.18.2_v0.4.1+576.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "68c11b3683b7ebeb8044e1a4f794b3ee5dc1d949",
+          "algo": 1
+        },
+        {
+          "value": "b1c49027b84d256bf51ad05b7156e930",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-05-20T23:53:07.863Z",
+      "fileLength": 13737949,
+      "downloadCount": 2371,
+      "downloadUrl": "https://edge.forgecdn.net/files/3798/590/create-mc1.18.2_v0.4.1%2b576.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 1053351275,
+      "modules": [
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 1455148615
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 2260977496
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "data",
+          "fingerprint": 3582725967
+        },
+        {
+          "name": "com",
+          "fingerprint": 832904700
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "assets",
+          "fingerprint": 1780138468
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 4244684718
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 3558931575
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 2166237139
+        }
+      ]
+    },
+    {
+      "id": 3794490,
+      "gameId": 432,
+      "modId": 624165,
+      "isAvailable": true,
+      "displayName": "Create 1.18.2 v0.4.1",
+      "fileName": "create-mc1.18.2_v0.4.1+565.jar",
+      "releaseType": 2,
+      "fileStatus": 4,
+      "hashes": [
+        {
+          "value": "d3c3312e51bcf036703f94fb14bdbdbb30202d9c",
+          "algo": 1
+        },
+        {
+          "value": "20183e026b1e2c41d3ea3d369015f6e0",
+          "algo": 2
+        }
+      ],
+      "fileDate": "2022-05-17T03:16:13.76Z",
+      "fileLength": 13688885,
+      "downloadCount": 52211,
+      "downloadUrl": "https://edge.forgecdn.net/files/3794/490/create-mc1.18.2_v0.4.1%2b565.jar",
+      "gameVersions": [
+        "Fabric",
+        "1.18.2"
+      ],
+      "sortableGameVersions": [
+        {
+          "gameVersionName": "Fabric",
+          "gameVersionPadded": "0",
+          "gameVersion": "",
+          "gameVersionReleaseDate": "2022-09-01T00:00:00Z",
+          "gameVersionTypeId": 68441
+        },
+        {
+          "gameVersionName": "1.18.2",
+          "gameVersionPadded": "0000000001.0000000018.0000000002",
+          "gameVersion": "1.18.2",
+          "gameVersionReleaseDate": "2022-02-28T14:23:37.723Z",
+          "gameVersionTypeId": 73250
+        }
+      ],
+      "dependencies": [
+        {
+          "modId": 306612,
+          "relationType": 3
+        }
+      ],
+      "alternateFileId": 0,
+      "isServerPack": false,
+      "fileFingerprint": 1632000144,
+      "modules": [
+        {
+          "name": "com",
+          "fingerprint": 3151118249
+        },
+        {
+          "name": "META-INF",
+          "fingerprint": 443919949
+        },
+        {
+          "name": ".cache",
+          "fingerprint": 980339496
+        },
+        {
+          "name": "create-refmap.json",
+          "fingerprint": 3865776996
+        },
+        {
+          "name": "data",
+          "fingerprint": 1923760215
+        },
+        {
+          "name": "fabric.mod.json",
+          "fingerprint": 912038655
+        },
+        {
+          "name": "logo.png",
+          "fingerprint": 3996926576
+        },
+        {
+          "name": "LICENSE_create",
+          "fingerprint": 1927476733
+        },
+        {
+          "name": "create.mixins.json",
+          "fingerprint": 1571582969
+        },
+        {
+          "name": "opt_in",
+          "fingerprint": 3656558771
+        },
+        {
+          "name": "create.accesswidener",
+          "fingerprint": 4244684718
+        },
+        {
+          "name": "assets",
+          "fingerprint": 1780138468
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "index": 50,
+    "pageSize": 50,
+    "resultCount": 16,
+    "totalCount": 66
+  }
+}

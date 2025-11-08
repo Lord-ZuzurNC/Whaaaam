@@ -1,8 +1,4 @@
-import os
-import time
-import json
-import re
-import requests
+import os, time, json, re, requests
 from providers import cache_path, is_cache_expired
 
 API_BASE = "https://api.modrinth.com/v2"
@@ -43,13 +39,17 @@ def cached_fetch(provider, slug, mod_id, page, url):
 
 
 def version_key(v: str):
-    parts = []
-    for seg in str(v).split("."):
-        try:
-            parts.append(int(seg))
-        except Exception:
-            parts.append(seg)
-    return parts
+    if not isinstance(v, str):
+        v = str(v)
+
+    parts = re.split(r"[.\-+_]", v)
+    key = []
+    for p in parts:
+        if p.isdigit():
+            key.append(int(p))
+        else:
+            key.append(float("inf"))
+    return tuple(key)
 
 
 def get_mod_data(url: str) -> dict:
@@ -91,7 +91,7 @@ def get_mod_data(url: str) -> dict:
             for loader in loaders:
                 pairs.add((gv, str(loader).capitalize()))
 
-    sorted_pairs = sorted(pairs, key=lambda x: (version_key(x[0]), x[1]), reverse=True)
+    sorted_pairs = sorted(pairs, key=lambda x: version_key(x[0]), reverse=True)
 
     return {
         "provider": "modrinth",

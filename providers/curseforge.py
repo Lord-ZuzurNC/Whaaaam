@@ -1,8 +1,5 @@
-import os
-import time
-import json
-import requests
-from datetime import datetime, timedelta
+import os, time, json, requests
+from datetime import timedelta
 from dotenv import load_dotenv
 from providers import cache_path, is_cache_expired
 
@@ -92,12 +89,12 @@ def get_mod_data(url: str) -> dict:
         for token in [t.lower() for t in f.get("gameVersions", [])]:
             if "fabric" in token:
                 loaders.add("Fabric")
+            if "neoforge" in token or "neo-forge" in token:
+                loaders.add("NeoForge")
             if "quilt" in token:
                 loaders.add("Quilt")
-            if "forge" in token and "fabric" not in token:
+            if "forge" in token and "neoforge" not in token:
                 loaders.add("Forge")
-            if "neoforge" in token:
-                loaders.add("NeoForge")
         if not loaders:
             ln = file_name
             if "fabric" in ln:
@@ -106,7 +103,7 @@ def get_mod_data(url: str) -> dict:
                 loaders.add("NeoForge")
             elif "quilt" in ln:
                 loaders.add("Quilt")
-            elif "forge" in ln:
+            elif "forge" in ln and "neoforge" not in ln:
                 loaders.add("Forge")
             else:
                 loaders.add("Unknown")

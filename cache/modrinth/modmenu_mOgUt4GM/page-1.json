@@ -1,0 +1,2541 @@
+[
+  {
+    "game_versions": [
+      "1.21.9",
+      "1.21.10-rc1",
+      "1.21.10"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "e0mxOOIE",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v16.0.0-rc.1 for 1.21.9",
+    "version_number": "16.0.0-rc.1",
+    "changelog": "- Updated to Minecraft 1.21.9",
+    "changelog_url": null,
+    "date_published": "2025-10-02T23:13:06.965652Z",
+    "downloads": 2086904,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "c927187d11cb6db2d3daad2a24899f1a70a1618f",
+          "sha512": "6a6a02911e065fc87265b915193fd4ad6dfbacc7dd6da53151eddbb4c08c6c1f57cc68d97af02d64f253e5f3e3f9110e715408489672b32c435c52e0467053ae"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/e0mxOOIE/modmenu-16.0.0-rc.1.jar",
+        "filename": "modmenu-16.0.0-rc.1.jar",
+        "primary": true,
+        "size": 1077403,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.6",
+      "1.21.7",
+      "1.21.8"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "am1Siv7F",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v15.0.0 for 1.21.8",
+    "version_number": "15.0.0",
+    "changelog": "No Changelog Available",
+    "changelog_url": null,
+    "date_published": "2025-08-30T20:06:39.007885Z",
+    "downloads": 1409106,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "b22a1a02a13642ec707d01bb8b14a21188d6d6fa",
+          "sha512": "4a118cb4bc7e44a77b50c2f6e7187d0add9b564e752b91ad8b536044cb5c3e07a4caf81114b72080e78debbc04db573798a3d48467b6ad16bc01f7c4b43fb62e"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/am1Siv7F/modmenu-15.0.0.jar",
+        "filename": "modmenu-15.0.0.jar",
+        "primary": true,
+        "size": 1083202,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.6",
+      "1.21.7",
+      "1.21.8"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "JY1tNj8H",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v15.0.0-beta.3 for 1.21.6",
+    "version_number": "15.0.0-beta.3",
+    "changelog": "No Changelog Available",
+    "changelog_url": null,
+    "date_published": "2025-06-20T23:35:23.212679Z",
+    "downloads": 3864205,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "84089aea3ca333e23df7f409d4daf497cc2660d1",
+          "sha512": "f8d21aa13f1f081bc928df2904346cd5e29bb358c34346bedb6bf4de04eeb5eba499d7b4a7b6c17a44663805457f8119698b70b1a26b7fca29c66e35cea8f1eb"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/JY1tNj8H/modmenu-15.0.0-beta.3.jar",
+        "filename": "modmenu-15.0.0-beta.3.jar",
+        "primary": true,
+        "size": 1076199,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.6"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "Dg11hN2f",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v15.0.0-beta.2 for 1.21.6",
+    "version_number": "15.0.0-beta.2",
+    "changelog": "- Fix description list Background-gradient widget / scroll bar (thanks sakura-ryoko)",
+    "changelog_url": null,
+    "date_published": "2025-06-18T02:15:34.965884Z",
+    "downloads": 95102,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "8a0767e29d46aa4c40b6cd4e35ebff667adf212b",
+          "sha512": "0a2f24e43d93dc9402ccaf3e5e24e4392daaf0111bb450d2d96aedde9f56f11ead2bf54c77e6631d5bcd8aa3530302dce972183e71f32100192a22d8fec8a7bc"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/Dg11hN2f/modmenu-15.0.0-beta.2.jar",
+        "filename": "modmenu-15.0.0-beta.2.jar",
+        "primary": true,
+        "size": 1083229,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.6-rc1",
+      "1.21.6"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "MddiUHup",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v15.0.0-beta.1 for 1.21.6-rc1",
+    "version_number": "15.0.0-beta.1",
+    "changelog": "- Update to 1.21.6-rc1 thanks to lowercasebtw",
+    "changelog_url": null,
+    "date_published": "2025-06-17T04:06:52.322666Z",
+    "downloads": 11605,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "03727fda3d9a3ac75d3ba7cbbc9d0d338e657054",
+          "sha512": "7107301467a8fd9d2418919a5a4c1706829f3dbf3e9737f0746927df0f718cfbbef11f6d9cd78267357e8e9f497e64cd1c4d7f51822a417a332934cb6dd82e95"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/MddiUHup/modmenu-15.0.0-beta.1.jar",
+        "filename": "modmenu-15.0.0-beta.1.jar",
+        "primary": true,
+        "size": 1078721,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.5-rc1",
+      "1.21.5-rc2",
+      "1.21.5"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "T7GjZmwP",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v14.0.0-rc.2 for 1.21.5-rc1",
+    "version_number": "14.0.0-rc.2",
+    "changelog": "- Fixed concurrency issue when loading mod metadata",
+    "changelog_url": null,
+    "date_published": "2025-03-25T18:32:24.314927Z",
+    "downloads": 3722337,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "cdcbe5d129ca9939c3c95a09b3d6fd1ed5513edd",
+          "sha512": "091953cac8e7657b99f794d97ac8ca321c4eb3e8eafbadeb62ccbe7991ea83aa1c5c7d91817c61940fcf5ab84f946be393ba8727828ac74035626963ee668d39"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/T7GjZmwP/modmenu-14.0.0-rc.2.jar",
+        "filename": "modmenu-14.0.0-rc.2.jar",
+        "primary": true,
+        "size": 1069680,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.5-rc1",
+      "1.21.5-rc2",
+      "1.21.5"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "OZuPErV6",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v14.0.0-rc.1 for 1.21.5-rc1",
+    "version_number": "14.0.0-rc.1",
+    "changelog": "- Updated to 1.21.5",
+    "changelog_url": null,
+    "date_published": "2025-03-25T16:31:52.405416Z",
+    "downloads": 7644,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "16cc348b96108930c0a4467331f96ac155e4e27901ab6f6066dee0f20e3daf7a3a4b3b98fcde7bc9bb8bb9c03dcdcd2ac067e38a8430143ac10c925718098f75",
+          "sha1": "fb7c76e53db2e1a5717c8d25f502d08997927c31"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/OZuPErV6/modmenu-14.0.0-rc.1.jar",
+        "filename": "modmenu-14.0.0-rc.1.jar",
+        "primary": true,
+        "size": 1069617,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "25w09a",
+      "25w09b",
+      "25w10a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "R7uVB42W",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v14.0.0-beta.2 for 25w10a",
+    "version_number": "14.0.0-beta.2",
+    "changelog": "- Removed redundant stacetrace logging for mod icon errors\n- Updated Ukrainian translation\n- Fix scroll position being reset when returning to the Mods screen\n- Optimize description rendering\n- Make generated mods appear as children of their containing mod\n- Update to 25w09a",
+    "changelog_url": null,
+    "date_published": "2025-03-11T22:44:56.264151Z",
+    "downloads": 23097,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "c6fc250e8c2207191d1e176670600c0784d7fcc33b74758bb02c7f5925b3ea49e40fcc4e8dfb5e5dcbe70109dc60284e4a571af1e3fc993806e413a79ca7032d",
+          "sha1": "8b5799561a70dc13961f635675079430e8b4a776"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/R7uVB42W/modmenu-14.0.0-beta.2.jar",
+        "filename": "modmenu-14.0.0-beta.2.jar",
+        "primary": true,
+        "size": 1055354,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "7iGb2ltH",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v13.0.3 for 1.21.4",
+    "version_number": "13.0.3",
+    "changelog": "- Removed redundant stacetrace logging for mod icon errors\n- Updated Ukrainian translation\n- Fix scroll position being reset when returning to the Mods screen\n- Optimize description rendering\n- Make generated mods appear as children of their containing mod",
+    "changelog_url": null,
+    "date_published": "2025-03-11T21:49:43.167175Z",
+    "downloads": 2173163,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "147681418d8729790fe7712163706d5209a5e6c90ffe81867020f70595ef5ede8037586ca4eb8239e540b1375dca4a0bbfbbe86c61c488aabf9b702520b7afe5",
+          "sha1": "4cab0014a7223c6988fde70064579dc66ef8f000"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/7iGb2ltH/modmenu-13.0.3.jar",
+        "filename": "modmenu-13.0.3.jar",
+        "primary": true,
+        "size": 1050777,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "25w06a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "hsiHpAl5",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v14.0.0-beta.1 for 25w06a",
+    "version_number": "14.0.0-beta.1",
+    "changelog": "- Updated to 25w06a",
+    "changelog_url": null,
+    "date_published": "2025-02-12T02:07:23.110378Z",
+    "downloads": 4471,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "521cfd9e854729e85717e1263aa15661a44d4ced",
+          "sha512": "8d0ec6b95aacef9338f2127c2a526ad50d39487fd2505eea7295f228d78ae8ab6df384783fb9839052ae4fe078c59e2e8153707826644af62b4067aed325718b"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/hsiHpAl5/modmenu-14.0.0-beta.1.jar",
+        "filename": "modmenu-14.0.0-beta.1.jar",
+        "primary": true,
+        "size": 996184,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "qPUMDJX6",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v13.0.2 for 1.21.4",
+    "version_number": "13.0.2",
+    "changelog": "- Updated German translations\n- Updated Slovak translations\n- Updated Ukrainian translations",
+    "changelog_url": null,
+    "date_published": "2025-02-12T02:02:43.818351Z",
+    "downloads": 779753,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "ef2512f29363f3a8d3a9cb92ba43eca3c689b8c4",
+          "sha512": "7be7ea40934865ae71c2805ac228b2cd808d1f0dd1ec361e10ab5e84d881a3abd3f427d840153f89a501a7f08198781c88f17811c2b6373a3d30b5696c3d073d"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/qPUMDJX6/modmenu-13.0.2.jar",
+        "filename": "modmenu-13.0.2.jar",
+        "primary": true,
+        "size": 993944,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "4z29vhIo",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v13.0.1 for 1.21.4",
+    "version_number": "13.0.1",
+    "changelog": "- Updated Vietnamese translation\n- Updated Tartar translation\n- Updated Slovakian translation",
+    "changelog_url": null,
+    "date_published": "2025-01-21T21:01:20.271234Z",
+    "downloads": 689723,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "33bbf098d225683b77b2b66551ba57a5a7fb14a7ab7c3d0798fe1b0c3be3d346d3befc9c43d862533da347fa3a5c4fa48d5e1becd2d09dd1635defe0a4198806",
+          "sha1": "0ddb327640b1b766155e489852378950ef16da8d"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/4z29vhIo/modmenu-13.0.1.jar",
+        "filename": "modmenu-13.0.1.jar",
+        "primary": true,
+        "size": 992893,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "dG06oDvH",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v13.0.0 for 1.21.4",
+    "version_number": "13.0.0",
+    "changelog": "- Fix crash when using keyboard navigation at the end of the list",
+    "changelog_url": null,
+    "date_published": "2025-01-06T00:53:42.045002Z",
+    "downloads": 338092,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "46344e4ffcb2e7c933a5b42016642d298d244a7f",
+          "sha512": "1133b650b25fa0cd356aad51184b100d06020bd4ecd5caef03abadcc5a17162bfc1c95e8921bbad3b0964ef556a9aed256615b8c2931404ab90c8901ca7de378"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/dG06oDvH/modmenu-13.0.0.jar",
+        "filename": "modmenu-13.0.0.jar",
+        "primary": true,
+        "size": 992083,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.4-rc3",
+      "1.21.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "2pJcGBVh",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v13.0.0-beta.1 for 1.21.4-rc3",
+    "version_number": "13.0.0-beta.1",
+    "changelog": "- Port to 1.21.4\n- Add sort option to sort by update",
+    "changelog_url": null,
+    "date_published": "2024-12-03T23:49:47.269458Z",
+    "downloads": 640791,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "ef2ae8075bdc720f44cf36363f873fa8d8202b5e",
+          "sha512": "e142b42a007d7853fe53ca74c8cc933566a75aa3068f6f6216f55d794cd4f3344c56e3a2de3db4cd59363799aa92583c6f45633cd9a4bb6cb24115f60617dd8c"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/2pJcGBVh/modmenu-13.0.0-beta.1.jar",
+        "filename": "modmenu-13.0.0-beta.1.jar",
+        "primary": true,
+        "size": 992025,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.2-pre1",
+      "1.21.2-pre2",
+      "1.21.2-pre3",
+      "1.21.2-pre4",
+      "1.21.2-pre5",
+      "1.21.2-rc1",
+      "1.21.2",
+      "1.21.3"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "4xPSbh0l",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v12.0.0 for 1.21.3",
+    "version_number": "12.0.0",
+    "changelog": "- Add sort option to sort by update",
+    "changelog_url": null,
+    "date_published": "2024-12-03T23:46:53.644700Z",
+    "downloads": 317692,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "7175dbf35737848ab9ea1b8d16798cff22f2ba9e",
+          "sha512": "d215306281e7ad1da1037bc848c806c2e200d7eca39ccd2ca5fc25a03e3eacef2eb15b70fca1d832fb249aecc29a100fc87b9dacf90565fdf822b9a6df355af7"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/4xPSbh0l/modmenu-12.0.0.jar",
+        "filename": "modmenu-12.0.0.jar",
+        "primary": true,
+        "size": 986258,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21.2-pre1",
+      "1.21.2-pre2",
+      "1.21.2-pre3",
+      "1.21.2-pre4",
+      "1.21.2-pre5",
+      "1.21.2-rc1",
+      "1.21.2-rc2",
+      "1.21.2",
+      "1.21.3"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "PcJvQYqu",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v12.0.0-beta.1 for 1.21.2-pre3",
+    "version_number": "12.0.0-beta.1",
+    "changelog": "- Updated to 1.21.2-pre3\n- Fix Mods screen being slow to open the first time\n- Config screen errors no longer show until after a user has tried to open them\n- Fix drag-n-drop not supporting Quilt mods\n- Updated Polish translation\n- Fixed issue with drag-n-drop toast having the same line displayed twice\n- Updated Korean translations\n- Fixed Belarusian translation\n- Fixed issues with parent mods\n- Improve compatibility with other mods' mixins",
+    "changelog_url": null,
+    "date_published": "2024-10-14T04:12:17.953801Z",
+    "downloads": 472829,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "7d7879f45e37048aa8ebd37dcc150b74ebcd6f72bd52fb25c409719779edad3610dc2cab5c248c581f10e3d7f8514555c4753ad7523fce5124b8fae6676948a6",
+          "sha1": "4536cf33f54fd52b8530fcb3e7e89431c1ccd07b"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/PcJvQYqu/modmenu-12.0.0-beta.1.jar",
+        "filename": "modmenu-12.0.0-beta.1.jar",
+        "primary": true,
+        "size": 981862,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21",
+      "1.21.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "YIfqIJ8q",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.3 for 1.21",
+    "version_number": "11.0.3",
+    "changelog": "- Fix Mods screen being slow to open the first time\n- Config screen errors no longer show until after a user has tried to open them\n- Fix drag-n-drop not supporting Quilt mods\n- Updated Polish translation\n- Fixed issue with drag-n-drop toast having the same line displayed twice\n- Updated Korean translations\n- Fixed Belarusian translation\n- Fixed issues with parent mods",
+    "changelog_url": null,
+    "date_published": "2024-10-14T04:11:09.901609Z",
+    "downloads": 8520414,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "6213120772192040a0aeb5c7cfe330c068605b1f",
+          "sha512": "4c6387a059c7ac9028acc3d78124af02a4495bef2c16783bbffe5bf449067daf2620708fd57f8725e46f0c34d0f571adf60f0869742bfe7f6101ddf13a2a87da"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/YIfqIJ8q/modmenu-11.0.3.jar",
+        "filename": "modmenu-11.0.3.jar",
+        "primary": true,
+        "size": 973066,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21",
+      "1.21.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "3ib3Uvvv",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.2 for 1.21",
+    "version_number": "11.0.2",
+    "changelog": "- Improve compatibility with other mods' mixins",
+    "changelog_url": null,
+    "date_published": "2024-08-25T17:06:17.366123Z",
+    "downloads": 2002704,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "740c9845a8447efa481607d1a9879a4774c7610eb5bc4072ccb2b7ed9b2afc295f0db41abb608ab2cbf589b42578bcd054fb51f7f7257d3151d5d3a0adc0b6ab",
+          "sha1": "0a7c7ac1dd5360ef735ca1e782540ec45c4fc3c8"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/3ib3Uvvv/modmenu-11.0.2.jar",
+        "filename": "modmenu-11.0.2.jar",
+        "primary": true,
+        "size": 975323,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "24w33a",
+      "24w34a",
+      "24w35a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "ixIyiMpO",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v12.0.0-alpha.1 for 24w34a",
+    "version_number": "12.0.0-alpha.1",
+    "changelog": "- Improve compatibility with other mods' mixins\n- Update for 24w31a",
+    "changelog_url": null,
+    "date_published": "2024-08-25T17:06:12.570329Z",
+    "downloads": 4366,
+    "version_type": "alpha",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "e2fa510f65897e90db230d797a73afa4057a193d",
+          "sha512": "913be7aea000ee2c95f0678ba16d962ff452c1983c328867eae16d385bda65c3f91207651272214ce72e2e7b446789d570cdb9f17468b9d19b834cc334093301"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/ixIyiMpO/modmenu-12.0.0-alpha.1.jar",
+        "filename": "modmenu-12.0.0-alpha.1.jar",
+        "primary": true,
+        "size": 983182,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21",
+      "1.21.1-rc1",
+      "1.21.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "xhN1IvHi",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.1 for 1.21",
+    "version_number": "11.0.1",
+    "changelog": "- Fixed \"Server Links\" button overlapping Mods button in \"Insert\" mode",
+    "changelog_url": null,
+    "date_published": "2024-06-21T14:44:44.493843Z",
+    "downloads": 2705914,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "01fe4782bd8036a9e5ebb749fc22f32834ac228d0ea025b89687a1bcd7296b1312c5a46cb1480bc9851380297c3ee4b57f966c09af6a901b092023c8e23032a2",
+          "sha1": "e4ba66f6036a4902433bb517d55120c4237c512f"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/xhN1IvHi/modmenu-11.0.1.jar",
+        "filename": "modmenu-11.0.1.jar",
+        "primary": true,
+        "size": 975390,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "lJ1xXMce",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.0 for 1.21",
+    "version_number": "11.0.0",
+    "changelog": "- Fixed mods button not showing up on servers with Server Links\n- Changed functionality of Game Mode display option \"Replace Bugs\" to \"Replace\", which now replaces both Give Feedback and Report Bugs, these are now both found in Mod Menu under the Minecraft entry. \"Below Bugs\" is now \"Insert",
+    "changelog_url": null,
+    "date_published": "2024-06-18T17:43:49.210075Z",
+    "downloads": 184875,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "d2b353f3f491ce8029f33cc17b69d80bb465842d",
+          "sha512": "c8613d518304accf94fc83f5b6c35baf561ac1cf725f466a6c8f58e57e4143a3799a5e871c4fb69c7cf0b543f450d17b22ca59521a4df8319ecd53bd56458ec4"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/lJ1xXMce/modmenu-11.0.0.jar",
+        "filename": "modmenu-11.0.0.jar",
+        "primary": true,
+        "size": 975152,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.20.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "FawTQg29",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.2.0 for 1.20.4",
+    "version_number": "9.2.0",
+    "changelog": "- Fixed broken Chinese translation\n- Fixed update checker exception\n- Fixed update checker promoting downgrades\n- Added support for QuickText in mod descriptions\n- Newlines in descriptions are no longer forced to be paragraphs, so single linebreaks are now allowed\n- Fixed update checker promoting downgrades\n- Fixed crash with unknown badges\n- Updated Belarusian Translation\n- Updated Polish Translation\n- Updated Tatar Translation\n- Update Chinese Translation\n- Fixed credits role translation keys not being lowercased\n- Fixed contributors being sorted",
+    "changelog_url": null,
+    "date_published": "2024-06-18T16:14:18.029842Z",
+    "downloads": 808434,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "b8b1e21d42e74c1b4ea16e9846c2198dc84352bc",
+          "sha512": "30e8075a4228ee11eb8b0e85d950a69c8d2df57e05b0da5268e6b0129eea5e69ac30e6eb1b4c93348bb8acfdc53c22b2866288d76f7446b51b79355f4eada87a"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/FawTQg29/modmenu-9.2.0.jar",
+        "filename": "modmenu-9.2.0.jar",
+        "primary": true,
+        "size": 963019,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.20.5",
+      "1.20.6"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "HLa8flfl",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v10.0.0 for 1.20.6",
+    "version_number": "10.0.0",
+    "changelog": "- Fixed broken Chinese translation\n- Fixed update checker exception\n- Fixed update checker promoting downgrades\n- Updated Belarusian Translation\n- Updated Polish Translation\n- Updated Tatar Translation\n- Update Chinese Translation\n- Fixed credits role translation keys not being lowercased\n- Fixed contributors being sorted\n- Added support for QuickText in mod descriptions\n- Newlines in descriptions are no longer forced to be paragraphs, so single linebreaks are now allowed\n- Fixed update checker promoting downgrades\n- Fixed text now having shadows properly\n- Fixed crash with unknown badges",
+    "changelog_url": null,
+    "date_published": "2024-06-18T16:14:03.279929Z",
+    "downloads": 383777,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "ff8c299d701db928256c0c5f06c0b90c8fe97ac4",
+          "sha512": "b18c56321c0dfd404607bd895ef3aa654d390cfb7b96cbf449ecaad4be4fce72d4b20e56bd4b914d9c162dfa9384f55ec238e855b4a1525b12bad3359c8d0534"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/HLa8flfl/modmenu-10.0.0.jar",
+        "filename": "modmenu-10.0.0.jar",
+        "primary": true,
+        "size": 966865,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "jnj30PDT",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.0-rc.4 for 1.21",
+    "version_number": "11.0.0-rc.4",
+    "changelog": "- Fixed broken Chinese translation",
+    "changelog_url": null,
+    "date_published": "2024-06-16T15:13:29.185771Z",
+    "downloads": 50784,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "7337c3ee2becae0b2f4df6182716ac672387b6b5",
+          "sha512": "5b998a86ad6527f235f76e2b0659791c704c683a1746873bffe1619c539b241a36ba18e1e5a42dec363b21b071b5610ba57ed89a8b668be461627247ec557442"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/jnj30PDT/modmenu-11.0.0-rc.4.jar",
+        "filename": "modmenu-11.0.0-rc.4.jar",
+        "primary": true,
+        "size": 971581,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "I7OSH8Gw",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.0-rc.2 for 1.21",
+    "version_number": "11.0.0-rc.2",
+    "changelog": "- Fixed Options screen rendering twice\n- Fixed update checker exception\n- Fixed update checker promoting downgrades\n- Fixed text not having shadows properly\n- Fixed crash with unknown badges\n- Updated Belarusian Translation\n- Updated Polish Translation\n- Updated Tatar Translation\n- Update Chinese Translation\n- Fixed credits role translation keys not being lowercased\n- Fixed contributors being sorted\n- Added support for QuickText in mod descriptions\n- Newlines in descriptions are no longer forced to be paragraphs, so single linebreaks are now allowd",
+    "changelog_url": null,
+    "date_published": "2024-06-15T15:45:45.265631Z",
+    "downloads": 23608,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "5ba29905c003e10109acf3ebee06d0283aea970d3fae903c158efd5a1c8287c2c20c05ca2cbf0bfee4f8f6775d7cf935d503528f707eb6ad9b84140139143b3e",
+          "sha1": "9e86614a0a30f07350e8af6f2aacebdfcad7aa25"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/I7OSH8Gw/modmenu-11.0.0-rc.2.jar",
+        "filename": "modmenu-11.0.0-rc.2.jar",
+        "primary": true,
+        "size": 971585,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "eXts2L7r",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.21"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "YLesFuAc",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.0-rc.1 for 1.21",
+    "version_number": "11.0.0-rc.1",
+    "changelog": "- Fixed Options screen rendering twice\n- Fixed update checker exception\n- Fixed update checker promoting downgrades\n- Fixed text not having shadows properly\n- Fixed crash with unknown badges\n- Updated Belarusian Translation\n- Updated Polish Translation\n- Updated Tatar Translation\n- Update Chinese Translation\n- Fixed credits role translation keys not being lowercased\n- Fixed contributors being sorted\n- Added support for QuickText in mod descriptions\n- Newlines in descriptions are no longer forced to be paragraphs, so single linebreaks are now allowd",
+    "changelog_url": null,
+    "date_published": "2024-06-15T15:37:34.707504Z",
+    "downloads": 718,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "5e60940c028e24e7d0faaab1df408b32326b37fe",
+          "sha512": "69f8f0e58cfe718ce6387cccbca25fd18dd7821bfb621cb82fcd63aac143460b6e0556b3c483000016fe7621f39bb9e8497f7db1237133a515012d24634e5567"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/YLesFuAc/modmenu-11.0.0-rc.1.jar",
+        "filename": "modmenu-11.0.0-rc.1.jar",
+        "primary": true,
+        "size": 971585,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.21"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "KXx8jdVE",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.0-beta.2 for 1.21-pre2",
+    "version_number": "11.0.0-beta.2",
+    "changelog": "No Changelog Available",
+    "changelog_url": null,
+    "date_published": "2024-06-14T17:30:58.570461Z",
+    "downloads": 65674,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "e3aa145fef806d5d18f5333250ad308601fca4df",
+          "sha512": "07c35028ea2e2bcf18235631676502ca90dc426d4a580503d9094ecfbab44898b477e859d891644c76e8c47b863bb8196bd19ad1fc7d0955cc7c58d1f2f8bf25"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/KXx8jdVE/modmenu-11.0.0-beta.2.jar",
+        "filename": "modmenu-11.0.0-beta.2.jar",
+        "primary": true,
+        "size": 754231,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.21-pre2",
+      "1.21-pre3",
+      "1.21-pre4",
+      "1.21-rc1",
+      "1.21"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "9FL4cmP7",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v11.0.0-beta.1 for 1.21-pre2",
+    "version_number": "11.0.0-beta.1",
+    "changelog": "- Fix update checker not being run when config screen is closed without the Done button",
+    "changelog_url": null,
+    "date_published": "2024-06-04T01:16:45.311766Z",
+    "downloads": 101276,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "fc171193da296c26aec44c34cc9883dfe871e09460a2e4d2610b1252831bf1876a5e4ebda4abc0f115f406319e59be779857d14e8d219118e11e025276f1ab2a",
+          "sha1": "57958151898eec96499ad0d221c8c3c3f4390e36"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/9FL4cmP7/modmenu-11.0.0-beta.1.jar",
+        "filename": "modmenu-11.0.0-beta.1.jar",
+        "primary": true,
+        "size": 754430,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.5-rc3",
+      "1.20.5",
+      "1.20.6-rc1",
+      "1.20.6",
+      "24w18a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "NgnZx44E",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v10.0.0-beta.1 for 1.20.5-rc3",
+    "version_number": "10.0.0-beta.1",
+    "changelog": "- Add update checkers for Fabric Loader and Quilt Loader\n- Add API for mods to provide update checkers for other mods\n- Fix Mod Menu build metadata not being properly stripped from the User Agent string generation for privacy\n- Group mod credits together by role\n- No longer promotes updates to beta or alpha versions by default\n- Fixed disable_update_checker config option not working\n- Delay loading API implementations until it's first needed in attempt to fix Architectury API's usage (beta)\n- Change Twitter name to X (Twitter)",
+    "changelog_url": null,
+    "date_published": "2024-04-22T21:34:28.068160Z",
+    "downloads": 584288,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "d462b9cc38eef0019b10212932439c576dafbb2a6396cf0457f8f9b7b15e91d5ad9cb2edc5dc8c7bb68dfc8586beece601aa880072ba90cd3be9466f70ce8567",
+          "sha1": "c6407363a0564a149d3466c55f829895da6d7803"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/NgnZx44E/modmenu-10.0.0-beta.1.jar",
+        "filename": "modmenu-10.0.0-beta.1.jar",
+        "primary": true,
+        "size": 746627,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "ybV7vGT5",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.2.0-beta.2 for 1.20.4",
+    "version_number": "9.2.0-beta.2",
+    "changelog": "- Fix update checker not being run when config screen is closed without the Done button",
+    "changelog_url": null,
+    "date_published": "2024-04-22T20:32:09.833046Z",
+    "downloads": 411147,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "ae50f27e17e1c6b9da1293c391729f4bd5e63f65",
+          "sha512": "e8a73596f6ed279a9c4da7d2c0e9c5f08a8deb563626dcc47380be93f15cfcff9c12e2973317f6306cd53842b1eb0cdd62f4dbd75f580edb00476b3e4435331e"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/ybV7vGT5/modmenu-9.2.0-beta.2.jar",
+        "filename": "modmenu-9.2.0-beta.2.jar",
+        "primary": true,
+        "size": 742941,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "VOHp29AO",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.2.0-beta.1 for 1.20.4",
+    "version_number": "9.2.0-beta.1",
+    "changelog": "- Add update checkers for Fabric Loader and Quilt Loader\n- Add API for mods to provide update checkers for other mods\n- Fix Mod Menu build metadata not being properly stripped from the User Agent string generation for privacy\n- Group mod credits together by role\n- No longer promotes updates to beta or alpha versions by default\n- Fixed disable_update_checker config option not working",
+    "changelog_url": null,
+    "date_published": "2024-04-22T20:20:16.714233Z",
+    "downloads": 1380,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "8e721f73650a9c386f47b59ff355887d413582d4",
+          "sha512": "aaa220912f5d7b837c61bf8bcf26a7fc06eb5dd181c5c44dde0262aaf4ed161840d62c40db41d45ba7df3c5e495c20550ab7071aef0bd42ec985656839cff37c"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/VOHp29AO/modmenu-9.2.0-beta.1.jar",
+        "filename": "modmenu-9.2.0-beta.1.jar",
+        "primary": true,
+        "size": 742939,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "w3icASIi",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.1.0-beta.1 for 1.20.4",
+    "version_number": "9.1.0-beta.1",
+    "changelog": "- Delay loading API implementations until it's first needed in attempt to fix Architectury API's usage (beta)\n- Change Twitter name to X (Twitter)",
+    "changelog_url": null,
+    "date_published": "2024-04-04T16:37:41.934684Z",
+    "downloads": 275188,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "0417da163e6e9692c08c113117a1bd39337a7a03",
+          "sha512": "03efc2e7a0ef2b4128c16f648feaaadf4df1c747f2d2d3dbe918b15a5b6bbd8204c0e1f6e2c42e9104fad991cb6fe61553379bc02893ddc3f7e153c37ae7593b"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/w3icASIi/modmenu-9.1.0-beta.1.jar",
+        "filename": "modmenu-9.1.0-beta.1.jar",
+        "primary": true,
+        "size": 724448,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "24w10a",
+      "24w11a",
+      "24w12a",
+      "24w13a",
+      "24w14potato",
+      "24w14a",
+      "1.20.5-pre1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "mtTzRMV2",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v10.0.0-alpha.3 for 24w10a",
+    "version_number": "10.0.0-alpha.3",
+    "changelog": "- Change Twitter name to X (Twitter)\n- Update Belarusian translations",
+    "changelog_url": null,
+    "date_published": "2024-03-08T20:45:27.859816Z",
+    "downloads": 14162,
+    "version_type": "alpha",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "36d207e978b749e8cce6e11b3a2cf27d6ddea50d",
+          "sha512": "472e566a9304a72bf40043c82945ecd55ba0f9259457268a077b416495bf427f0b4d7475f7e45779f34d6b9ad5b1d933a65f21ee992eee78068ba16acbe9b6eb"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/mtTzRMV2/modmenu-10.0.0-alpha.3.jar",
+        "filename": "modmenu-10.0.0-alpha.3.jar",
+        "primary": true,
+        "size": 731910,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "24w09a",
+      "24w10a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "ua8KrvY4",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v10.0.0-alpha.1 for 24w09a",
+    "version_number": "10.0.0-alpha.1",
+    "changelog": "No Changelog Available",
+    "changelog_url": null,
+    "date_published": "2024-02-29T16:54:03.777377Z",
+    "downloads": 2437,
+    "version_type": "alpha",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "229a43426b1c1b23ea74493b2f480664f7580ec2",
+          "sha512": "3461bdd8758fa2e50c946ba72e95c1d684e9961fdb0a463308d6b58657457b0d7b7650964ce4b3515a481fe8a70809bf2ba90aeda8cffebe010d10de68a1e358"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/ua8KrvY4/modmenu-10.0.0-alpha.1.jar",
+        "filename": "modmenu-10.0.0-alpha.1.jar",
+        "primary": true,
+        "size": 731905,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.3-pre4",
+      "1.20.3-rc1",
+      "1.20.3",
+      "1.20.4-rc1",
+      "1.20.4",
+      "23w51a",
+      "23w51b",
+      "24w03a",
+      "24w03b",
+      "24w04a",
+      "24w05a",
+      "24w05b",
+      "24w06a",
+      "24w07a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "sjtVVlsA",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.0.0 for 1.20.4",
+    "version_number": "9.0.0",
+    "changelog": "- Fix missing error icon on mod icons",
+    "changelog_url": null,
+    "date_published": "2023-12-18T21:18:12.030704Z",
+    "downloads": 1010040,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "eb09a3b6668407df4ad9b24849d52a38c448877e",
+          "sha512": "62ae3152d6dfd2745b95a6572f085bf8deb708d183a4234e6f72ae7b07f05a787454d4f289cee96d4e0f7efab026ed6073659d1aebb87530abeb7ddcfc0fe40b"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/sjtVVlsA/modmenu-9.0.0.jar",
+        "filename": "modmenu-9.0.0.jar",
+        "primary": true,
+        "size": 724484,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.2"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "fCQyI9Zj",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v8.0.1 for 1.20.2",
+    "version_number": "8.0.1",
+    "changelog": "- Fix missing error icon on mod icons",
+    "changelog_url": null,
+    "date_published": "2023-12-18T21:09:24.979305Z",
+    "downloads": 534124,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "e87e503df7506cf80e15c7d8d38e8e8dd2b3d01e",
+          "sha512": "b2827f7bf82f2791812c1a1ebdac4a0d62451e040e08eedb6b5dbfc9f3e78711286fc82676f29fec7600fc7058ebd40a627267fc59763b7b21586da582dd8171"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/fCQyI9Zj/modmenu-8.0.1.jar",
+        "filename": "modmenu-8.0.1.jar",
+        "primary": true,
+        "size": 727367,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.3-pre4",
+      "1.20.3-rc1",
+      "1.20.3",
+      "1.20.4-rc1",
+      "1.20.4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "4EYB2Bxx",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.0.0-pre.1 for 1.20.3-pre4",
+    "version_number": "9.0.0-pre.1",
+    "changelog": "- Updated to 1.20.3-pre4\n- Updated Belarusian translations\n- Updated Chinese translations\n- Updated Norwegian Bokm\u00e5l translations",
+    "changelog_url": null,
+    "date_published": "2023-11-29T23:20:48.756587Z",
+    "downloads": 70568,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "940a5614137befcad119740e20a2cfceb254307a",
+          "sha512": "0c69d9a6231cbd244a36b2f67e50567eda3b07bda3b9d1a927b84a1cd30fbb840bf4c94c4b2f94fd46fe82d18c0b2389fecebd161c9ccc48927b854224f68810"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/4EYB2Bxx/modmenu-9.0.0-pre.1.jar",
+        "filename": "modmenu-9.0.0-pre.1.jar",
+        "primary": true,
+        "size": 724562,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "23w46a",
+      "1.20.3-pre1",
+      "1.20.3-pre2",
+      "1.20.3-pre3",
+      "1.20.3-pre4"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "tXEHCONL",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.0.0-alpha.3 for 23w46a",
+    "version_number": "9.0.0-alpha.3",
+    "changelog": "No Changelog Available",
+    "changelog_url": null,
+    "date_published": "2023-11-17T20:44:15.301367Z",
+    "downloads": 2488,
+    "version_type": "alpha",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "a5d92c0b3b6b3157f0b69d8077a790d54524f092",
+          "sha512": "ca83cfc6a24e042e73cf36c3386168b508478317cbff508a365948aa3594a8a1cfde621acd41954d59afb68afcd40bb7c571019e0d7958c4ffebef2f9f137202"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/tXEHCONL/modmenu-9.0.0-alpha.3.jar",
+        "filename": "modmenu-9.0.0-alpha.3.jar",
+        "primary": true,
+        "size": 723595,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "23w44a",
+      "23w45a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "Edgke5GX",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.0.0-alpha.2 for 23w44a",
+    "version_number": "9.0.0-alpha.2",
+    "changelog": "- Updated to 23w44a",
+    "changelog_url": null,
+    "date_published": "2023-11-03T19:47:18.246250Z",
+    "downloads": 2343,
+    "version_type": "alpha",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "dd7fe55dea3f7988c47a12b53cd82c9ea126ac7606cfc929344c641f6b09e48508141a09cd311a13da7fffeccb47b8c7560b4f7cd8623800704dd4cb5f84a2fa",
+          "sha1": "93d4505f6f9916660b6793eb83d97419adc37f59"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/Edgke5GX/modmenu-9.0.0-alpha.2.jar",
+        "filename": "modmenu-9.0.0-alpha.2.jar",
+        "primary": true,
+        "size": 727451,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "23w42a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "qpKaDJtd",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v9.0.0-alpha.1 for 23w42a",
+    "version_number": "9.0.0-alpha.1",
+    "changelog": "- Updated to 23w42a",
+    "changelog_url": null,
+    "date_published": "2023-10-18T20:26:41.516316Z",
+    "downloads": 3484,
+    "version_type": "alpha",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "60736fc31a8a15df91162b531b44eb65e2dfa4f0",
+          "sha512": "5eb877b4d07cb3443cd28d4a2de4de307cf85933dcaabd874bad0939cd4c5952dc127594e49426426a979a532e1147f5085a9dc847bf534540af4880cce33fe7"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/qpKaDJtd/modmenu-9.0.0-alpha.1.jar",
+        "filename": "modmenu-9.0.0-alpha.1.jar",
+        "primary": true,
+        "size": 727335,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.2",
+      "23w40a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "TwfjidT5",
+    "project_id": "mOgUt4GM",
+    "author_id": "uF4fzWRt",
+    "featured": false,
+    "name": "v8.0.0 for 1.20.2",
+    "version_number": "8.0.0",
+    "changelog": "No Changelog Available",
+    "changelog_url": null,
+    "date_published": "2023-09-25T20:37:23.399667Z",
+    "downloads": 427005,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "cc27c98c68127c42ab7c1272d156a8dce4f0c00bc6b7b0c8c302c27a01c97096a01409186281f7dc9b631f60587cac26c87898fa6df56a0169a9a0ced44eb344",
+          "sha1": "6c781bc4ebf6b11296715c663bc1c7542e4eb630"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/TwfjidT5/modmenu-8.0.0.jar",
+        "filename": "modmenu-8.0.0.jar",
+        "primary": true,
+        "size": 727276,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "23w31a",
+      "23w32a",
+      "23w33a",
+      "23w35a",
+      "1.20.2-pre1",
+      "1.20.2-pre2",
+      "1.20.2-pre3",
+      "1.20.2-pre4",
+      "1.20.2-rc1",
+      "1.20.2-rc2",
+      "1.20.2"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "sMAXpy0X",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v8.0.0-beta.2 for 1.20.2",
+    "version_number": "8.0.0-beta.2",
+    "changelog": "- Update Tatar translations\n- Update Vietnamese translations\n- Fix child mods hidden via config not being hidden",
+    "changelog_url": null,
+    "date_published": "2023-09-08T04:44:12.386487Z",
+    "downloads": 12220,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "4734fb036dc039c3d5ef253f01cd08fc5ac3354d7b3c803072bd29587a7e8a6d7d1cd9feb2b3737153b4a24d28a5df0df68d81eed59fcc1bb4995ea1c096822f",
+          "sha1": "bd249640216551c9f62f2ec3a1fdbcd94b001af4"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/sMAXpy0X/modmenu-8.0.0-beta.2.jar",
+        "filename": "modmenu-8.0.0-beta.2.jar",
+        "primary": true,
+        "size": 727336,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "lEkperf6",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v7.2.2 for 1.20.1",
+    "version_number": "7.2.2",
+    "changelog": "- Update Tatar translations\n- Update Vietnamese translations\n- Fix child mods hidden via config not being hidden",
+    "changelog_url": null,
+    "date_published": "2023-09-08T04:44:04.261764Z",
+    "downloads": 13220174,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "9a7837e04bb34376611b207a3b20e5fe1c82a4822b42929d5b410809ec4b88ff3cac8821c4568f880775bafa3c079dfc7800f8471356a4046248b12607e855eb",
+          "sha1": "099c68feeb74887cbbbd8ce9a27c6123804a2c5a"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/lEkperf6/modmenu-7.2.2.jar",
+        "filename": "modmenu-7.2.2.jar",
+        "primary": true,
+        "size": 721366,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "23w31a",
+      "23w32a",
+      "23w33a",
+      "23w35a",
+      "1.20.2-pre1",
+      "1.20.2-pre2"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "jbNN4rAs",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v8.0.0-beta.1 for 1.20.2-pre2",
+    "version_number": "8.0.0-beta.1",
+    "changelog": "No Changelog Available",
+    "changelog_url": null,
+    "date_published": "2023-09-08T03:03:17.128306Z",
+    "downloads": 405,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "5baa8a9ce1a70a9c1beb0d6fb3fee8da8c59e34b",
+          "sha512": "f7b7254fb7302ed53efdea4241e18b9108d54ebedf55ceacba180d6b2a86d9ffb4031e092e3d987ab49435a876bc6b63c31dbb5d173566ece85ba4b0a2e99e4a"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/jbNN4rAs/modmenu-8.0.0-beta.1.jar",
+        "filename": "modmenu-8.0.0-beta.1.jar",
+        "primary": true,
+        "size": 726809,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.19.4",
+      "23w12a",
+      "23w13a",
+      "23w13a_or_b",
+      "23w14a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "lMqXEzUw",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v6.3.1 for 1.19.4",
+    "version_number": "6.3.1",
+    "changelog": "- Add the library badge to Fabric Language Kotlin\n- Add a search term for updateable mods",
+    "changelog_url": null,
+    "date_published": "2023-07-18T20:52:41.953834Z",
+    "downloads": 383451,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "ab2736e00597ba8b11e4f58573eb49c79e0417b4",
+          "sha512": "396a22fb6c23483bea40b17e21185bcc56c77a736f52e5cda9b3ac799e4e0aac78e396476162f9166fcb56203be1d1071de04971a9b4feb8f4f6ea6103125f0d"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/lMqXEzUw/modmenu-6.3.1.jar",
+        "filename": "modmenu-6.3.1.jar",
+        "primary": true,
+        "size": 725106,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "eTCL1uh8",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v7.2.1 for 1.20.1",
+    "version_number": "7.2.1",
+    "changelog": "- Add the library badge to Fabric Language Kotlin\n- Add a search term for updateable mods",
+    "changelog_url": null,
+    "date_published": "2023-07-18T20:52:39.423597Z",
+    "downloads": 946469,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "bcf9f30825d51e55ed5edef77b481a8e42ba61e6b78e32b6258ce86aaf4cfe812c4bd81595c5acebc65c876ae5b9840a7fb57d8ad7d26229c74b49c1b530e76f",
+          "sha1": "ccaa15132f3e21307736d16fc160d064cc539e8c"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/eTCL1uh8/modmenu-7.2.1.jar",
+        "filename": "modmenu-7.2.1.jar",
+        "primary": true,
+        "size": 720850,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.19.3"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "id0aLmxO",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v5.1.0 for 1.19.3",
+    "version_number": "5.1.0",
+    "changelog": "- Update French translations\n- Updates Tatar translations\n- Add dev env tag to update checker user agent\n- Fix update checker not working for Quilt mods\n- Fixed update checker error when it could not find a primary file on Modrinth\n- Changed mod names to be prioritized when searching\n- Removed April Fools \"virus checker\" joke\n- Updated translations\n- Updated translations",
+    "changelog_url": null,
+    "date_published": "2023-07-18T20:00:44.644692Z",
+    "downloads": 64716,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "722ddc8a91aab0c97efc4504e39900fb085547c0",
+          "sha512": "af8b17e9db3eb0c52b5e6ef0446f77ec4abdc600ec1339a29d627f31fe93076923fd8267748bcd8ac7686099806c1c22e3e9aa93db59c52ccd20fb0438bd4b30"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/id0aLmxO/modmenu-5.1.0.jar",
+        "filename": "modmenu-5.1.0.jar",
+        "primary": true,
+        "size": 709592,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.19.4",
+      "23w12a",
+      "23w13a",
+      "23w13a_or_b",
+      "23w14a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "sLzitH81",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v6.3.0 for 1.19.4",
+    "version_number": "6.3.0",
+    "changelog": "- Update French translations\n- Updates Tatar translations\n- Strip version prefixes in update checker message\n- Hide update indicator for hidden mods\n- Hide child libraries of non-library parents when libraries are hidden\n- Add dev env tag to update checker user agent\n- Fix text wrapping in mod descriptions\n- Fix update checker not working for Quilt mods\n- Fixed update checker error when it could not find a primary file on Modrinth\n- Fixes double-clicking on a mod sometimes activating on a single click\n- Changes double-click to prioritize opening the config of a parent mod if Quick Configure is enabled\n- Changed mod names to be prioritized when searching",
+    "changelog_url": null,
+    "date_published": "2023-07-18T19:57:12.419451Z",
+    "downloads": 2243,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "54bb58f1c591a782db51e99499d385c11a7305ba",
+          "sha512": "7e71a1e7216293e696ef35720f6d9f09c5d20efb42995eb383b95354c9d00e5d6bf3ec6721972f5c32e526756c14d7eff3e51138ab092088f18fefd690a0338c"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/sLzitH81/modmenu-6.3.0.jar",
+        "filename": "modmenu-6.3.0.jar",
+        "primary": true,
+        "size": 724986,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "VHzvWfY2",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v7.2.0 for 1.20.1",
+    "version_number": "7.2.0",
+    "changelog": "- Update French translations\n- Updates Tatar translations\n- Strip version prefixes in update checker message\n- Hide update indicator for hidden mods\n- Fix shadows rendering behind the scrollable description text\n- Hide child libraries of non-library parents when libraries are hidden\n- Add dev env tag to update checker user agent\n- Fix text wrapping in mod descriptions\n- Fix update checker not working for Quilt mods",
+    "changelog_url": null,
+    "date_published": "2023-07-18T19:38:24.809477Z",
+    "downloads": 5919,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "69f80d7058555eefdeadb8ed4112c43e595c5451",
+          "sha512": "2d6a6e2c54824ba7a2682b52b9d8ef04bfbd269b75f7b99298fb1ee6519d30c5afa5ee8c485574ac09c391ca29f0b71dd9af9fff2e2166e879f0f035a7989d14"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/VHzvWfY2/modmenu-7.2.0.jar",
+        "filename": "modmenu-7.2.0.jar",
+        "primary": true,
+        "size": 720728,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "zv46i3PW",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v7.1.0 for 1.20.1",
+    "version_number": "7.1.0",
+    "changelog": "- Changed mod names to be prioritized when searching\n- Fixed update checker error when it could not find a primary file on Modrinth\n- Fixes double-clicking on a mod sometimes activating on a single click\n- Changes double-click to prioritize opening the config of a parent mod if Quick Configure is enabled",
+    "changelog_url": null,
+    "date_published": "2023-06-17T21:21:08.847536Z",
+    "downloads": 412136,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "a4ace64412564f15c88f6e78916fe4197b9dfb04d23fa25649c0a5b5dc2041d17c4bdf3c1f726359561cb60eb680f3f8e45ababc1614f9dc089cb0c645b6e430",
+          "sha1": "7d26ff2477ad8a083f11c1006a2b87ff1c121b62"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/zv46i3PW/modmenu-7.1.0.jar",
+        "filename": "modmenu-7.1.0.jar",
+        "primary": true,
+        "size": 717936,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.19.4",
+      "23w12a",
+      "23w13a",
+      "23w13a_or_b",
+      "23w14a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "CtMNOUcV",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v6.2.3 for 1.19.4",
+    "version_number": "6.2.3",
+    "changelog": "- Removed April Fools \"virus checker\" joke",
+    "changelog_url": null,
+    "date_published": "2023-06-08T18:44:49.142841Z",
+    "downloads": 69063,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "561044c111cb676cc5645fb1e159538c84d5a1fd",
+          "sha512": "2f3eae4b86bf7d056bef5cfc49ee573b3eb1c4f3b4ec0511d8c64a4073b0dab3b1b043e5be8d726b89dc64d70887075905e6f05323fabd387b5924271296fae0"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/CtMNOUcV/modmenu-6.2.3.jar",
+        "filename": "modmenu-6.2.3.jar",
+        "primary": true,
+        "size": 721665,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20",
+      "1.20.1-rc1",
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "RTFDnTKf",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v7.0.1 for 1.20",
+    "version_number": "7.0.1",
+    "changelog": "- Removed April Fools \"virus checker\" joke",
+    "changelog_url": null,
+    "date_published": "2023-06-08T18:44:49.070458Z",
+    "downloads": 572939,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "4573f699d177b28a05a5f3f208b264bf985d73042c796c9a08ad4123b78a5d4af7421ce939d0dfb21fee468000b4a6a8968094d44dac4146773b693447bfd055",
+          "sha1": "7210fab34b5ffe9f43207e2a74c7d4b8cdf5b165"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/RTFDnTKf/modmenu-7.0.1.jar",
+        "filename": "modmenu-7.0.1.jar",
+        "primary": true,
+        "size": 718157,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.20"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "M7LIgtWJ",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v7.0.0 for 1.20",
+    "version_number": "7.0.0",
+    "changelog": "No Changelog Available",
+    "changelog_url": null,
+    "date_published": "2023-06-07T19:37:11.724190Z",
+    "downloads": 49574,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "cc34dc395aa54e99e9a98a9b0950fdcb16361ca0d1fc39d91311f34e9442a15bf50b18590cba6aefebe2c4f1e680d01060457bcfdcf4f90683d32e907a55befe",
+          "sha1": "d5f0eb3275106c8f17af20e43d884356ada062c9"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/M7LIgtWJ/modmenu-7.0.0.jar",
+        "filename": "modmenu-7.0.0.jar",
+        "primary": true,
+        "size": 718829,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.19.4",
+      "23w12a",
+      "23w13a",
+      "23w13a_or_b",
+      "23w14a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "iZRiOnnj",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v6.2.2 for 1.19.4",
+    "version_number": "6.2.2",
+    "changelog": "- Changed the way buttons are moved on the title screen to only move button widgets.",
+    "changelog_url": null,
+    "date_published": "2023-04-29T18:08:18.285957Z",
+    "downloads": 219612,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "186f6aecea667d94aed67187d1d70cbd01a34d54",
+          "sha512": "f7f273d96cced94c2f616c48081321b349272826df8f99ee96a3ddb2208a32871c054292702be76bb4624f901c4df0ca784fa496eea16dc7cd67702b09f2b342"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/iZRiOnnj/modmenu-6.2.2.jar",
+        "filename": "modmenu-6.2.2.jar",
+        "primary": true,
+        "size": 722329,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "23w17a",
+      "23w18a",
+      "1.20-pre1",
+      "1.20-pre2",
+      "1.20-pre3",
+      "1.20-pre4",
+      "1.20-pre5",
+      "1.20-pre6",
+      "1.20-pre7",
+      "1.20-rc1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "EuNUYds8",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v7.0.0-beta.2 for 23w17a",
+    "version_number": "7.0.0-beta.2",
+    "changelog": "- Changed the way buttons are moved on the title screen to only move button widgets.",
+    "changelog_url": null,
+    "date_published": "2023-04-29T18:07:53.313282Z",
+    "downloads": 3250,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "11b29d74a7084012198453d3a539a98b641d10fa",
+          "sha512": "232ab97abb6357377e273bbeb1ed2031da173a415e2fab387ea3dfbb24194a1daad375c4df98dc7d27989a5345730ef9fc58ad360f26458bdd08b6241af93122"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/EuNUYds8/modmenu-7.0.0-beta.2.jar",
+        "filename": "modmenu-7.0.0-beta.2.jar",
+        "primary": true,
+        "size": 722422,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "23w16a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "RdCGzY7B",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v7.0.0-beta.1 for 23w16a",
+    "version_number": "7.0.0-beta.1",
+    "changelog": "- Updated to 23w16a",
+    "changelog_url": null,
+    "date_published": "2023-04-20T19:56:29.475778Z",
+    "downloads": 548,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "42db6219f8c75a3fc1ed492bec297d768014be815525f954f6ffa875d7c310bc6878b9915221228b9812a55cb8999e01d0ef608164bba925a7a0bc8e95f986f7",
+          "sha1": "d8c1dc6fef9a0553b402a5070ed31cf659ebb68b"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/RdCGzY7B/modmenu-7.0.0-beta.1.jar",
+        "filename": "modmenu-7.0.0-beta.1.jar",
+        "primary": true,
+        "size": 722491,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.19.4",
+      "23w12a",
+      "23w13a",
+      "23w13a_or_b",
+      "23w14a"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "id": "yjjsLqbS",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v6.2.1 for 1.19.4",
+    "version_number": "6.2.1",
+    "changelog": "- Change the Java background color to always be red by default\n- Implemented a workaround for an issue with mods relying on the time the API's config screen factory providers are used.",
+    "changelog_url": null,
+    "date_published": "2023-04-20T18:52:29.165949Z",
+    "downloads": 54733,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha1": "e87ca1aa589c1d706830856ee1632d99adacacbf",
+          "sha512": "b9e293a119c8ced8cdf38ec2f3cb68a731cb136986982c835198eeb4266076080b840ed97bae74f177ca9ae711e0db78630e4e42b2930389e1be1813eb76860f"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/yjjsLqbS/modmenu-6.2.1.jar",
+        "filename": "modmenu-6.2.1.jar",
+        "primary": true,
+        "size": 722293,
+        "file_type": null
+      }
+    ],
+    "dependencies": []
+  },
+  {
+    "game_versions": [
+      "1.16.1"
+    ],
+    "loaders": [
+      "fabric"
+    ],
+    "id": "3gwnUSKz",
+    "project_id": "mOgUt4GM",
+    "author_id": "Dc7EYhxG",
+    "featured": false,
+    "name": "v1.14.5+build.30 for 1.16.1",
+    "version_number": "1.14.5+build.30",
+    "changelog": "",
+    "changelog_url": null,
+    "date_published": "2023-04-18T20:57:27.245672Z",
+    "downloads": 15595,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "hashes": {
+          "sha512": "2cc3f548e56164726bae5e8cb0bc0f4656d97701fdc7332440987624a543cf9507f62a13cbb12925a96aefd56decccf614ec2089ac0593a2483c99040ed44b07",
+          "sha1": "2874cf766879d6b22f9223f8d739606be1d59c26"
+        },
+        "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/3gwnUSKz/modmenu-1.14.5%2Bbuild.30.jar",
+        "filename": "modmenu-1.14.5+build.30.jar",
+        "primary": true,
+        "size": 88624,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  }
+]

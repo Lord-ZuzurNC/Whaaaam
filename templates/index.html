@@ -9,42 +9,50 @@
   <body>
     <header>
       <h1>Minecraft Mod Matrix</h1>
-      <button id="theme-toggle">🌗</button>
+      <button id="theme-toggle">🌞/🌙</button>
     </header>
 
-    <main>
-      <section id="input-section">
-        <textarea
-          id="mod-urls"
-          placeholder="Enter mod URLs, one per line..."
-        ></textarea>
-        <div class="actions">
-          <button id="analyze-btn">Analyze</button>
-          <button id="export-md">Export MD</button>
-          <button id="export-csv">Export CSV</button>
-          <button id="clear-cache">🧹 Clear Cache</button>
-        </div>
-      </section>
+    <!-- Input + Analyze/Clear Cache block -->
+    <section id="analyze-block" class="input-block">
+      <textarea
+        id="mod-urls"
+        placeholder="Paste CurseForge or Modrinth URLs (one per line)"
+      ></textarea>
+      <div class="input-actions">
+        <button id="analyze-btn">Analyze</button>
+        <button id="clear-cache">Clear Cache</button>
+      </div>
+    </section>
 
-      <section id="filters">
-        <label
-          >Version:
-          <select id="filter-version"></select
-        ></label>
-        <label
-          >Loader:
-          <select id="filter-loader"></select
-        ></label>
-        <button id="apply-filters">Apply Filters</button>
-      </section>
+    <!-- Filters and Exports -->
+    <section id="filter-block" class="filters-block">
+      <div class="filters-left">
+        <label for="filter-version">Version:</label>
+        <select id="filter-version"></select>
+        <label for="filter-loader">Loader:</label>
+        <select id="filter-loader"></select>
+      </div>
+      <div class="filters-right">
+        <button id="export-md">Export .MD</button>
+        <button id="export-csv">Export .CSV</button>
+      </div>
+    </section>
 
-      <section id="results"></section>
-    </main>
-
-    <footer>
-      <p>Minecraft Mod Matrix - 2025</p>
-    </footer>
+    <!-- Results -->
+    <main id="results"></main>
 
     <script src="/static/app.js"></script>
+
+    <footer>
+      <p>
+        <a href="https://jigsaw.w3.org/css-validator/check/referer">
+          <img
+            style="border: 0; width: 88px; height: 31px"
+            src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
+            alt="Valid CSS!"
+          />
+        </a>
+      </p>
+    </footer>
   </body>
 </html>
