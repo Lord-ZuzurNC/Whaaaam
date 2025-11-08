@@ -19,6 +19,12 @@ jobs:
         python-version: ["3.10", "3.11", "3.12"]
         os: ["ubuntu-latest", "windows-latest"]
 
+    # inject secrets into the job environment (never print them)
+    env:
+      API_KEY: ${{ secrets.CF_API_KEY }}
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      DEBUG: ${{ secrets.DEBUG }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -46,7 +52,7 @@ jobs:
       - name: Lint with flake8
         run: |
           echo "Running flake8..."
-          # fail on hard errors (selected), but allow the general complexity/line-length check to not break the run
+          # Print critical errors but don't fail the job here so we can still run tests while fixing lint.
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
@@ -70,15 +76,29 @@ jobs:
             exit $rc
           }
 
-      - name: Verify Flask startup (smoke test - Linux)
+      - name: Prepare .env for app (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          # write .env from job env values without printing secrets
+          printf "API_KEY=%s\nDEBUG=%s\n" "$API_KEY" "$DEBUG" > .env
+
+      - name: Prepare .env for app (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          # write .env from job env values without printing secrets
+          Set-Content -Path .env -Value "API_KEY=$env:API_KEY"
+          Add-Content -Path .env -Value "DEBUG=$env:DEBUG"
+
+      - name: Verify Flask startup (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
           echo "Testing Flask startup..."
-          python -c "from web import app; client = app.test_client(); r = client.get('/'); print('Root route returned:', r.status_code); assert r.status_code in (200, 302)"
+          python -c 'from web import app, sys as _sys; client = app.test_client(); r = client.get("/"); print("Root route returned:", r.status_code); _sys.exit(0 if r.status_code in (200,302) else 1)'
 
-      - name: Verify Flask startup (smoke test - Windows)
+      - name: Verify Flask startup (Windows)
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
           Write-Host "Testing Flask startup..."
-          python -c "from web import app; client = app.test_client(); r = client.get('/'); Write-Host 'Root route returned:' $($r.status_code); if (-not (,@(200,302) -contains $r.status_code)) { exit 1 }"
+          python -c "from web import app, sys as _sys; client = app.test_client(); r = client.get('/'); print('Root route returned:', r.status_code); _sys.exit(0 if r.status_code in (200,302) else 1)"
