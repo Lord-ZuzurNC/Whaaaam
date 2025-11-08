@@ -45,7 +45,7 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          echo "🔍 Running flake8..."
+          echo "Running flake8..."
           # fail on hard errors (selected), but allow the general complexity/line-length check to not break the run
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
@@ -53,18 +53,18 @@ jobs:
       - name: Run tests (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
-          echo "🧪 Running pytest..."
-          pytest -v --maxfail=3 --disable-warnings || { rc=$?; if [ $rc -eq 5 ]; then echo "⚠️ No tests collected (exit code 5). Continuing"; else exit $rc; fi }
+          echo "Running pytest..."
+          pytest -v --maxfail=3 --disable-warnings || { rc=$?; if [ $rc -eq 5 ]; then echo "No tests collected (exit code 5). Continuing"; else exit $rc; fi }
 
       - name: Run tests (Windows)
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
-          Write-Host "🧪 Running pytest..."
+          Write-Host "Running pytest..."
           pytest -v --maxfail=3 --disable-warnings
           $rc = $LASTEXITCODE
           if ($rc -eq 5) {
-            Write-Host "⚠️ No tests collected (exit code 5). Continuing"
+            Write-Host "No tests collected (exit code 5). Continuing"
             exit 0
           } elseif ($rc -ne 0) {
             exit $rc
@@ -73,12 +73,12 @@ jobs:
       - name: Verify Flask startup (smoke test - Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
-          echo "🚀 Testing Flask startup..."
-          python -c "from web import app; client = app.test_client(); r = client.get('/'); print('✅ Root route returned:', r.status_code); assert r.status_code in (200, 302)"
+          echo "Testing Flask startup..."
+          python -c "from web import app; client = app.test_client(); r = client.get('/'); print('Root route returned:', r.status_code); assert r.status_code in (200, 302)"
 
       - name: Verify Flask startup (smoke test - Windows)
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
-          Write-Host "🚀 Testing Flask startup..."
-          python -c "from web import app; client = app.test_client(); r = client.get('/'); Write-Host '✅ Root route returned:' $($r.status_code); if (-not (,@(200,302) -contains $r.status_code)) { exit 1 }"
+          Write-Host "Testing Flask startup..."
+          python -c "from web import app; client = app.test_client(); r = client.get('/'); Write-Host 'Root route returned:' $($r.status_code); if (-not (,@(200,302) -contains $r.status_code)) { exit 1 }"
