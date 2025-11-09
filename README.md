@@ -7,7 +7,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10–3.12-blue?logo=python)](https://www.python.org/)  
 [![Flask](https://img.shields.io/badge/Backend-Flask-000?logo=flask)](https://flask.palletsprojects.com/)  
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)  
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Lord_ZuzurNC/3M-MinecraftModpackMatrix/python-app.yml?label=Build%20Status)](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/actions)
+[![GitHub Workflow Status](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/actions/workflows/python-app.yml/badge.svg?event=push)](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/actions)
 
 ---
 
