@@ -1,3 +1,5 @@
+> This software has been entirely developped using ChatGPT and many research on internet forums. This may have some unusual ways of coding. If you spot anything, do not hesitate to read through this README, [CONTRIBUTING](CONTRIBUTING.md), [SECURITY](SECURITY.md) and create an issue to make it more human and secure.
+
 # Minecraft Mod Matrix
 
 > _A smarter way to build Minecraft modpacks — find which mods are compatible across versions and loaders in seconds._
