@@ -13,7 +13,7 @@
 ## 💡 Overview
 
 Tired of checking **every single mod page** to see if they all support the same Minecraft version or loader?<br>
-**Minecraft Mod Matrix (3M)** automates that for you.
+**(3M) Minecraft Mod Matrix** automates that for you.
 
 Paste your Modrinth and CurseForge URLs, click **Analyze**, and get a beautiful table showing:
 
