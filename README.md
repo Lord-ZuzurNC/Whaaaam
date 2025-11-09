@@ -61,7 +61,7 @@ Create a .env file in the project root:
 CF_API_KEY=your_curseforge_api_key_here
 ```
 
-> You need to get the Cusrforge API from their [Studio](https://console.curseforge.com/) > API keys.
+> You need to get the Cusrforge API from their [Studio](https://console.curseforge.com/) > API keys.<br>
 > If you skip the API key, Modrinth mods will still analyze fine.
 
 #### 3️⃣ Install Dependencies
