@@ -85,7 +85,7 @@ Then visit 👉 http://localhost:5000
 1. Paste your Modrinth or CurseForge URLs (one per line).
 2. Click **Analyze** to fetch mod info.
 3. The table will show each mod’s:
-   - Source icon ![Modrinth logo](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/blob/main/static/mr.svg) Modrinth / ![Curseforge logo](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/blob/main/static/cf.svg) CurseForge
+   - Source icon ![Modrinth logo](static/mr.svg) Modrinth / ![Curseforge logo](static/cf.svg) CurseForge
    - Clickable mod name
    - Toggleable version/loader list
 4. Filter results to narrow results.
@@ -97,7 +97,7 @@ Then visit 👉 http://localhost:5000
 
 ## 📷 Screenshot
 
-![Screenshot of the app](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/blob/main/docs/screenshot_themes.png)
+![Screenshot of the app](docs/screenshot_themes.png)
 
 ---
 
@@ -144,11 +144,11 @@ Just paste their URLs, click Analyze, and Minecraft Mod Matrix will instantly sh
 Pull requests are welcome!<br>
 Whether it’s new providers, UI polish, or better filtering logic — open an issue or PR to help improve Minecraft Mod Matrix.
 
-Please read the (very short) [contributing guideline](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/edit/main/CONTRIBUTING.md).
+Please read the (very short) [contributing guideline](CONTRIBUTING.md).
 
 ---
 
 ## 📜 License
 
-Released under the [MIT License](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/blob/main/LICENSE)<br>
+Released under the [MIT License](LICENSE)<br>
 © 2025 – Lord_ZuzurNC

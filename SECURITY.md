@@ -18,7 +18,7 @@ Only stable Flask 3.1.0+ are supported.
 
 Only stable Flask CORS 6.0.0+ are supported.
 
-Do only install pip packages that are explicitely described in the [requirement.txt](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/blob/main/requirements.txt).
+Do only install pip packages that are explicitely described in the [requirement.txt](requirements.txt).
 
 ## Reporting a Vulnerability
 

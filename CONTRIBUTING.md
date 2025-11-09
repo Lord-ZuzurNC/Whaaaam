@@ -11,12 +11,13 @@ Thanks for your interest in contributing!
 
 ## 🧰 Development Setup
 
-Follow the installation steps in the [README](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/blob/main/README.md).<br>
+Follow the installation steps in the [README](README.md).<br>
 Use `pytest` for tests and `flake8` for linting (You can check my [Workflow](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/blob/main/.github/workflows/python-app.yml)).
 
 ## 💡 Suggestions
 
 Feel free to open issues for:
+
 - UI improvements
-- [Feature ideas](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/edit/main/README.md#-planned-upgrades) (e.g. new providers)
+- [Feature ideas](README.md#-planned-upgrades) (e.g. new providers)
 - Bug reports with reproduction steps
