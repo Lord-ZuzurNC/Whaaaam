@@ -4,9 +4,9 @@
 
 ---
 
-[![Python](https://img.shields.io/badge/Python-3.10–3.12-blue?logo=python)](https://www.python.org/)<br>
-[![Flask](https://img.shields.io/badge/Backend-Flask-000?logo=flask)](https://flask.palletsprojects.com/)<br>
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)<br>
+[![Python](https://img.shields.io/badge/Python-3.10–3.12-blue?logo=python)](https://www.python.org/)  
+[![Flask](https://img.shields.io/badge/Backend-Flask-000?logo=flask)](https://flask.palletsprojects.com/)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)  
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Lord_ZuzurNC/3M-MinecraftModpackMatrix/python-app.yml?label=Build%20Status)](https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/actions)
 
 ---
@@ -59,10 +59,10 @@ Create a .env file in the project root:
 
 ```
 CF_API_KEY=your_curseforge_api_key_here
-DEBUG=true
 ```
 
-> If you skip the key, Modrinth mods will still analyze fine.
+> You need to get the Cusrforge API from their [Studio](https://console.curseforge.com/) > API keys.
+> If you skip the API key, Modrinth mods will still analyze fine.
 
 #### 3️⃣ Install Dependencies
 
