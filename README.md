@@ -1,3 +1,3 @@
 # This is under (re)construction.
 
-For old stuff look at the "backup" folder.
+There is a rebrand and rebuild of the tool from (almost) scratch.
