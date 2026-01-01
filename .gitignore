@@ -15,7 +15,6 @@ Thumbs.db
 *.kate-swp
 
 # Backup
-backup/
 *.bak
 
 # VS Code Workspace
