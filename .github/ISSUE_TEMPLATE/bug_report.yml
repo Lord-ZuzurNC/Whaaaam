@@ -1,5 +1,5 @@
 name: 🐞 Bug report
-description: Report a bug to help improve Minecraft Mod Matrix
+description: Report a bug to help improve Whaaaam
 labels: [bug]
 body:
   - type: textarea

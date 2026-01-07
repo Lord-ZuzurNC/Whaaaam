@@ -345,7 +345,7 @@ document.getElementById("export-csv").onclick = () => exportCSV(lastResults);
 // ---- Export helpers ----
 function exportMD(results) {
   if (!results.length) return;
-  let md = "# Minecraft Mod Matrix\n\n";
+  let md = "# Whaaaam\n\n";
   results.forEach((mod) => {
     md += `- **${mod.name || "Unknown"}** (${mod.provider || "?"})\n`;
     (mod.versions || []).forEach(([v, l]) => {
