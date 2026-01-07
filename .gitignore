@@ -19,3 +19,11 @@ Thumbs.db
 
 # VS Code Workspace
 *.code-workspace
+
+# Auto Claude data directory
+.auto-claude/
+.auto-claude-status
+.claude_settings.json
+
+# Backup folder (restored to project root)
+backup/
