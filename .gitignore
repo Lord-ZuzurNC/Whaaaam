@@ -24,6 +24,3 @@ Thumbs.db
 .auto-claude/
 .auto-claude-status
 .claude_settings.json
-
-# Backup folder (restored to project root)
-backup/
