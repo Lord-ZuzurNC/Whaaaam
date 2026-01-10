@@ -86,7 +86,8 @@ python main.py
 - Reference issues when relevant (e.g., "Fix #123")
 
 **Examples:**
-```
+
+```text
 Add support for modpacks in CurseForge
 Fix version parsing for NeoForge mods
 Update README with new installation steps
@@ -94,7 +95,7 @@ Update README with new installation steps
 
 ## Project Structure
 
-```
+```bash
 Whaaaam/
 ├── main.py              # CLI entry point
 ├── web.py               # Flask web server
@@ -115,7 +116,8 @@ Want to add support for another mod platform? Here's how:
 
 1. Create a new file in `providers/` (e.g., `providers/newplatform.py`)
 2. Implement a function that takes a URL and returns mod data in this format:
-   ```python
+
+ ```python
    {
        "name": "Mod Name",
        "provider": "newplatform",
@@ -128,9 +130,10 @@ Want to add support for another mod platform? Here's how:
        "url": "https://..."
    }
    ```
-3. Register your provider in `providers/__init__.py`
-4. Update the URL validation in `web.py` if needed
-5. Submit a pull request!
+
+1. Register your provider in `providers/__init__.py`
+2. Update the URL validation in `web.py` if needed
+3. Submit a pull request!
 
 ## Questions?
 

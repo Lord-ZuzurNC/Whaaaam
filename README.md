@@ -59,22 +59,22 @@ Enter your mod URLs one per line, then press Enter on an empty line to analyze.
 
 ### Example Output
 
-```
+```text
 All your mods are compatible with Fabric 1.20.1 & Forge 1.20.1
 ```
 
 Or if there's partial compatibility:
 
-```
+```text
 Most of your mods share: Fabric 1.20.1 (8/10)
 ```
 
 ## Supported Platforms
 
-| Platform | URL Format |
-|----------|------------|
+| Platform   | URL Format                                              |
+|------------|---------------------------------------------------------|
 | CurseForge | `https://www.curseforge.com/minecraft/mc-mods/mod-name` |
-| Modrinth | `https://modrinth.com/mod/mod-name` |
+| Modrinth   | `https://modrinth.com/mod/mod-name`                     |
 
 ## Configuration
 
@@ -82,9 +82,9 @@ No configuration required! Whaaaam works out of the box.
 
 ### Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `CF_API_KEY` | CurseForge API key (optional, for higher rate limits) | None |
+| Variable     | Description                                           | Default |
+|--------------|-------------------------------------------------------|---------|
+| `CF_API_KEY` | CurseForge API key (optional, for higher rate limits) | None    |
 
 ## Contributing
 

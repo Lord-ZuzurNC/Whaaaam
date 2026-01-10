@@ -1,30 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="keywords"
-      content="HTML, CSS, JavaScript, Minecraft, Mod, Mods, Modpack, Curseforge, Modrinth, Github, OpenSource, FOSS, Python"
-    />
-    <meta
-      name="description"
-      content="Whaaaam tells you what MC version/loader all your mods have in common."
-    />
-    <meta name="author" content="Lord_ZuzurNC" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="HTML, CSS, JavaScript, Minecraft, Mod, Mods, Modpacks, Curseforge, Modrinth, Github, OpenSource, FOSS, Python">
+    <meta name="description" content="Whaaaam tells you what MC version/loader all your mods have in common.">
+    <meta name="author" content="Lord_ZuzurNC">
     <title>Whaaaam</title>
-    <link rel="icon" type="image/x-icon" href="/static/favico.ico" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="icon" type="image/x-icon" href="/static/favico.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
     <header>
       <h1>Whaaaam</h1>
       <label class="theme-switch">
-        <input type="checkbox" id="theme-toggle" />
+        <input type="checkbox" id="theme-toggle">
         <span class="slider">
           <span class="icon sun">🌞</span>
           <span class="icon moon">🌙</span>
@@ -39,8 +30,8 @@
         placeholder="Paste CurseForge or Modrinth URLs (one per line)"
       ></textarea>
       <div class="input-actions">
-        <button id="analyze-btn">Analyze</button>
-        <button id="clear-cache">Clear Cache</button>
+        <button id="analyze-btn" type="submit">Analyze</button>
+        <button id="clear-cache" type="submit">Clear Cache</button>
       </div>
     </section>
 
@@ -53,8 +44,8 @@
         <select id="filter-loader"></select>
       </div>
       <div class="filters-right">
-        <button id="export-md">Export .MD</button>
-        <button id="export-csv">Export .CSV</button>
+        <button id="export-md" type="submit">Export .MD</button>
+        <button id="export-csv" type="submit">Export .CSV</button>
       </div>
     </section>
 
@@ -71,11 +62,7 @@
     <footer class="footer">
       <div class="footer-row">
         <div class="footer-col">
-          <img
-            src="/static/favico.ico"
-            alt="Whaaaam Logo"
-            class="footer-icon"
-          />
+          <img src="/static/favico.ico" alt="Whaaaam Logo" class="footer-icon">
         </div>
         <div class="footer-col">
           <h4 class="footer-info">
@@ -90,20 +77,15 @@
         <div class="footer-col">
           <div class="icons">
             <a href="https://github.com/Lord-ZuzurNC/Whaaaam">
-              <img
-                src="/static/github.svg"
-                alt="Github Logo"
-                class="github-icon"
-              />
+              <img src="/static/github.svg" alt="Github Logo" class="github-icon">
             </a>
           </div>
-          <div class="media">
+          <div class="w3c">
             <a href="https://jigsaw.w3.org/css-validator/check/referer">
               <img
-                style="border: 0; width: 88px; height: 31px"
-                src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-                alt="Valid CSS!"
-              />
+              style="border: 0; width: 88px; height: 31px"
+              src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
+              alt="Valid CSS!">
             </a>
           </div>
         </div>
