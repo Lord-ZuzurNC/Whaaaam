@@ -1,9 +1,39 @@
-// Theme
-const themeToggle = document.getElementById("theme-toggle");
+// Theme Switcher
+const themeSwitcher = document.querySelector(".theme-switcher");
+const themeOptions = document.querySelectorAll(".theme-option");
+const themeIndicator = document.querySelector(".theme-indicator");
 
-function applyTheme(theme) {
-  document.body.classList.toggle("dark", theme === "dark");
-  localStorage.setItem("theme", theme);
+const themes = ["latte", "frappe", "macchiato", "mocha"];
+let currentThemeIndex = 0;
+
+function applyTheme(themeName) {
+  document.documentElement.setAttribute("data-theme", themeName);
+
+  // Apply dark class for backwards compatibility with existing CSS
+  const isDark = themeName !== "latte";
+  document.body.classList.toggle("dark", isDark);
+
+  localStorage.setItem("theme", themeName);
+
+  // Update active states
+  themeOptions.forEach((option, index) => {
+    const isActive = option.dataset.theme === themeName;
+    option.setAttribute("aria-checked", isActive);
+    if (isActive) {
+      currentThemeIndex = index;
+    }
+  });
+
+  // Move indicator
+  updateIndicatorPosition();
+}
+
+function updateIndicatorPosition() {
+  const activeOption = themeOptions[currentThemeIndex];
+  const containerRect = themeSwitcher.getBoundingClientRect();
+  const optionRect = activeOption.getBoundingClientRect();
+  const offsetX = optionRect.left - containerRect.left;
+  themeIndicator.style.transform = `translateX(${offsetX}px)`;
 }
 
 function updateTableLogos() {
@@ -18,15 +48,40 @@ function updateTableLogos() {
 }
 
 // Initialize theme
-const savedTheme = localStorage.getItem("theme") || "light";
+const savedTheme = localStorage.getItem("theme") || "mocha";
 applyTheme(savedTheme);
-themeToggle.checked = savedTheme === "dark";
 
-themeToggle.onchange = () => {
-  const newTheme = themeToggle.checked ? "dark" : "light";
-  applyTheme(newTheme);
-  updateTableLogos(); // update logos instantly
-};
+// Click handlers
+themeOptions.forEach((option) => {
+  option.addEventListener("click", () => {
+    applyTheme(option.dataset.theme);
+    updateTableLogos();
+    updateOverlayTheme();
+  });
+});
+
+// Keyboard navigation
+themeSwitcher.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+    e.preventDefault();
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    applyTheme(themes[currentThemeIndex]);
+    updateTableLogos();
+    updateOverlayTheme();
+  } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+    e.preventDefault();
+    currentThemeIndex = (currentThemeIndex - 1 + themes.length) % themes.length;
+    applyTheme(themes[currentThemeIndex]);
+    updateTableLogos();
+    updateOverlayTheme();
+  } else if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    // Already on selected theme, no action needed
+  }
+});
+
+// Update indicator on window resize
+window.addEventListener("resize", updateIndicatorPosition);
 
 // ---- Helpers ----
 function normalizeLoader(l) {
@@ -142,14 +197,6 @@ function updateOverlayTheme() {
   const isDark = document.body.classList.contains("dark");
   loadingOverlay.classList.toggle("light", !isDark);
 }
-
-// Call this whenever theme changes
-themeToggle.onchange = () => {
-  const newTheme = themeToggle.checked ? "dark" : "light";
-  applyTheme(newTheme);
-  updateTableLogos();
-  updateOverlayTheme();
-};
 
 // Deduplicate mods by provider + slug
 function dedupeMods(results) {

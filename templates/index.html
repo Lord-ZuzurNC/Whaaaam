@@ -14,13 +14,21 @@
   <body>
     <header>
       <h1>Whaaaam</h1>
-      <label class="theme-switch">
-        <input type="checkbox" id="theme-toggle">
-        <span class="slider">
-          <span class="icon sun">🌞</span>
-          <span class="icon moon">🌙</span>
-        </span>
-      </label>
+      <div class="theme-switcher" role="radiogroup" aria-label="Theme selector" tabindex="0">
+        <div class="theme-option" data-theme="latte" role="radio" aria-label="Latte theme" tabindex="-1">
+          <div class="theme-circle"></div>
+        </div>
+        <div class="theme-option" data-theme="frappe" role="radio" aria-label="Frappé theme" tabindex="-1">
+          <div class="theme-circle"></div>
+        </div>
+        <div class="theme-option" data-theme="macchiato" role="radio" aria-label="Macchiato theme" tabindex="-1">
+          <div class="theme-circle"></div>
+        </div>
+        <div class="theme-option" data-theme="mocha" role="radio" aria-label="Mocha theme" tabindex="-1">
+          <div class="theme-circle"></div>
+        </div>
+        <div class="theme-indicator"></div>
+      </div>
     </header>
 
     <!-- Input + Analyze/Clear Cache block -->
