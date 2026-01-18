@@ -26,8 +26,29 @@ const ThemeManager = (() => {
     return VALID_THEMES.includes(themeName);
   }
 
-  // Get current theme from localStorage or default
+  // Get theme from URL parameter
+  function getThemeFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const urlTheme = params.get("theme");
+    return isValidTheme(urlTheme) ? urlTheme : null;
+  }
+
+  // Update URL parameter without page reload
+  function updateURLParameter(themeName) {
+    const url = new URL(window.location);
+    url.searchParams.set("theme", themeName);
+    window.history.replaceState({}, "", url);
+  }
+
+  // Get current theme from URL > localStorage > default
   function getTheme() {
+    // URL parameter takes precedence
+    const urlTheme = getThemeFromURL();
+    if (urlTheme) {
+      return urlTheme;
+    }
+
+    // Fall back to localStorage
     if (!isLocalStorageAvailable()) {
       return DEFAULT_THEME;
     }
@@ -54,6 +75,9 @@ const ThemeManager = (() => {
     if (isLocalStorageAvailable()) {
       localStorage.setItem(STORAGE_KEY, themeName);
     }
+
+    // Update URL parameter without page reload
+    updateURLParameter(themeName);
 
     // Update UI elements if initialized
     if (themeOptions && themeIndicator) {
