@@ -1,3 +1,9 @@
+/* ============================================================
+   LEGACY CSS - TO BE MIGRATED TO TAILWIND
+   See .ralph-tui/MIGRATION_CHECKLIST.md for migration status
+   ============================================================ */
+
+/* LEGACY: CSS Variables - Will be replaced by Tailwind theme system */
 :root {
   --bg: #f5f5f5;
   --text: #222;
@@ -14,6 +20,7 @@ body.dark {
   --border: #444;
 }
 
+/* LEGACY: Base body styles - To be migrated to Tailwind utilities */
 body {
   font-family: "Segoe UI", sans-serif;
   background: var(--bg);
@@ -23,6 +30,7 @@ body {
   transition: background 0.5s ease, color 0.5s ease;
 }
 
+/* LEGACY: Header layout - To be migrated to Tailwind utilities */
 header {
   display: flex;
   justify-content: center;
@@ -34,6 +42,8 @@ header {
 }
 
 /* ===== Theme Switcher ===== */
+/* PARTIALLY MIGRATED: Theme switcher uses Tailwind config for colors,
+   but UI styling is still legacy CSS. See MIGRATION_CHECKLIST.md */
 .theme-switcher {
   position: absolute;
   right: 12px;
@@ -111,6 +121,7 @@ header {
 }
 
 /* ===== Input Block ===== */
+/* LEGACY: Input and form styles - To be migrated to Tailwind utilities */
 .input-block {
   display: flex;
   flex-direction: column;
@@ -167,6 +178,7 @@ header {
 }
 
 /* ===== Filters + Exports ===== */
+/* LEGACY: Filter controls - To be migrated to Tailwind utilities */
 .filters-block {
   display: flex;
   justify-content: space-between;
@@ -186,6 +198,7 @@ header {
 }
 
 /* ==== LOADING ==== */
+/* LEGACY: Loading overlay and spinner - To be migrated to Tailwind utilities */
 #loading-overlay {
   display: none; /* hidden by default */
   position: fixed;
@@ -235,6 +248,7 @@ header {
 }
 
 /* ===== Table ===== */
+/* LEGACY: Table and results styles - To be migrated to Tailwind utilities */
 #results {
   display: flex;
   flex-direction: column;
@@ -278,6 +292,7 @@ th {
 }
 
 /* ===== Links in light mode ===== */
+/* LEGACY: Link styles - To be migrated to Tailwind utilities */
 body a {
   color: #1d4ed8; /* dark blue for normal links */
   text-decoration: underline;
@@ -306,6 +321,7 @@ body.dark a:hover {
 }
 
 /* ===== Compatibility Banner ===== */
+/* LEGACY: Compatibility banner - To be migrated to Tailwind utilities */
 .compatibility-summary {
   font-weight: bold;
   font-size: 1rem;
@@ -345,6 +361,7 @@ body.dark .compatibility-summary.bad {
 }
 
 /* ===== Layout Fix: Footer Always at Bottom ===== */
+/* LEGACY: Layout flexbox - To be migrated to Tailwind utilities */
 html,
 body {
   height: 100%;
@@ -358,6 +375,7 @@ main {
 }
 
 /* ===== Minecraft-Style Footer ===== */
+/* LEGACY: Footer styles - To be migrated to Tailwind utilities */
 .footer {
   position: relative;
   width: 100%;
@@ -444,6 +462,7 @@ body.dark .footer-col .icons img.github-icon {
 }
 
 /* ===== Responsive ===== */
+/* LEGACY: Responsive breakpoints - To be migrated to Tailwind responsive utilities */
 @media (max-width: 700px) {
   .footer-row {
     flex-direction: column;
