@@ -1,0 +1,31 @@
+{
+  "name": "whaaaam",
+  "version": "1.0.0",
+  "description": "**Whaaaam** tells you what Minecraft version and mod loader all your mods have in common.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./static/css/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./static/css/tailwind.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix/issues"
+  },
+  "homepage": "https://github.com/Lord-ZuzurNC/3M-MinecraftModpackMatrix#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19"
+  }
+}
