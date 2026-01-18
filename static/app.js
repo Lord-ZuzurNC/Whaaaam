@@ -1,87 +1,178 @@
-// Theme Switcher
-const themeSwitcher = document.querySelector(".theme-switcher");
-const themeOptions = document.querySelectorAll(".theme-option");
-const themeIndicator = document.querySelector(".theme-indicator");
+// ---- Theme Management Module ----
+const ThemeManager = (() => {
+  const VALID_THEMES = ["latte", "frappe", "macchiato", "mocha"];
+  const DEFAULT_THEME = "mocha";
+  const STORAGE_KEY = "theme";
 
-const themes = ["latte", "frappe", "macchiato", "mocha"];
-let currentThemeIndex = 0;
+  let currentThemeIndex = 0;
+  let themeSwitcher = null;
+  let themeOptions = null;
+  let themeIndicator = null;
 
-function applyTheme(themeName) {
-  document.documentElement.setAttribute("data-theme", themeName);
-
-  // Apply dark class for backwards compatibility with existing CSS
-  const isDark = themeName !== "latte";
-  document.body.classList.toggle("dark", isDark);
-
-  localStorage.setItem("theme", themeName);
-
-  // Update active states
-  themeOptions.forEach((option, index) => {
-    const isActive = option.dataset.theme === themeName;
-    option.setAttribute("aria-checked", isActive);
-    if (isActive) {
-      currentThemeIndex = index;
+  // Check if localStorage is available
+  function isLocalStorageAvailable() {
+    try {
+      const test = "__localStorage_test__";
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
     }
-  });
-
-  // Move indicator
-  updateIndicatorPosition();
-}
-
-function updateIndicatorPosition() {
-  const activeOption = themeOptions[currentThemeIndex];
-  const containerRect = themeSwitcher.getBoundingClientRect();
-  const optionRect = activeOption.getBoundingClientRect();
-  const offsetX = optionRect.left - containerRect.left;
-  themeIndicator.style.transform = `translateX(${offsetX}px)`;
-}
-
-function updateTableLogos() {
-  const isDark = document.body.classList.contains("dark");
-  document.querySelectorAll(".provider-logo").forEach((img) => {
-    if (img.alt === "CurseForge") {
-      img.src = isDark ? "/static/cf_dark.svg" : "/static/cf.svg";
-    } else if (img.alt === "Modrinth") {
-      img.src = isDark ? "/static/mr_dark.svg" : "/static/mr.svg";
-    }
-  });
-}
-
-// Initialize theme
-const savedTheme = localStorage.getItem("theme") || "mocha";
-applyTheme(savedTheme);
-
-// Click handlers
-themeOptions.forEach((option) => {
-  option.addEventListener("click", () => {
-    applyTheme(option.dataset.theme);
-    updateTableLogos();
-    updateOverlayTheme();
-  });
-});
-
-// Keyboard navigation
-themeSwitcher.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-    e.preventDefault();
-    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-    applyTheme(themes[currentThemeIndex]);
-    updateTableLogos();
-    updateOverlayTheme();
-  } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-    e.preventDefault();
-    currentThemeIndex = (currentThemeIndex - 1 + themes.length) % themes.length;
-    applyTheme(themes[currentThemeIndex]);
-    updateTableLogos();
-    updateOverlayTheme();
-  } else if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    // Already on selected theme, no action needed
   }
-});
 
-// Update indicator on window resize
-window.addEventListener("resize", updateIndicatorPosition);
+  // Validate theme name
+  function isValidTheme(themeName) {
+    return VALID_THEMES.includes(themeName);
+  }
+
+  // Get current theme from localStorage or default
+  function getTheme() {
+    if (!isLocalStorageAvailable()) {
+      return DEFAULT_THEME;
+    }
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return isValidTheme(saved) ? saved : DEFAULT_THEME;
+  }
+
+  // Set theme and update UI
+  function setTheme(themeName) {
+    // Validate theme name
+    if (!isValidTheme(themeName)) {
+      console.warn(`Invalid theme "${themeName}". Falling back to "${DEFAULT_THEME}".`);
+      themeName = DEFAULT_THEME;
+    }
+
+    // Update DOM
+    document.documentElement.setAttribute("data-theme", themeName);
+
+    // Apply dark class for backwards compatibility with existing CSS
+    const isDark = themeName !== "latte";
+    document.body.classList.toggle("dark", isDark);
+
+    // Persist to localStorage if available
+    if (isLocalStorageAvailable()) {
+      localStorage.setItem(STORAGE_KEY, themeName);
+    }
+
+    // Update UI elements if initialized
+    if (themeOptions && themeIndicator) {
+      updateUIState(themeName);
+    }
+
+    // Update dynamic elements
+    updateTableLogos();
+    updateOverlayTheme();
+  }
+
+  // Update UI state (active states and indicator position)
+  function updateUIState(themeName) {
+    themeOptions.forEach((option, index) => {
+      const isActive = option.dataset.theme === themeName;
+      option.setAttribute("aria-checked", isActive);
+      if (isActive) {
+        currentThemeIndex = index;
+      }
+    });
+    updateIndicatorPosition();
+  }
+
+  // Move the sliding indicator
+  function updateIndicatorPosition() {
+    if (!themeSwitcher || !themeIndicator || !themeOptions[currentThemeIndex]) {
+      return;
+    }
+    const activeOption = themeOptions[currentThemeIndex];
+    const containerRect = themeSwitcher.getBoundingClientRect();
+    const optionRect = activeOption.getBoundingClientRect();
+    const offsetX = optionRect.left - containerRect.left;
+    themeIndicator.style.transform = `translateX(${offsetX}px)`;
+  }
+
+  // Update logos based on theme
+  function updateTableLogos() {
+    const isDark = document.body.classList.contains("dark");
+    document.querySelectorAll(".provider-logo").forEach((img) => {
+      if (img.alt === "CurseForge") {
+        img.src = isDark ? "/static/cf_dark.svg" : "/static/cf.svg";
+      } else if (img.alt === "Modrinth") {
+        img.src = isDark ? "/static/mr_dark.svg" : "/static/mr.svg";
+      }
+    });
+  }
+
+  // Update loading overlay theme
+  function updateOverlayTheme() {
+    const loadingOverlay = document.getElementById("loading-overlay");
+    if (loadingOverlay) {
+      const isDark = document.body.classList.contains("dark");
+      loadingOverlay.classList.toggle("light", !isDark);
+    }
+  }
+
+  // Initialize theme system and event listeners
+  function initTheme() {
+    // Get DOM elements
+    themeSwitcher = document.querySelector(".theme-switcher");
+    themeOptions = document.querySelectorAll(".theme-option");
+    themeIndicator = document.querySelector(".theme-indicator");
+
+    // Apply saved or default theme
+    const savedTheme = getTheme();
+    setTheme(savedTheme);
+
+    // Setup event listeners only if elements exist
+    if (!themeSwitcher || !themeOptions.length || !themeIndicator) {
+      console.warn("Theme switcher elements not found. Theme switching disabled.");
+      return;
+    }
+
+    // Click handlers
+    themeOptions.forEach((option) => {
+      option.addEventListener("click", () => {
+        const theme = option.dataset.theme;
+        if (theme) {
+          setTheme(theme);
+        }
+      });
+    });
+
+    // Keyboard navigation
+    themeSwitcher.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        currentThemeIndex = (currentThemeIndex + 1) % VALID_THEMES.length;
+        setTheme(VALID_THEMES[currentThemeIndex]);
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        currentThemeIndex =
+          (currentThemeIndex - 1 + VALID_THEMES.length) % VALID_THEMES.length;
+        setTheme(VALID_THEMES[currentThemeIndex]);
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        // Already on selected theme, no action needed
+      }
+    });
+
+    // Update indicator on window resize
+    window.addEventListener("resize", updateIndicatorPosition);
+  }
+
+  // Public API
+  return {
+    setTheme,
+    getTheme,
+    initTheme,
+  };
+})();
+
+// Initialize theme on DOM load
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", ThemeManager.initTheme);
+} else {
+  // DOM already loaded
+  ThemeManager.initTheme();
+}
 
 // ---- Helpers ----
 function normalizeLoader(l) {
@@ -190,12 +281,6 @@ function hideLoading() {
   loadingOverlay.style.display = "none";
   clearInterval(loadingInterval);
   loadingInterval = null;
-}
-
-// Update overlay theme when user toggles theme
-function updateOverlayTheme() {
-  const isDark = document.body.classList.contains("dark");
-  loadingOverlay.classList.toggle("light", !isDark);
 }
 
 // Deduplicate mods by provider + slug
