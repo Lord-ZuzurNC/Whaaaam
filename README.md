@@ -18,9 +18,26 @@ Paste your CurseForge and Modrinth mod URLs, and instantly see which Minecraft v
 
 ### Prerequisites
 
+- Curl and Git
+
+```bash
+apt install -y git curl
+```
+
 - Python 3.8+
 - pip
+
+```bash
+apt install -y python3 python3-venv python3-pip build-essential
+```
+
 - Node.js 16+ and npm (for building frontend assets)
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+\. "$HOME/.nvm/nvm.sh"
+nvm install 24
+```
 
 ### Installation
 
@@ -30,9 +47,11 @@ git clone https://github.com/Lord-ZuzurNC/Whaaaam.git
 cd Whaaaam
 
 # Install Python dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
 
 # Install Node.js dependencies and build CSS
+npm install -g npm@latest
 npm install
 npm run build:css
 ```
@@ -77,7 +96,7 @@ Most of your mods share: Fabric 1.20.1 (8/10)
 ## Supported Platforms
 
 | Platform   | URL Format                                              |
-|------------|---------------------------------------------------------|
+| ---------- | ------------------------------------------------------- |
 | CurseForge | `https://www.curseforge.com/minecraft/mc-mods/mod-name` |
 | Modrinth   | `https://modrinth.com/mod/mod-name`                     |
 
@@ -111,7 +130,7 @@ No configuration required! Whaaaam works out of the box.
 ### Environment Variables
 
 | Variable     | Description                                           | Default |
-|--------------|-------------------------------------------------------|---------|
+| ------------ | ----------------------------------------------------- | ------- |
 | `CF_API_KEY` | CurseForge API key (optional, for higher rate limits) | None    |
 
 ## Development
