@@ -43,7 +43,7 @@ nvm install 24
 
 ```bash
 # Clone the repository
-git clone https://github.com/Lord-ZuzurNC/Whaaaam.git
+git clone https://codeberg.org/LordZNC/Whaaaam.git
 cd Whaaaam
 
 # Install Python dependencies
@@ -212,4 +212,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Made with love by [Lord_ZuzurNC](https://github.com/Lord-ZuzurNC)
+Made with love by [Lord_ZuzurNC](https://codeberg.org/LordZNC)
