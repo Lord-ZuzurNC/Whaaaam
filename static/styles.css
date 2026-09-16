@@ -1,61 +1,273 @@
 /* ============================================================
-   LEGACY CSS - TO BE MIGRATED TO TAILWIND
-   See .ralph-tui/MIGRATION_CHECKLIST.md for migration status
+   Whaaaam — application styles
+   Colour comes from the four Catppuccin palettes, selected by the
+   [data-theme] attribute on <html>. Every value below is a token;
+   no component hard-codes a colour.
    ============================================================ */
 
-/* LEGACY: CSS Variables - Will be replaced by Tailwind theme system */
+/* ============================================================
+   1. THEME TOKENS
+   ------------------------------------------------------------
+   Roles, not swatches:
+     --bg / --surface   canvas and raised surfaces
+     --line             decorative separators
+     --border           interactive control borders (>=3:1 on both surfaces)
+     --text / --subtext primary and secondary copy
+     --accent           identity + the primary action, nothing else
+     --on-accent        the only foreground used on an accent fill
+     --good/warn/bad    verdict status, paired with a tinted surface
+   Contrast for every pair below is verified against WCAG AA.
+   ============================================================ */
+
+/* Fallback for a missing/invalid data-theme. It must stay ABOVE the theme
+   blocks: :root and [data-theme="..."] have the same specificity (0,1,0), so
+   whichever comes last would win. Values mirror Mocha, the default theme. */
 :root {
-  --bg: #f5f5f5;
-  --text: #222;
-  --accent: #007bff;
-  --card-bg: #fff;
-  --border: #ccc;
+  --bg: #1e1e2e;
+  --surface: #313244;
+  --line: #45475a;
+  --border: #7f849c;
+  --text: #cdd6f4;
+  --subtext: #a6adc8;
+  --accent: #89b4fa;
+  --accent-hover: #9ec2fb;
+  --on-accent: #1e1e2e;
+  --visited: #cba6f7;
+  --good: #a6e3a1;
+  --good-tint: #343e40;
+  --warn: #f9e2af;
+  --warn-tint: #413d43;
+  --bad: #f38ba8;
+  --bad-tint: #402f42;
+  --scrim: rgba(30, 30, 46, 0.88);
+  --shadow: rgba(0, 0, 0, 0.4);
 }
 
-body.dark {
-  --bg: #1e1e1e;
-  --text: #f1f1f1;
-  --accent: #3399ff;
-  --card-bg: #2a2a2a;
-  --border: #444;
+[data-theme="latte"] {
+  --bg: #eff1f5;
+  --surface: #e6e9ef;
+  --line: #ccd0da;
+  --border: #7c7f93;
+  --text: #4c4f69;
+  --subtext: #5c5f77;
+  --accent: #1e66f5;
+  --accent-hover: #1a5ad8;
+  --on-accent: #ffffff;
+  --visited: #8738ed;
+  --good: #398e26;
+  --good-tint: #dde7e0;
+  --warn: #b07017;
+  --warn-tint: #e9e4df;
+  --bad: #d20f39;
+  --bad-tint: #ecdae2;
+  --scrim: rgba(239, 241, 245, 0.88);
+  --shadow: rgba(76, 79, 105, 0.16);
 }
 
-/* LEGACY: Base body styles - To be migrated to Tailwind utilities */
+[data-theme="frappe"] {
+  --bg: #303446;
+  --surface: #414559;
+  --line: #51576d;
+  --border: #949cbb;
+  --text: #c6d0f5;
+  /* Catppuccin Frappe subtext1, not subtext0: subtext0 (#a5adce) measures
+     4.26:1 on --surface, so table headings and metadata would miss AA. */
+  --subtext: #b5bfe2;
+  --accent: #8caaee;
+  --accent-hover: #a1b9f1;
+  --on-accent: #303446;
+  --visited: #cda4e8;
+  --good: #a6d189;
+  --good-tint: #434d51;
+  --warn: #e5c890;
+  --warn-tint: #4d4c52;
+  --bad: #e78284;
+  --bad-tint: #4d4050;
+  --scrim: rgba(48, 52, 70, 0.88);
+  --shadow: rgba(0, 0, 0, 0.32);
+}
+
+[data-theme="macchiato"] {
+  --bg: #24273a;
+  --surface: #363a4f;
+  --line: #494d64;
+  --border: #8087a2;
+  --text: #cad3f5;
+  --subtext: #a5adcb;
+  --accent: #8aadf4;
+  --accent-hover: #9fbcf6;
+  --on-accent: #24273a;
+  --visited: #c6a0f6;
+  --good: #a6da95;
+  --good-tint: #394449;
+  --warn: #eed49f;
+  --warn-tint: #44434a;
+  --bad: #ed8796;
+  --bad-tint: #443649;
+  --scrim: rgba(36, 39, 58, 0.88);
+  --shadow: rgba(0, 0, 0, 0.36);
+}
+
+[data-theme="mocha"] {
+  --bg: #1e1e2e;
+  --surface: #313244;
+  --line: #45475a;
+  --border: #7f849c;
+  --text: #cdd6f4;
+  --subtext: #a6adc8;
+  --accent: #89b4fa;
+  --accent-hover: #9ec2fb;
+  --on-accent: #1e1e2e;
+  --visited: #cba6f7;
+  --good: #a6e3a1;
+  --good-tint: #343e40;
+  --warn: #f9e2af;
+  --warn-tint: #413d43;
+  --bad: #f38ba8;
+  --bad-tint: #402f42;
+  --scrim: rgba(30, 30, 46, 0.88);
+  --shadow: rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================
+   2. TYPE + NON-COLOUR TOKENS
+   ============================================================ */
+
+:root {
+  --font-ui: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Press Start 2P", ui-monospace, monospace;
+
+  --step--1: 0.8125rem;   /* labels, metadata */
+  --step-0: 1rem;         /* body */
+  --step-2: clamp(1.05rem, 0.9rem + 0.9vw, 1.35rem);  /* verdict */
+  --step-3: clamp(1.15rem, 0.7rem + 2.6vw, 2rem);     /* wordmark */
+
+  --radius: 8px;
+  --radius-sm: 6px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --shell: 72rem;
+}
+
+/* ============================================================
+   3. BASE
+   ============================================================ */
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 body {
-  font-family: "Segoe UI", sans-serif;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  line-height: 1.55;
   background: var(--bg);
   color: var(--text);
-  margin: 0;
-  padding: 0;
+  caret-color: var(--accent);
+  scrollbar-color: var(--border) var(--surface);
   transition: background 0.5s ease, color 0.5s ease;
 }
 
-/* LEGACY: Header layout - To be migrated to Tailwind utilities */
+main {
+  flex: 1; /* keeps the footer at the bottom on short pages */
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  overflow-wrap: anywhere;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+a:visited {
+  color: var(--visited);
+  text-decoration-color: var(--visited);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Available to assistive tech, absent from the layout. Used by #sr-announce,
+   the page's only live region. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   4. HEADER + WORDMARK
+   ------------------------------------------------------------
+   The header is a quiet surface. The accent is spent on the
+   wordmark and the primary action, and nowhere else.
+   ============================================================ */
+
 header {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  padding: 1rem;
-  background: var(--accent);
-  color: #fff;
+  gap: 1rem;
+  padding: 1.25rem var(--gutter);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
 }
 
-/* ===== Theme Switcher ===== */
-/* PARTIALLY MIGRATED: Theme switcher uses Tailwind config for colors,
-   but UI styling is still legacy CSS. See MIGRATION_CHECKLIST.md */
+h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--accent);
+}
+
+/* ===== Theme switcher ===== */
 .theme-switcher {
   position: absolute;
-  right: 12px;
+  right: var(--gutter);
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 8px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--bg);
+  border: 1px solid var(--line);
   border-radius: 20px;
-  backdrop-filter: blur(10px);
 }
 
 .theme-option {
@@ -66,414 +278,607 @@ header {
   transition: transform 0.2s ease;
 }
 
-.theme-option:hover {
-  transform: scale(1.15);
-}
-
-.theme-option:focus {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
-  border-radius: 50%;
+@media (hover: hover) {
+  .theme-option:hover {
+    transform: scale(1.15);
+  }
 }
 
 .theme-circle {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid var(--border);
   transition: border-color 0.3s ease;
 }
 
-.theme-option:hover .theme-circle {
-  border-color: rgba(255, 255, 255, 0.6);
+@media (hover: hover) {
+  .theme-option:hover .theme-circle {
+    border-color: var(--accent);
+  }
 }
 
-/* Theme circle colors - using Catppuccin base colors */
-.theme-option[data-theme="latte"] .theme-circle {
-  background-color: #eff1f5;
+/* The checked swatch is marked by a ring, so the active theme is
+   readable without relying on the sliding pill alone. */
+.theme-option[aria-checked="true"] .theme-circle {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
 }
 
-.theme-option[data-theme="frappe"] .theme-circle {
-  background-color: #303446;
-}
+.theme-option[data-theme="latte"] .theme-circle { background-color: #eff1f5; }
+.theme-option[data-theme="frappe"] .theme-circle { background-color: #303446; }
+.theme-option[data-theme="macchiato"] .theme-circle { background-color: #24273a; }
+.theme-option[data-theme="mocha"] .theme-circle { background-color: #1e1e2e; }
 
-.theme-option[data-theme="macchiato"] .theme-circle {
-  background-color: #24273a;
-}
-
-.theme-option[data-theme="mocha"] .theme-circle {
-  background-color: #1e1e2e;
-}
-
-/* Active state indicator - sliding pill behind circles */
 .theme-indicator {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 12px);
   left: 8px;
-  transform: translateY(-50%);
   width: 24px;
   height: 24px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: var(--line);
   border-radius: 50%;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: -1;
   pointer-events: none;
 }
 
-/* ===== Input Block ===== */
-/* LEGACY: Input and form styles - To be migrated to Tailwind utilities */
+/* ============================================================
+   5. INPUT BLOCK
+   ============================================================ */
+
 .input-block {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-  margin: 1.5rem auto;
-  width: 80%;
+  gap: 0.6rem;
+  width: min(100% - (2 * var(--gutter)), var(--shell));
+  margin: 2rem auto 1.5rem;
+}
+
+.input-block label {
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.label-hint {
+  display: block;
+  font-weight: 400;
+  color: var(--subtext);
 }
 
 #mod-urls {
-  width: 60%;
-  height: 140px;
+  width: 100%;
+  min-height: 9rem;
   padding: 0.8rem;
-  border: 2px solid var(--accent);
-  border-radius: 8px;
-  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  line-height: 1.6;
   resize: vertical;
-  background: var(--card-bg);
+  background: var(--surface);
   color: var(--text);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-#mod-urls:focus {
-  outline: none;
+#mod-urls::placeholder {
+  color: var(--subtext);
+}
+
+#mod-urls:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
   border-color: var(--accent);
+}
+
+.form-status {
+  margin: 0;
+  font-size: var(--step--1);
+  color: var(--subtext);
+}
+
+.form-status[data-tone="error"] {
+  color: var(--text);
+  background: var(--bad-tint);
+  border-left: 1px solid var(--bad);
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius-sm);
+}
+
+.form-status[data-tone="ok"] {
+  color: var(--text);
+  background: var(--good-tint);
+  border-left: 1px solid var(--good);
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius-sm);
 }
 
 .input-actions {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 60%;
+  gap: 0.75rem;
 }
 
-#analyze-btn,
-#clear-cache,
-#export-md,
-#export-csv {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
+/* ===== Buttons ===== */
+.btn {
+  min-height: 44px;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--step-0);
   font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-#analyze-btn:hover,
-#clear-cache:hover,
-#export-md:hover,
-#export-csv:hover {
-  background: #0056b3;
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
 }
 
-/* ===== Filters + Exports ===== */
-/* LEGACY: Filter controls - To be migrated to Tailwind utilities */
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* ============================================================
+   6. FILTERS + EXPORTS
+   ============================================================ */
+
 .filters-block {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 80%;
-  margin: 0 auto 1rem;
+  gap: 1rem;
+  width: min(100% - (2 * var(--gutter)), var(--shell));
+  margin: 0 auto 1.5rem;
+}
+
+.filters-left,
+.filters-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filters-left label {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--subtext);
 }
 
 .filters-left select {
-  margin-left: 0.3rem;
-  margin-right: 1rem;
-  padding: 0.4rem;
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
   color: var(--text);
+  font-family: inherit;
+  font-size: var(--step--1);
 }
 
-/* ==== LOADING ==== */
-/* LEGACY: Loading overlay and spinner - To be migrated to Tailwind utilities */
+/* ============================================================
+   7. LOADING
+   ============================================================ */
+
 #loading-overlay {
-  display: none; /* hidden by default */
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
   z-index: 9999;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "Press Start 2P", cursive;
-  font-size: 14px;
-  color: #fff;
-  transition: background 0.3s, color 0.3s;
+  gap: 0.75rem;
+  background: var(--scrim);
+  backdrop-filter: blur(2px);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--text);
 }
 
-#loading-overlay.light {
-  background: rgba(255, 255, 255, 0.7);
-  color: #000;
+/* The one control reachable while the scrim is up. */
+#cancel-check {
+  margin-top: 0.5rem;
 }
 
 .spinner {
-  border: 8px solid rgba(255, 255, 255, 0.2);
-  border-top: 8px solid #fff;
+  width: 48px;
+  height: 48px;
+  border: 6px solid var(--line);
+  border-top-color: var(--accent);
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
   animation: spin 1s linear infinite;
-  margin-bottom: 10px;
-  transition: border-color 0.3s;
-}
-
-#loading-overlay.light .spinner {
-  border: 8px solid rgba(0, 0, 0, 0.2);
-  border-top: 8px solid #000;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-/* ===== Table ===== */
-/* LEGACY: Table and results styles - To be migrated to Tailwind utilities */
+/* ============================================================
+   8. RESULTS
+   ============================================================ */
+
 #results {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
+  width: min(100% - (2 * var(--gutter)), var(--shell));
+  margin: 0 auto;
+  padding-bottom: 2.5rem;
+}
+
+.results-placeholder,
+.table-empty {
+  max-width: 48ch;
+  margin: 2rem 0;
+  text-align: center;
+  text-wrap: pretty;
+  color: var(--subtext);
+}
+
+.filter-note {
+  margin: 0;
+  align-self: flex-start;
+  font-size: var(--step--1);
+  color: var(--subtext);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Verdict banner =====
+   The answer to the whole list. Status is carried by the words first;
+   the tint and marker reinforce it without ever being the only cue. */
+.compatibility-summary {
+  width: 100%;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--step-2);
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  text-wrap: balance;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.compatibility-summary.good {
+  background: var(--good-tint);
+  border-color: var(--good);
+}
+
+.compatibility-summary.warning {
+  background: var(--warn-tint);
+  border-color: var(--warn);
+}
+
+.compatibility-summary.bad {
+  background: var(--bad-tint);
+  border-color: var(--bad);
+}
+
+/* ===== Table ===== */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 1px 3px var(--shadow);
 }
 
 table {
-  width: 70%;
+  width: 100%;
+  /* Below this the container scrolls rather than crushing three columns of
+     mod names and version lists into a phone width. */
+  min-width: 34rem;
   border-collapse: collapse;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: var(--step-0);
 }
 
 th,
 td {
-  padding: 0.8rem;
-  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--line);
   text-align: left;
+  vertical-align: top;
+}
+
+tbody tr:last-child th,
+tbody tr:last-child td {
+  border-bottom: 0;
 }
 
 th {
-  background: var(--accent);
-  color: white;
+  background: var(--surface);
+  color: var(--subtext);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 
 .col-source {
-  width: 5%;
+  width: 3.5rem;
   text-align: center;
 }
 
 .col-name {
   width: 45%;
+  overflow-wrap: anywhere;
 }
 
 .provider-logo {
   width: 20px;
   height: 20px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
-/* ===== Links in light mode ===== */
-/* LEGACY: Link styles - To be migrated to Tailwind utilities */
-body a {
-  color: #1d4ed8; /* dark blue for normal links */
-  text-decoration: underline;
+/* Rows for mods that could not be checked. They stay in the table and
+   say why — they are never dropped from the list or the count. */
+.row-unchecked .col-source {
+  color: var(--bad);
+  font-weight: 700;
 }
 
-body a:visited {
-  color: #6b21a8; /* purple for visited links */
+.cell-reason {
+  color: var(--subtext);
+  font-size: var(--step--1);
+  overflow-wrap: anywhere;
 }
 
-body a:hover {
-  color: #2563eb; /* slightly lighter blue on hover */
-}
-
-/* ===== Links in dark mode ===== */
-body.dark a {
-  color: #60a5fa; /* light blue for normal links */
-  text-decoration: underline;
-}
-
-body.dark a:visited {
-  color: #facc15; /* yellow for visited links to be visible */
-}
-
-body.dark a:hover {
-  color: #93c5fd; /* slightly lighter blue on hover */
-}
-
-/* ===== Compatibility Banner ===== */
-/* LEGACY: Compatibility banner - To be migrated to Tailwind utilities */
-.compatibility-summary {
-  font-weight: bold;
-  font-size: 1rem;
-  padding: 8px 12px;
-  margin: 10px 0;
-  border-radius: 6px;
-  text-align: center;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-/* ===== Compatibility Banner Light Mode ===== */
-body:not(.dark) .compatibility-summary.good {
-  background-color: #16a34a; /* bright green */
-  color: white;
-}
-body:not(.dark) .compatibility-summary.warning {
-  background-color: #facc15; /* yellow */
-  color: black;
-}
-body:not(.dark) .compatibility-summary.bad {
-  background-color: #dc2626; /* red */
-  color: white;
-}
-
-/* ===== Compatibility Banner Dark Mode ===== */
-body.dark .compatibility-summary.good {
-  background-color: #22c55e; /* lighter green for dark bg */
-  color: #e5ffe5;
-}
-body.dark .compatibility-summary.warning {
-  background-color: #fcd34d; /* softer yellow */
-  color: #222;
-}
-body.dark .compatibility-summary.bad {
-  background-color: #ef4444; /* bright red */
-  color: #fff0f0;
-}
-
-/* ===== Layout Fix: Footer Always at Bottom ===== */
-/* LEGACY: Layout flexbox - To be migrated to Tailwind utilities */
-html,
-body {
-  height: 100%;
-  margin: 0;
+/* ===== Version disclosure ===== */
+details > summary {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  min-height: 24px;
+  padding-block: 0.15rem;
+  cursor: pointer;
+  font-size: var(--step--1);
+  color: var(--subtext);
+  font-variant-numeric: tabular-nums;
 }
 
-main {
-  flex: 1; /* This pushes footer to bottom if content is short */
+@media (pointer: coarse) {
+  details > summary {
+    min-height: 44px;
+  }
 }
 
-/* ===== Minecraft-Style Footer ===== */
-/* LEGACY: Footer styles - To be migrated to Tailwind utilities */
+details[open] > summary {
+  margin-bottom: 0.4rem;
+}
+
+.version-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.version-list li {
+  line-height: 1.7;
+}
+
+/* ============================================================
+   9. FOOTER
+   ------------------------------------------------------------
+   Plain and token-driven: the footer follows the palette like
+   every other surface. No texture, no display face.
+   ============================================================ */
+
 .footer {
-  position: relative;
   width: 100%;
-  color: #fff;
-  font-family: "Press Start 2P", monospace;
-  padding: 10px 0; /* reduced from 20px */
-  border-top: 4px solid #4f772d;
-  background-image: url("/static/textures/grass_block_side.png");
-  background-repeat: repeat-x;
-  background-size: 128px 100%;
-  background-color: #3b2f1e;
-  box-shadow: 0 -4px 0 #2d2619;
+  margin-top: auto;
+  padding: 1rem var(--gutter);
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  color: var(--subtext);
+  font-size: var(--step--1);
 }
 
 .footer-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem; /* tighter spacing */
-  padding: 0 1.5rem;
+  gap: 1rem;
+  width: min(100%, var(--shell));
+  margin: 0 auto;
   flex-wrap: wrap;
 }
 
-/* ===== Icon block ===== */
-.footer-icon {
-  background-color: rgba(40, 40, 40, 0.6);
-  border-radius: 6px;
-  padding: 4px;
-  width: 32px;
-  height: 32px;
-}
-
-/* ===== Text info block ===== */
-.footer-info {
-  display: inline-block;
-  background-color: rgba(40, 40, 40, 0.6);
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: #fff;
-  font-size: 0.7rem; /* slightly smaller text */
-  font-weight: bold;
-  text-align: center;
-  text-shadow: 1px 1px 0 #000;
-  white-space: nowrap;
-}
-
-/* ===== Ensure GitHub + CSS icons are side-by-side ===== */
 .footer-col {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
+  gap: 0.5rem;
 }
 
-/* ===== For only the icon areas, make sure they're inline ===== */
-.footer-col .icons,
-.footer-col .media {
+.footer-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+}
+
+.footer-info {
+  margin: 0;
+  color: var(--subtext);
+  line-height: 1.6;
+}
+
+.footer-col .icons {
   display: inline-flex;
   align-items: center;
-  gap: 4px; /* spacing between GitHub and CSS badge */
+  gap: 0.5rem;
 }
 
-.footer-col .icons img,
-.footer-col .media img {
-  border-radius: 6px;
+.footer-col .icons a,
+.footer-col .w3c a {
+  display: inline-flex;
   padding: 4px;
-  height: 28px;
+  border-radius: var(--radius-sm);
+}
+
+.footer-col .icons img {
+  height: 22px;
   width: auto;
-  transition: transform 0.2s ease;
 }
 
-.footer-col .icons img:hover,
-.footer-col .media img:hover {
-  transform: scale(1.1);
+.footer-col .w3c img {
+  height: 24px;
+  width: auto;
+  opacity: 0.75;
 }
 
-/* ===== GitHub auto-swap ===== */
-.footer-col .icons img.github-icon {
-  content: url("/static/github.svg");
+/* ============================================================
+   10. RESPONSIVE
+   ------------------------------------------------------------
+   Two content-driven breakpoints:
+     900px — the justified filter bar runs out of room
+     640px — the header's absolute switcher would hit the wordmark
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .filters-block {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  /* A two-column grid keeps each label bound to its own select. Letting the
+     selects flex instead pushed "Loader" onto the first row, away from its
+     control. */
+  .filters-left {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+  }
+
+  .filters-left select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filters-right {
+    flex-wrap: wrap;
+  }
+
+  .filters-right .btn {
+    flex: 1 1 auto;
+  }
 }
 
-body.dark .footer-col .icons img.github-icon {
-  content: url("/static/github_dark.svg");
-}
+@media (max-width: 640px) {
+  header {
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-block: 1rem;
+  }
 
-/* ===== Responsive ===== */
-/* LEGACY: Responsive breakpoints - To be migrated to Tailwind responsive utilities */
-@media (max-width: 700px) {
+  /* Static below this width: absolutely positioned, the switcher
+     overlaps the wordmark on narrow viewports. */
+  .theme-switcher {
+    position: static;
+    transform: none;
+  }
+
+  .theme-option {
+    width: 28px;
+    height: 28px;
+  }
+
+  .input-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .footer-row {
     flex-direction: column;
-    gap: 1rem;
-  }
-
-  .footer-col {
+    gap: 0.75rem;
     text-align: center;
   }
+}
 
-  .footer-links {
-    justify-content: center;
+/* ============================================================
+   11. REDUCED MOTION
+   ------------------------------------------------------------
+   Fewer and gentler, not silent. The spinner keeps turning so
+   "still working" stays legible, but it steps instead of sweeping;
+   everything decorative resolves instantly.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+
+  .theme-option,
+  .theme-circle,
+  .btn,
+  .compatibility-summary {
+    transition-duration: 0.01ms;
+  }
+
+  .theme-option:hover {
+    transform: none;
+  }
+
+  .theme-indicator {
+    transition: none;
+  }
+
+  .spinner {
+    animation: spin 1.2s steps(8, end) infinite;
+  }
+}
+
+/* ============================================================
+   12. FORCED COLOURS
+   ------------------------------------------------------------
+   Windows High Contrast replaces every colour we set, which would
+   make the three verdict states identical. Border style is not
+   overridden, so it carries the distinction; the sentence inside
+   the banner already carries it in words.
+   ============================================================ */
+
+@media (forced-colors: active) {
+  .compatibility-summary {
+    border-width: 2px;
+  }
+
+  .compatibility-summary.good {
+    border-style: solid;
+  }
+
+  .compatibility-summary.warning {
+    border-style: dashed;
+  }
+
+  .compatibility-summary.bad {
+    border-style: double;
+  }
+
+  .row-unchecked .col-source {
+    font-weight: 700;
   }
 }

@@ -4,6 +4,11 @@
 
 Paste your CurseForge and Modrinth mod URLs, and instantly see which Minecraft versions and loaders (Forge, Fabric, NeoForge, Quilt) are compatible across your entire mod list.
 
+## Contents
+
+- [Contents](#contents)
+- 
+
 ## Features
 
 - **Multi-Source Support** - Works with both CurseForge and Modrinth URLs
@@ -18,9 +23,18 @@ Paste your CurseForge and Modrinth mod URLs, and instantly see which Minecraft v
 
 ### Prerequisites
 
+- Curl and Git
+
+```bash
+apt install -y git curl
+```
+
 - Python 3.8+
 - pip
-- Node.js 16+ and npm (for building frontend assets)
+
+```bash
+apt install -y python3 python3-venv python3-pip build-essential
+```
 
 ### Installation
 
@@ -30,12 +44,11 @@ git clone https://github.com/Lord-ZuzurNC/Whaaaam.git
 cd Whaaaam
 
 # Install Python dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
-
-# Install Node.js dependencies and build CSS
-npm install
-npm run build:css
 ```
+
+There is no frontend build step — `static/styles.css` is served as authored.
 
 ### Usage
 
@@ -45,22 +58,44 @@ npm run build:css
 python web.py
 ```
 
-Open your browser to `http://localhost:5000`, paste your mod URLs (one per line), and click **Analyze**.
+Open your browser to `http://localhost:5000`, paste your mod URLs (one per line), and click **Check compatibility**.
 
 #### Command Line
 
+The CLI gives the same answer as the web UI — same checking, same verdict, same wording.
+
 ```bash
+# URLs as arguments
+python main.py https://modrinth.com/mod/sodium https://www.curseforge.com/minecraft/mc-mods/jei
+
+# from a file, or piped in
+python main.py --file mods.txt
+cat mods.txt | python main.py
+
+# or paste interactively: run with no arguments, blank line to finish
 python main.py
 ```
 
-Enter your mod URLs one per line, then press Enter on an empty line to analyze.
+| Option | What it does |
+| ------ | ------------ |
+| `--version 1.20.1` | only show table rows for that Minecraft version |
+| `--loader fabric` | only show table rows for that loader |
+| `--show-versions` | list every version instead of a count |
+| `--export md\|csv` | write the results to a file (`--out -` for stdout) |
+| `--clear-cache` | delete the cached version data and exit |
+
+Filters narrow the table; they never change the verdict above it. Exit status is
+`0` when a shared version exists, `2` when none does, `1` when no URLs were given
+— so it composes into scripts.
 
 ## How It Works
 
 1. **Paste URLs** - Add CurseForge or Modrinth mod page URLs
-2. **Analyze** - Whaaaam fetches version data from each platform's API
+2. **Check** - Whaaaam fetches version data from each platform's API in parallel
 3. **Compare** - All mod versions are cross-referenced to find common compatibility
-4. **Results** - See which Minecraft versions and loaders work with ALL your mods
+4. **Results** - See which Minecraft versions and loaders work with ALL your mods.
+   Mods that could not be fetched are listed with the reason and still counted, so
+   a green verdict always means the whole list was checked.
 
 ### Example Output
 
@@ -77,7 +112,7 @@ Most of your mods share: Fabric 1.20.1 (8/10)
 ## Supported Platforms
 
 | Platform   | URL Format                                              |
-|------------|---------------------------------------------------------|
+| ---------- | ------------------------------------------------------- |
 | CurseForge | `https://www.curseforge.com/minecraft/mc-mods/mod-name` |
 | Modrinth   | `https://modrinth.com/mod/mod-name`                     |
 
@@ -97,8 +132,8 @@ Themes are automatically saved to your browser and can be shared via URL (e.g., 
 ### For Developers
 
 The theme system is built with:
-- **TailwindCSS v3** - Utility-first CSS framework with JIT compilation
-- **Catppuccin Colors** - All 4 palettes (68 colors total) available as Tailwind utilities
+- **CSS custom properties** - one `[data-theme]` block per palette in `static/styles.css`
+- **Catppuccin Colors** - all 4 palettes, mapped to semantic roles rather than raw swatches
 - **ThemeManager API** - JavaScript module for programmatic theme control
 - **URL Parameters** - Share themes via `?theme=<name>` in the URL
 
@@ -106,39 +141,36 @@ To customize or extend themes, see the [Development](#development) section below
 
 ## Configuration
 
-No configuration required! Whaaaam works out of the box.
-
 ### Environment Variables
 
-| Variable     | Description                                           | Default |
-|--------------|-------------------------------------------------------|---------|
-| `CF_API_KEY` | CurseForge API key (optional, for higher rate limits) | None    |
+| Variable     | Description                   | Default |
+| ------------ | ----------------------------- | ------- |
+| `CF_API_KEY` | CurseForge API key (required) | None    |
+
+`CF_API_KEY` is checked when `providers/curseforge.py` is imported, so the app
+will not start without it — including for a Modrinth-only mod list. Set it in your
+environment or in a `.env` file.
 
 ## Development
 
-### Building Frontend Assets
+### Frontend
 
-Whaaaam uses TailwindCSS for styling. After making changes to HTML templates or JavaScript:
+`static/styles.css` is authored by hand and served as-is. There is no build step,
+no bundler and no CSS framework — edit the file and reload.
 
-```bash
-# Build optimized CSS (for production)
-npm run build:css
-
-# Watch mode (rebuilds automatically on file changes)
-npm run watch:css
-```
-
-The build process:
-1. Reads Tailwind directives from `src/input.css`
-2. Scans `templates/**/*.html` and `static/**/*.js` for class usage
-3. Generates minified CSS to `static/css/tailwind.css`
+The design system it implements (tokens, type scale, components, named rules) is
+documented in [DESIGN.md](DESIGN.md).
 
 ### Theme System Architecture
 
-**Configuration** (`tailwind.config.js`):
-- Defines 4 Catppuccin color palettes (latte, frappe, macchiato, mocha)
-- Each palette has 17 colors (5 base + 12 accent colors)
-- Colors available as Tailwind utilities: `bg-mocha-base`, `text-latte-text`, etc.
+**Tokens** (`static/styles.css`, section 1):
+- One `[data-theme="..."]` block per palette: latte, frappe, macchiato, mocha
+- Each defines the same 18 semantic properties — `--bg`, `--surface`, `--line`,
+  `--border`, `--text`, `--subtext`, `--accent`, `--on-accent`, the verdict
+  statuses, and so on
+- Components read tokens; they never hard-code a colour
+- A Mocha-valued `:root` fallback sits **above** the theme blocks, because
+  `:root` and `[data-theme="x"]` share specificity and source order decides
 
 **JavaScript** (`static/app.js`):
 - `ThemeManager` module with IIFE pattern for encapsulation
@@ -146,33 +178,17 @@ The build process:
 - Handles localStorage persistence and URL parameter sync
 - Priority: URL param > localStorage > default ("mocha")
 
-**CSS** (`static/styles.css` + `static/css/tailwind.css`):
-- Dual-loading pattern: legacy CSS first, Tailwind CSS second
-- Smooth 0.5s transitions when switching themes
-- Backward compatible with existing `body.dark` class
-
 **HTML** (`templates/index.html`):
-- Theme attribute on `<html data-theme="mocha">`
-- Circular theme switcher with ARIA roles for accessibility
-- Keyboard navigation support (arrow keys)
+- Theme attribute on `<html data-theme="mocha">` — the only theme signal
+- Circular theme switcher as an ARIA `radiogroup` with roving tabindex
+- Keyboard navigation: arrow keys, Home and End
 
-### CSS Migration Status
+### Accessibility
 
-The project is currently in a **gradual migration** from custom CSS to TailwindCSS:
-
-- **Phase 1: Dual Loading** ✅ Complete
-  - Both `styles.css` (legacy) and `tailwind.css` (new) are loaded
-  - New system has override priority
-
-- **Phase 2: Component Migration** 🚧 In Progress
-  - Migrating components incrementally to Tailwind utilities
-  - Legacy CSS marked with `/* LEGACY: ... */` comments
-
-- **Phase 3: Cleanup** 📋 Planned
-  - Remove legacy CSS once all components are migrated
-  - Remove dual-loading system
-
-See `.ralph-tui/MIGRATION_CHECKLIST.md` for detailed migration tracking.
+Every foreground/background pair is verified against WCAG AA in all four palettes.
+Latte is the strict one — its accents are mid-lightness, so a colour that passes on
+Mocha can fail there. The page has a single live region (`#sr-announce`), a
+`prefers-reduced-motion` path, and a `forced-colors` path.
 
 ## Contributing
 
@@ -188,8 +204,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Thanks to the [CurseForge](https://www.curseforge.com/) and [Modrinth](https://modrinth.com/) teams for their APIs
-- Built with [Flask](https://flask.palletsprojects.com/) and love
+- Thanks to the [CurseForge](https://www.curseforge.com/) and [Modrinth](https://modrinth.com/) teams for their APIs.
+- Built with [Flask](https://flask.palletsprojects.com/) and love.
 
 ---
 

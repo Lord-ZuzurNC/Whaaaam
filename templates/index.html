@@ -4,99 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="HTML, CSS, JavaScript, Minecraft, Mod, Mods, Modpacks, Curseforge, Modrinth, Github, OpenSource, FOSS, Python">
-    <meta name="description" content="Whaaaam tells you what MC version/loader all your mods have in common.">
+    <meta name="description" content="Paste your CurseForge and Modrinth mod links. Whaaaam tells you which Minecraft version and loader your whole list has in common.">
     <meta name="author" content="Lord_ZuzurNC">
     <title>Whaaaam</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
     <link rel="icon" type="image/x-icon" href="/static/favico.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- Legacy styles - being gradually migrated to Tailwind -->
+    <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Subset to the wordmark's own glyphs (W, h, a, m). If the wordmark text
+         ever changes, widen the text= parameter to match or it will not render. -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&text=Whaam&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
-    <!-- TailwindCSS - loaded after styles.css for override priority -->
-    <link rel="stylesheet" href="/static/css/tailwind.css">
   </head>
   <body>
     <header>
       <h1>Whaaaam</h1>
-      <div class="theme-switcher" role="radiogroup" aria-label="Theme selector" tabindex="0">
-        <div class="theme-option" data-theme="latte" role="radio" aria-label="Latte theme" tabindex="-1">
+      <div class="theme-switcher" role="radiogroup" aria-label="Theme">
+        <div class="theme-option" data-theme="latte" role="radio" aria-label="Latte" aria-checked="false" tabindex="-1">
           <div class="theme-circle"></div>
         </div>
-        <div class="theme-option" data-theme="frappe" role="radio" aria-label="Frappé theme" tabindex="-1">
+        <div class="theme-option" data-theme="frappe" role="radio" aria-label="Frappé" aria-checked="false" tabindex="-1">
           <div class="theme-circle"></div>
         </div>
-        <div class="theme-option" data-theme="macchiato" role="radio" aria-label="Macchiato theme" tabindex="-1">
+        <div class="theme-option" data-theme="macchiato" role="radio" aria-label="Macchiato" aria-checked="false" tabindex="-1">
           <div class="theme-circle"></div>
         </div>
-        <div class="theme-option" data-theme="mocha" role="radio" aria-label="Mocha theme" tabindex="-1">
+        <div class="theme-option" data-theme="mocha" role="radio" aria-label="Mocha" aria-checked="true" tabindex="0">
           <div class="theme-circle"></div>
         </div>
         <div class="theme-indicator"></div>
       </div>
     </header>
 
-    <!-- Input + Analyze/Clear Cache block -->
-    <section id="analyze-block" class="input-block">
+    <!-- Input + check/clear-cache block -->
+    <section id="analyze-block" class="input-block" aria-labelledby="mod-urls-label">
+      <label id="mod-urls-label" for="mod-urls">
+        Mod URLs
+        <span class="label-hint">One CurseForge or Modrinth URL per line</span>
+      </label>
       <textarea
         id="mod-urls"
-        placeholder="Paste CurseForge or Modrinth URLs (one per line)"
+        spellcheck="false"
+        aria-describedby="form-status"
+        placeholder="https://www.curseforge.com/minecraft/mc-mods/jei&#10;https://modrinth.com/mod/sodium"
       ></textarea>
+      <p id="form-status" class="form-status" role="status" hidden></p>
       <div class="input-actions">
-        <button id="analyze-btn" type="submit">Analyze</button>
-        <button id="clear-cache" type="submit">Clear Cache</button>
+        <button id="analyze-btn" type="button" class="btn btn-primary">Check compatibility</button>
+        <button id="clear-cache" type="button" class="btn">Clear cache</button>
       </div>
     </section>
 
     <!-- Filters and Exports -->
-    <section id="filter-block" class="filters-block">
+    <section id="filter-block" class="filters-block" aria-label="Filter and export">
       <div class="filters-left">
-        <label for="filter-version">Version:</label>
-        <select id="filter-version"></select>
-        <label for="filter-loader">Loader:</label>
-        <select id="filter-loader"></select>
+        <label for="filter-version">Version</label>
+        <select id="filter-version"><option value="">All</option></select>
+        <label for="filter-loader">Loader</label>
+        <select id="filter-loader"><option value="">All</option></select>
       </div>
       <div class="filters-right">
-        <button id="export-md" type="submit">Export .MD</button>
-        <button id="export-csv" type="submit">Export .CSV</button>
+        <button id="export-md" type="button" class="btn">Export Markdown</button>
+        <button id="export-csv" type="button" class="btn">Export CSV</button>
       </div>
     </section>
 
-    <div id="loading-overlay">
-      <div class="spinner"></div>
-      <div class="loading-text">Fetching mods</div>
+    <!-- The overlay itself is not aria-hidden any more: it holds a real control.
+         The spinner and the animated dots are, because their text is on a timer
+         and #sr-announce already carries the state. -->
+    <div id="loading-overlay" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <div class="loading-text" aria-hidden="true">Checking mods</div>
+      <button id="cancel-check" type="button" class="btn">Cancel</button>
     </div>
 
+    <!-- The single live region. Receives one message per state change, so a
+         screen reader hears the verdict rather than the whole results table. -->
+    <p id="sr-announce" class="visually-hidden" role="status" aria-live="polite"></p>
+
     <!-- Results -->
-    <main id="results"></main>
+    <main id="results" aria-label="Results">
+      <p class="results-placeholder">
+        Paste your mod list above to find the Minecraft version and loader they all share.
+      </p>
+    </main>
 
     <script src="/static/app.js"></script>
 
     <footer class="footer">
       <div class="footer-row">
         <div class="footer-col">
-          <img src="/static/favico.ico" alt="Whaaaam Logo" class="footer-icon">
+          <img src="/static/logo-48.png" alt="" width="24" height="24" class="footer-icon">
         </div>
         <div class="footer-col">
-          <h4 class="footer-info">
+          <p class="footer-info">
             Whaaaam —
             <a
               href="https://github.com/Lord-ZuzurNC/Whaaaam?tab=MIT-1-ov-file"
               target="_blank"
-              >MIT License © 2025</a
+              rel="noopener noreferrer"
+              >MIT License © 2026</a
             >
-          </h4>
+          </p>
         </div>
         <div class="footer-col">
           <div class="icons">
-            <a href="https://github.com/Lord-ZuzurNC/Whaaaam">
-              <img src="/static/github.svg" alt="Github Logo" class="github-icon">
+            <a href="https://github.com/Lord-ZuzurNC/Whaaaam" target="_blank" rel="noopener noreferrer">
+              <img src="/static/github.svg" alt="Whaaaam on GitHub" width="22" height="22" class="github-icon">
             </a>
           </div>
           <div class="w3c">
-            <a href="https://jigsaw.w3.org/css-validator/check/referer">
+            <a href="https://jigsaw.w3.org/css-validator/check/referer" target="_blank" rel="noopener noreferrer">
               <img
-              style="border: 0; width: 88px; height: 31px"
+              width="88" height="31" loading="lazy" decoding="async"
               src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-              alt="Valid CSS!">
+              alt="Check this page with the W3C CSS Validator">
             </a>
           </div>
         </div>

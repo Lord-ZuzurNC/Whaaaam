@@ -3,6 +3,8 @@ import time
 import json
 import re
 import requests
+from providers.http import request as http_request
+from compat import normalize_loader, is_release_version
 from providers import cache_path, is_cache_expired
 
 
@@ -10,15 +12,8 @@ API_BASE = "https://api.modrinth.com/v2"
 CACHE_TTL_HOURS = 24
 
 
-def safe_request(url: str, retries: int = 5, delay: int = 1, timeout: int = 10):
-    for attempt in range(retries):
-        try:
-            r = requests.get(url, timeout=timeout)
-            r.raise_for_status()
-            return r
-        except requests.RequestException:
-            time.sleep(delay)
-    raise RuntimeError(f"Failed to fetch {url} after {retries} retries")
+def safe_request(url: str, retries: int = 3, delay: int = 1, timeout: int = 10):
+    return http_request("Modrinth", url, retries=retries, delay=delay, timeout=timeout)
 
 
 def slug_from_url(url: str) -> str | None:
@@ -61,7 +56,7 @@ def version_key(v: str):
 def get_mod_data(url: str) -> dict:
     slug = slug_from_url(url)
     if not slug:
-        raise ValueError(f"Invalid Modrinth URL: {url}")
+        raise ValueError("Not a Modrinth mod link")
 
     project_url = f"{API_BASE}/project/{slug}"
     proj = safe_request(project_url).json()
@@ -92,12 +87,14 @@ def get_mod_data(url: str) -> dict:
         game_versions = v.get("game_versions", []) if isinstance(v, dict) else []
         loaders = v.get("loaders", []) if isinstance(v, dict) else []
         for gv in game_versions:
-            if not str(gv).startswith("1."):
+            if not is_release_version(gv):
                 continue
             for loader in loaders:
-                pairs.add((gv, str(loader).capitalize()))
+                # normalize_loader, not capitalize(): the latter produced
+                # "Neoforge", which disagreed with the CurseForge spelling.
+                pairs.add((str(gv), normalize_loader(str(loader))))
 
-    sorted_pairs = sorted(pairs, key=lambda x: version_key(x[0]), reverse=True)
+    sorted_pairs = sorted(pairs, key=lambda x: (version_key(x[0]), x[1]), reverse=True)
 
     return {
         "name": mod_name,

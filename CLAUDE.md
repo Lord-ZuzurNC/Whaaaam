@@ -1,358 +1,236 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code (claude.ai/code) when working in this repository.
 
-## Repository Structure
+**Visual design decisions live in [DESIGN.md](DESIGN.md), not here.** That file is
+normative for colour, type, layout, elevation, shape and components, and carries
+the named rules. This file covers how the project is built and run.
 
-This Lab directory contains multiple projects:
-- **Whaaaam/** - Minecraft mod compatibility checker (main project)
-- **Docker/** - Docker/infrastructure notes
-- **JdR/** - Personal notes/assets
+## Whaaaam
 
-## Whaaaam Project
+Paste a list of CurseForge and Modrinth mod URLs; get back the Minecraft version
+and loader combinations the whole list has in common. Product context — users,
+positioning, principles, brand commitments — is in [PRODUCT.md](PRODUCT.md).
 
 ### Build and Run Commands
 
 ```bash
-# Install Python dependencies
+# Python dependencies
 pip install -r requirements.txt
 
-# Install Node.js dependencies
-npm install
+# Web interface (recommended)
+python web.py          # http://localhost:5000
 
-# Build CSS (required before first run)
-npm run build:css
-
-# Watch mode for CSS development
-npm run watch:css
-
-# Run web interface (recommended)
-python web.py
-# Opens at http://localhost:5000
-
-# Run CLI interface
+# CLI interface
 python main.py
 ```
 
+There is **no frontend build step**. `static/styles.css` is authored directly and
+served as-is. `npm install` is not required to run the project.
+
 ### Environment Variables
 
-- `CF_API_KEY` - **Required** for CurseForge API access. Must be set in environment or `.env` file.
+- `CF_API_KEY` — **required.** `providers/curseforge.py` raises
+  `EnvironmentError("Missing CF_API_KEY in environment")` at *import* time, so the
+  app will not start without it, even for a Modrinth-only mod list. Set it in the
+  environment or in a `.env` file.
 
 ### Architecture
 
-**Entry Points:**
-- `web.py` - Flask web server with `/analyze` and `/clear_cache` endpoints
-- `main.py` - CLI interface for terminal usage
+**Entry points**
+- `web.py` — Flask routing only. `POST /analyze` takes `{"urls": [...]}`; `POST /clear_cache`.
+- `main.py` — CLI. Same checking, same verdict, same words as the web UI.
 
-**Provider System (`providers/`):**
-- `__init__.py` - Provider registry, URL detection (`detect_provider`), caching utilities (`cache_path`, `is_cache_expired`)
-- `curseforge.py` - CurseForge API integration (requires API key)
-- `modrinth.py` - Modrinth API integration (no key needed)
+**Shared core — the two interfaces must never answer differently**
+- `compat.py` — `compute_compatibility(mods, unchecked_count)`, `normalize_loader()`. The verdict.
+  `static/app.js` carries a mirror of this for the browser.
+- `modlist.py` — `check_urls()` (parallel fetch, input order preserved, deduped),
+  `fetch_mod_info()`, `is_valid_mod_url()`, `clear_cache()`.
+- `providers/http.py` — one `request()` with a retry policy that only retries what
+  can succeed later. A 401/403 is raised immediately as "rejected the API key"; retrying
+  it five times turned an instant diagnosis into a six-second wait blaming the wrong thing.
+
+**CurseForge version data comes from `latestFilesIndexes`**, which ships with the
+search response already made — one request per mod. Paging `/mods/{id}/files` is the
+fallback for a mod with no index. The old code always paged: JEI cost 74 requests and
+20s to produce 66 pairs, 18 of which were the fabricated `Unknown` loader. The index
+holds every real release pair (verified against JEI, JourneyMap, Create and AppleSkin;
+the only entries it lacks are snapshot channels, which are filtered anyway).
+
+**Provider system (`providers/`)**
+- `__init__.py` — registry, `detect_provider()`, cache helpers (`cache_path`, `is_cache_expired`).
+- `curseforge.py` — CurseForge API (needs the key).
+- `modrinth.py` — Modrinth API (no key).
 
 Each provider's `get_mod_data(url)` returns:
+
 ```python
 {
     "name": str,
     "provider": str,
     "id": str,
     "slug": str,
-    "versions": [(mc_version, loader), ...],  # e.g., [("1.20.1", "Fabric")]
+    "versions": [(mc_version, loader), ...],  # e.g. [("1.20.1", "Fabric")]
     "url": str
 }
 ```
 
-**Frontend (`static/`, `templates/`):**
-- `app.js` - Client-side compatibility analysis, filtering, export (MD/CSV), ThemeManager module
-- `index.html` - Single-page web UI with theme switcher component
-- `styles.css` - Legacy custom CSS (being gradually migrated to Tailwind)
-- `css/tailwind.css` - Generated TailwindCSS output (minified, optimized)
+**The error contract matters.** A mod that cannot be resolved comes back as
+`{"url": ..., "error": "<reason>"}` with no `versions` key, alongside the
+successful results. The frontend must keep these visible — see Invariants.
 
-**Caching:**
-- Located in `cache/` directory (auto-generated)
-- 24-hour TTL per mod/version data
-- Clear via `/clear_cache` endpoint
+**Concurrency** — `/analyze` fetches with a `ThreadPoolExecutor` of 8 workers.
 
-### Frontend Build System
+**Frontend (`static/`, `templates/`)**
+- `templates/index.html` — the single page.
+- `static/app.js` — `ThemeManager` IIFE, compatibility computation, rendering, export.
+- `static/styles.css` — the whole design system: theme tokens, components, responsive, reduced motion, forced colours.
 
-**Technology Stack:**
-- **TailwindCSS v3** - Utility-first CSS framework with JIT compilation
-- **PostCSS** - CSS processing with autoprefixer for browser compatibility
-- **npm scripts** - Build automation
+**Caching** — `cache/{provider}/{slug}_{mod_id}/page-{page}.json`, 24h TTL,
+cleared via `POST /clear_cache`.
 
-**Build Process:**
-1. Source CSS: `src/input.css` (contains Tailwind directives: `@tailwind base/components/utilities`)
-2. PostCSS processes with TailwindCSS plugin
-3. TailwindCSS scans content paths: `templates/**/*.html` and `static/**/*.js`
-4. Tree-shaking removes unused CSS classes
-5. Output: `static/css/tailwind.css` (minified, ~5-20KB depending on usage)
+### Invariants
 
-**Build Commands:**
-```bash
-npm run build:css    # Production build with minification
-npm run watch:css    # Development mode with auto-rebuild
-```
+These are correctness rules, not preferences. Breaking one produces a wrong answer.
 
-**Configuration Files:**
-- `package.json` - npm dependencies and build scripts
-- `postcss.config.js` - PostCSS plugins (TailwindCSS, autoprefixer)
-- `tailwind.config.js` - Tailwind configuration (content paths, theme colors)
+1. **A mod that could not be checked is never dropped.** It stays in the results
+   table with its reason, and it stays in the verdict's denominator. `2/10` means
+   ten mods were submitted. (PRODUCT.md principle 5.)
+2. **The verdict is computed before filtering.** `computeCompatibility()` runs on
+   the full result set; the version and loader filters narrow the table only. If
+   the verdict were derived from filtered results, selecting a version would make
+   it report full compatibility with that version, always.
+3. **The "all compatible" state requires zero unchecked mods.** With any failure,
+   the verdict downgrades to a counted partial.
+4. **Both interfaces answer identically.** The verdict comes from `compat.py`
+   (CLI) and its mirror in `static/app.js` (web). Change one, change the other, and
+   run `test_compat.py`, which compares them.
+5. **Provider output is ordered.** Version pairs are sorted by version *and loader*;
+   sorting by version alone over a `set` let same-version loaders fall out in hash
+   order, so the same list produced differently-worded verdicts run to run.
+6. **A loader is never invented.** A CurseForge file whose loader cannot be read
+   from its version tags or its filename contributes nothing. It used to become
+   `"Unknown"`, which shipped in the verdict as
+   *"compatible with … & Unknown 1.12.2"*. `Unknown` is not in the vocabulary.
+7. **Snapshots are not release targets.** `is_release_version()` in `compat.py`
+   gates every version pair; `1.20.5-Snapshot` is not something a server pins to,
+   and it can win the `max()` that picks the recommended version for a loader.
+8. **Throttle the network, never the disk.** `cached_fetch()` returns
+   `(data, from_cache)` and the 0.2s politeness sleep only runs on a real request.
+   Sleeping after a cache hit made a fully cached re-check of JEI cost 14.5s and
+   broke PRODUCT.md principle 3.
+9. **Third-party strings are never interpolated into HTML.** Mod names and version
+   strings come from provider APIs. Use `textContent` and `new Option()`; CSV cells
+   go through `csvCell()`, which also neutralises leading `=`, `+`, `-` and `@`.
 
-### Theme System Architecture
+### Interface Vocabulary
 
-**Overview:**
-The theme system provides 4 Catppuccin color themes with smooth transitions, localStorage persistence, and URL sharing support.
+One word per concept, in both interfaces. Changing one of these means changing it
+everywhere, including `main.py`.
 
-**Catppuccin Color Palettes:**
+| Concept | Word | Not |
+|---|---|---|
+| The primary operation | **check** ("Check compatibility", "Checking mods", "could not be checked") | analyze, fetch, scan, verify |
+| What the user pastes | **URL** | link, address |
+| A mod that failed to resolve | **could not be checked** | error, failed, invalid |
+| The loaders | **Forge, Fabric, NeoForge, Quilt** — exact casing | Neoforge, fabric |
+| The answer | **verdict** (internally); user-facing it is a sentence, never a label | result, status |
 
-All 4 palettes are defined in `tailwind.config.js`:
+Two verdict strings are recorded in PRODUCT.md as real shipped output and are
+reproduced exactly — do not reword them:
 
-1. **Latte** (light theme) - Warm, cozy light colors
-2. **Frappé** (dark theme) - Cool dark with subtle purple tones
-3. **Macchiato** (dark theme) - Rich, saturated dark colors
-4. **Mocha** (dark theme, default) - Deep dark for late-night sessions
+- `All your mods are compatible with Fabric 1.20.1 & Forge 1.20.1`
+- `Most of your mods share: Fabric 1.20.1 (8/10)`
 
-Each palette contains 17 colors:
-- **Base colors** (5): `base`, `surface`, `overlay`, `text`, `subtext`
-- **Accent colors** (12): `rosewater`, `flamingo`, `pink`, `mauve`, `red`, `maroon`, `peach`, `yellow`, `green`, `teal`, `sky`, `sapphire`, `blue`, `lavender`
+Error copy names what happened and what remains possible. It never exposes an
+internal API URL, a provider id, or a bare HTTP status as the message — see
+`httpProblem()` and `requestProblem()` in `static/app.js`, and the `error` strings
+in `web.py` and `providers/`, which are read verbatim by users.
 
-**Usage in HTML/CSS:**
-```html
-<!-- Use as Tailwind utilities -->
-<div class="bg-mocha-base text-mocha-text">
-  <button class="bg-latte-mauve hover:bg-latte-blue">
-    Click me
-  </button>
-</div>
-```
+Button labels are sentence case. Placeholders are examples; every field has a
+persistent `<label>`.
 
-**JavaScript ThemeManager API:**
+### Theme System
 
-Located in `static/app.js` using IIFE module pattern:
+Four Catppuccin palettes — Latte, Frappé, Macchiato, Mocha (default). They are a
+binding brand commitment: no fifth theme, no competing palette.
+
+**How it works**
+- `<html data-theme="...">` selects the palette. That attribute is the *only*
+  theme signal; nothing keys off a body class.
+- `static/styles.css` section 1 defines one `[data-theme="..."]` block per palette,
+  each setting the same 18 custom properties. Components read tokens and never
+  hard-code a colour.
+- `:root` carries a Mocha-valued fallback and **must stay above** the theme blocks:
+  `:root` and `[data-theme="x"]` have identical specificity `(0,1,0)`, so whichever
+  comes last wins. Putting the fallback last silently breaks every non-default theme.
+- Images that ship in two variants (`cf`/`cf_dark`, `mr`/`mr_dark`, `github`/`github_dark`)
+  are swapped in `updateThemedImages()`, not with the CSS `content:` trick, which
+  Firefox does not apply to `<img>`.
+
+**ThemeManager API** (`static/app.js`, IIFE)
 
 ```javascript
-// Public API
-ThemeManager.setTheme('latte')    // Set theme (updates DOM, localStorage, URL)
-ThemeManager.getTheme()           // Get current theme name
-ThemeManager.initTheme()          // Initialize theme system (call on page load)
-
-// Private implementation (not accessible)
-// - isValidTheme(name)
-// - isLocalStorageAvailable()
-// - updateUIState(theme)
-// - getThemeFromURL()
+ThemeManager.setTheme('latte')  // set, persist, update URL and UI
+ThemeManager.getTheme()         // URL ?theme= > localStorage > 'mocha'
+ThemeManager.initTheme()        // wire up on load
 ```
 
-**Theme Priority Cascade:**
-1. URL parameter (`?theme=latte`) - highest priority (for sharing)
-2. localStorage (`theme` key) - user's saved preference
-3. Default value (`mocha`) - fallback if neither is available
+Priority cascade: URL parameter → `localStorage` → `mocha`.
 
-**Theme Switching Mechanism:**
-- `<html data-theme="mocha">` attribute controls active theme
-- Backward compatible `body.dark` class maintained for legacy CSS
-- Smooth 0.5s CSS transitions on background and text colors
-- URL updates without page reload using `window.history.replaceState()`
+The switcher is a `radiogroup` with roving tabindex; arrows, Home and End move
+between palettes and move focus with them.
 
-**UI Component:**
-- Circular theme switcher with 4 indicators
-- Sliding pill animation highlighting active theme
-- Full ARIA support: `role="radiogroup"`, `role="radio"`, `aria-checked`
-- Keyboard navigation with arrow keys
-- Hover interactions with scale transform
-- Responsive resize handling
+### Accessibility Floor
 
-### CSS Migration Strategy
-
-**Current Status: Phase 1 Complete, Phase 2 In Progress**
-
-The project uses a **dual-loading pattern** for safe, incremental migration from custom CSS to TailwindCSS:
-
-**Phase 1: Dual Loading** ✅ Complete
-- Both stylesheets loaded in `index.html`:
-  1. `styles.css` (legacy) - loaded first
-  2. `css/tailwind.css` (new) - loaded second (override priority)
-- No breaking changes to existing functionality
-- New Tailwind classes can progressively replace legacy CSS
-
-**Phase 2: Component-by-Component Migration** 🚧 In Progress
-- Legacy CSS marked with `/* LEGACY: ... */` comments
-- Components migrated one at a time
-- Test thoroughly before moving to next component
-- Migration tracking in `.ralph-tui/MIGRATION_CHECKLIST.md`
-
-**Phase 3: Cleanup & Removal** 📋 Planned
-- Remove legacy CSS once all components migrated
-- Remove dual-loading, keep only Tailwind CSS
-- Remove `styles.css` file entirely
-- Update build process documentation
-
-**Migration Guidelines:**
-- Check for CSS namespace conflicts (`--custom-*` vs `--tw-*`)
-- Verify Tailwind Preflight doesn't break existing layouts
-- Document rollback strategy before major changes
-- Test both light and dark themes after each component migration
-- Use git for easy rollback if needed
-
-**Rollback Plan:**
-```bash
-# Restore legacy CSS if needed
-git restore templates/index.html static/styles.css
-
-# Rebuild Tailwind CSS
-npm run build:css
-```
+- Every foreground/background pair must clear WCAG AA **in all four palettes**.
+  Latte is the one that breaks: its accents are mid-lightness, so a colour that
+  passes on Mocha can fail there. Verify, don't assume.
+- `#sr-announce` is the page's **only** live region. It receives one finished
+  sentence per state change. Do not add `aria-live` to a container that re-renders
+  in bulk, and never to an element whose text is on a timer — the loading overlay
+  animates its dots, which is why it is `aria-hidden`.
+- Controls need a visible `:focus-visible` ring and a 24px minimum target (44px
+  under `pointer: coarse`).
+- Prefer a native element over a custom one: the version disclosure is `<details>`,
+  which supplies `aria-expanded`, keyboard handling and state for free.
+- There is a `prefers-reduced-motion` block; it reduces movement rather than
+  removing feedback (the spinner steps instead of sweeping).
+- There is a `forced-colors` block; the verdict states are distinguished by border
+  *style*, because colour is overridden in that mode.
 
 ### UI Development Guidelines
 
-When building or modifying the UI, follow these patterns:
-
-**CSS Framework:**
-- Use TailwindCSS utility classes for all new components
-- Use `cn` utility (clsx + tailwind-merge) for conditional class logic
-- Prefer Tailwind utilities over custom CSS
-
-**Layout:**
-- Use `h-dvh` instead of `h-screen` (better mobile support)
-- Use `text-balance` for headings
-- Use `text-pretty` for body text
-- Use `tabular-nums` for numeric data (tables, version numbers)
-
-**Theming:**
-- Use Catppuccin color utilities: `bg-mocha-base`, `text-latte-text`, etc.
-- Test all 4 themes (Latte, Frappé, Macchiato, Mocha)
-- Use smooth transitions for theme changes (0.5s ease)
-
-**Animations:**
-- **Never add animation unless explicitly requested**
-- Prefer simple transitions over complex animations
-- Use `cubic-bezier(0.4, 0, 0.2, 1)` for natural motion
-
-**Visual Style:**
-- **Never use gradients** unless explicitly requested
-- **Never use glow effects** unless explicitly requested
-- **Never use purple colors** unless part of Catppuccin theme
-- Keep design clean and functional
-
-**Accessibility:**
-- Use semantic HTML (`<button>`, `<nav>`, `<main>`, etc.)
-- Add ARIA roles for custom components (`role="radiogroup"`, `role="radio"`)
-- Support keyboard navigation (arrow keys, tab, enter)
-- Ensure sufficient color contrast in all themes
-
-**JavaScript Patterns:**
-- Use IIFE module pattern for encapsulation
-- Expose minimal public API via return object
-- Validate all user input (URL params, localStorage, form data)
-- Feature detection for localStorage (handle private browsing)
-- Check `document.readyState` for proper initialization timing
+- Read DESIGN.md first. Use its tokens; the only hex in `styles.css` belongs to the
+  four `[data-theme]` blocks and the four literal palette swatches in the switcher.
+- Use `h-dvh` semantics over viewport-height units that ignore mobile chrome.
+- Balance headings, use `text-wrap: pretty` for body copy, `tabular-nums` for any
+  version number or count.
+- **Never add animation unless explicitly requested.**
+- **Never use gradients or glow effects unless explicitly requested.**
+- Purple is permitted only as a Catppuccin token (mauve is the visited-link role).
+- Test all four themes, not just light and dark.
 
 ### Adding a New Provider
 
-To add support for a new mod hosting platform:
-
-1. **Create provider file**: `providers/newplatform.py`
-   ```python
-   def get_mod_data(url: str) -> dict:
-       """
-       Fetch mod data from new platform.
-
-       Returns:
-           {
-               "name": str,
-               "provider": str,
-               "id": str,
-               "slug": str,
-               "versions": [(mc_version, loader), ...],
-               "url": str
-           }
-       """
-       pass
-   ```
-
-2. **Register provider**: Add to `providers/__init__.py`
-   ```python
-   from .newplatform import get_mod_data as get_newplatform_data
-
-   PROVIDERS = {
-       # ...existing providers
-       "newplatform": get_newplatform_data,
-   }
-   ```
-
-3. **Update URL detection**: Modify `detect_provider()` in `providers/__init__.py`
-   ```python
-   def detect_provider(url: str) -> str:
-       if "newplatform.com" in url:
-           return "newplatform"
-       # ...existing checks
-   ```
-
-4. **Update validation**: Modify `is_valid_mod_url()` in `web.py`
-   ```python
-   def is_valid_mod_url(url):
-       valid_domains = [
-           "curseforge.com",
-           "modrinth.com",
-           "newplatform.com",  # Add new domain
-       ]
-   ```
-
-### Code Style and Patterns
-
-**Python:**
-- Follow PEP 8 style guide
-- Use type hints where helpful
-- Keep functions focused and single-purpose
-- Handle errors gracefully with try/except
-
-**JavaScript:**
-- Use modern ES6+ syntax
-- Prefer `const` over `let`, avoid `var`
-- Use template literals for string interpolation
-- Keep functions pure when possible
-- Document public APIs with JSDoc comments
-
-**CSS:**
-- Prefer Tailwind utilities over custom CSS
-- Use CSS custom properties for theme-specific values
-- Group related styles together
-- Comment complex or non-obvious styling decisions
+1. Create `providers/newplatform.py` with `get_mod_data(url) -> dict` matching the
+   contract above, raising or returning an `error` entry on failure.
+2. Register it in `providers/__init__.py` `PROVIDERS`.
+3. Extend `detect_provider()` in `providers/__init__.py`.
+4. Extend `is_valid_mod_url()` in `web.py`.
+5. Add the logo in light and dark variants and handle it in `updateThemedImages()`.
 
 ### Testing
 
-Before committing changes:
+Before committing:
 
-1. **Test both interfaces:**
-   - Run `python web.py` and test web UI
-   - Run `python main.py` and test CLI
-
-2. **Test all themes:**
-   - Switch between all 4 Catppuccin themes
-   - Verify colors and transitions
-   - Check both light (Latte) and dark themes
-
-3. **Test responsiveness:**
-   - Test on different screen sizes
-   - Verify mobile layout
-
-4. **Rebuild CSS:**
-   ```bash
-   npm run build:css
-   ```
-
-5. **Clear cache if needed:**
-   - Visit `http://localhost:5000/clear_cache`
-   - Or delete `cache/` directory
-
-### Deployment Notes
-
-**Production Checklist:**
-1. Run `npm run build:css` to generate optimized CSS
-2. Ensure `static/css/tailwind.css` is committed
-3. Set `CF_API_KEY` environment variable
-4. Clear cache before deployment if needed
-
-**Future Deprecations:**
-- `styles.css` will be removed once migration to Tailwind is complete
-- `body.dark` class will be removed (use `data-theme` attribute only)
-- Dual-loading pattern will be replaced with single Tailwind CSS file
+0. `python test_compat.py` — asserts the verdict logic and runs the shipped
+   `static/app.js` implementation against the same cases. It fails if the CLI and
+   the web would answer the same mod list differently, and if either of the two
+   verdict strings PRODUCT.md records has been reworded.
+1. `python web.py` and check the web UI; `python main.py <url> <url>` for the CLI.
+2. Submit a list that mixes a working mod, an unreachable mod and a junk URL.
+   Confirm the failures appear as rows and are counted in the verdict.
+3. Apply a version filter and confirm the verdict above the table does not change.
+4. Switch all four themes and check contrast, including Latte.
+5. Check at 320px and at desktop width; the page must not scroll horizontally.

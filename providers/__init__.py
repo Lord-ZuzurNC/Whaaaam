@@ -2,9 +2,6 @@ import os
 import re
 import time
 from typing import Optional
-# --- import provider implementations (after helpers) ---
-from .curseforge import get_mod_data as curseforge_get_mod_data
-from .modrinth import get_mod_data as modrinth_get_mod_data
 
 
 # --- safe name + cache path helpers (defined before importing providers) ---
@@ -41,6 +38,10 @@ def detect_provider(url: str) -> Optional[str]:
         return "modrinth"
     return None
 
+
+# --- import provider implementations (AFTER helpers are defined to avoid circular import) ---
+from .curseforge import get_mod_data as curseforge_get_mod_data
+from .modrinth import get_mod_data as modrinth_get_mod_data
 
 PROVIDERS = {
     "curseforge": curseforge_get_mod_data,
