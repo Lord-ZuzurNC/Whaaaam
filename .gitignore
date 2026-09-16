@@ -231,8 +231,6 @@ activemq-data/
 env/
 venv/
 ENV/
-env.bak/
-venv.bak/
 
 # Spyder project settings
 .spyderproject
@@ -306,6 +304,7 @@ pip-selfcheck.json
 
 # Backup
 *.bak
+*.bak/
 *.gho
 *.ori
 *.orig
@@ -330,22 +329,10 @@ backup/
 # Claude Code
 .claude/
 CLAUDE.md
+.claude*
 
-# Ralph-TUI
-.ralph-tui/
-ralph-prompt.hbs
-tasks/
-
-# Auto Claude data directory
-.auto-claude/
-.auto-claude-status
-.claude_settings.json
-.worktrees/
-
-# Cursor
-.cursor/
-.cursorignore
-.cursorindexingignore
+# Impeccable
+.impeccable/
 
 # Github
 .gitignore
@@ -355,3 +342,4 @@ node_modules/
 package-lock.json
 
 # Manual
+cache/
