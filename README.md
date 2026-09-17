@@ -4,10 +4,6 @@
 
 Paste your CurseForge and Modrinth mod URLs, and instantly see which Minecraft versions and loaders (Forge, Fabric, NeoForge, Quilt) are compatible across your entire mod list.
 
-## Contents
-
-- [Contents](#contents)
-- 
 
 ## Features
 
@@ -108,13 +104,13 @@ cat mods.txt | python main.py
 python main.py
 ```
 
-| Option | What it does |
-| ------ | ------------ |
-| `--version 1.20.1` | only show table rows for that Minecraft version |
-| `--loader fabric` | only show table rows for that loader |
-| `--show-versions` | list every version instead of a count |
+| Option             | What it does                                       |
+| ------------------ | -------------------------------------------------- |
+| `--version 1.20.1` | only show table rows for that Minecraft version    |
+| `--loader fabric`  | only show table rows for that loader               |
+| `--show-versions`  | list every version instead of a count              |
 | `--export md\|csv` | write the results to a file (`--out -` for stdout) |
-| `--clear-cache` | delete the cached version data and exit |
+| `--clear-cache`    | delete the cached version data and exit            |
 
 Filters narrow the table; they never change the verdict above it. Exit status is
 `0` when a shared version exists, `2` when none does, `1` when no URLs were given
