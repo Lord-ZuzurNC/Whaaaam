@@ -1,0 +1,3 @@
+# Tooling, not runtime. SECURITY.md tells operators to install only what
+# requirements.txt lists, so anything that is not imported by the app lives here.
+pipreqs==0.4.13

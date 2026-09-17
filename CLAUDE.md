@@ -19,14 +19,16 @@ positioning, principles, brand commitments — is in [PRODUCT.md](PRODUCT.md).
 pip install -r requirements.txt
 
 # Web interface (recommended)
-python web.py          # http://localhost:5000
+python web.py          # http://127.0.0.1:5000  (HOST/PORT to move it)
 
 # CLI interface
 python main.py
 ```
 
-There is **no frontend build step**. `static/styles.css` is authored directly and
-served as-is. `npm install` is not required to run the project.
+There is **no frontend build step**, and no npm tree: `static/styles.css` is
+authored directly and served as-is. There is no `package.json` — it declared no
+dependencies while an untracked lockfile pinned 83 packages for a Tailwind build
+that never existed, so all of it was removed.
 
 ### Environment Variables
 
@@ -38,7 +40,13 @@ served as-is. `npm install` is not required to run the project.
 ### Architecture
 
 **Entry points**
-- `web.py` — Flask routing only. `POST /analyze` takes `{"urls": [...]}`; `POST /clear_cache`.
+- `web.py` — Flask routing and the input ceilings. `POST /analyze` takes
+  `{"urls": [...]}`, refusing a body over 256 KB or a list over `MAX_URLS` (200)
+  before a provider is reached. There is no `/clear_cache` route: clearing the
+  cache is an operator action, so it lives at `main.py --clear-cache`. There is
+  no CORS layer — the page and the API are the same origin.
+- `deploy/nginx.conf` — the per-caller rate limit. It lives in the repository
+  because the application cannot enforce it: only the proxy sees every worker.
 - `main.py` — CLI. Same checking, same verdict, same words as the web UI.
 
 **Shared core — the two interfaces must never answer differently**
@@ -87,7 +95,12 @@ successful results. The frontend must keep these visible — see Invariants.
 - `static/styles.css` — the whole design system: theme tokens, components, responsive, reduced motion, forced colours.
 
 **Caching** — `cache/{provider}/{slug}_{mod_id}/page-{page}.json`, 24h TTL,
-cleared via `POST /clear_cache`.
+cleared with `python main.py --clear-cache`. `providers.CACHE_ROOT` is the single
+definition of where that is; `cache_path()` once joined from a relative `"cache"`,
+so starting the app from anywhere but the repository root wrote one cache and
+cleared a different one. The TTL governs freshness, `CACHE_MAX_BYTES` (256 MB)
+governs size: `enforce_cache_budget()` runs after each write and evicts
+oldest-first, because one full request can write ~92 MB.
 
 ### Invariants
 
@@ -122,6 +135,18 @@ These are correctness rules, not preferences. Breaking one produces a wrong answ
 9. **Third-party strings are never interpolated into HTML.** Mod names and version
    strings come from provider APIs. Use `textContent` and `new Option()`; CSV cells
    go through `csvCell()`, which also neutralises leading `=`, `+`, `-` and `@`.
+10. **`ProviderError` is the only exception whose text reaches the user.**
+   `fetch_mod_info()` returns `str(exc)` for it and a fixed sentence for everything
+   else. Do not widen that catch: it once included `ValueError`, and
+   `json.JSONDecodeError` subclasses `ValueError`, so a truncated cache file
+   reported *"Expecting property name enclosed in double quotes: line 1 column 2"*
+   to the person checking their mod list. A provider that wants to say something
+   raises `ProviderError`.
+11. **A check is bounded in time, not only in length.** `check_urls()` abandons
+   unfinished lookups at `CHECK_DEADLINE` and reports them as rows. Without it, 200
+   URLs against unresponsive upstreams held a worker for ~14 minutes and four
+   requests denied the service to everyone. The deadline must stay below the
+   browser's 60s abort and below the proxy's `proxy_read_timeout`.
 
 ### Interface Vocabulary
 
@@ -216,9 +241,14 @@ between palettes and move focus with them.
 1. Create `providers/newplatform.py` with `get_mod_data(url) -> dict` matching the
    contract above, raising or returning an `error` entry on failure.
 2. Register it in `providers/__init__.py` `PROVIDERS`.
-3. Extend `detect_provider()` in `providers/__init__.py`.
-4. Extend `is_valid_mod_url()` in `web.py`.
+3. Add its hosts to `ALLOWED_HOSTS` in `providers/__init__.py`. That is the only
+   place a host is named: `detect_provider()` reads it and `is_valid_mod_url()`
+   defers to `detect_provider()`, so there is no second list to keep in step.
+   Match hosts exactly — a substring test accepted `curseforge.com.attacker.example`.
+4. Return `canonical_url(url)` rather than the pasted URL, so a decorated link
+   cannot ride into the results table under a real mod's name.
 5. Add the logo in light and dark variants and handle it in `updateThemedImages()`.
+6. Add the new host forms to the allowlist cases in `test_web.py`.
 
 ### Testing
 
@@ -228,6 +258,10 @@ Before committing:
    `static/app.js` implementation against the same cases. It fails if the CLI and
    the web would answer the same mod list differently, and if either of the two
    verdict strings PRODUCT.md records has been reworded.
+0b. `python test_web.py` — the HTTP edge: input ceilings, exact-host matching,
+   what an internal error is allowed to say, the request deadline, cache
+   containment and eviction, and the security headers. Makes no network request,
+   and fails if anything starts making one.
 1. `python web.py` and check the web UI; `python main.py <url> <url>` for the CLI.
 2. Submit a list that mixes a working mod, an unreachable mod and a junk URL.
    Confirm the failures appear as rows and are counted in the verdict.

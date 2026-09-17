@@ -60,6 +60,38 @@ python web.py
 
 Open your browser to `http://localhost:5000`, paste your mod URLs (one per line), and click **Check compatibility**.
 
+`web.py` binds `127.0.0.1` and starts Flask's development server. Set `HOST` and
+`PORT` to move it, but do not expose that server directly — it has no
+request-size or slow-client protection of its own.
+
+#### Deployment
+
+Every check spends your `CF_API_KEY`, so a reachable instance needs a limit in
+front of it. Run under a real WSGI server:
+
+```bash
+gunicorn -w 4 --threads 8 -b 127.0.0.1:5000 --timeout 60 web:app
+```
+
+`--threads` matters: a check is long and I/O-bound, and with the default sync
+worker one slow request occupies a whole worker. With four sync workers, four
+requests were enough to make the service unavailable to everyone else.
+
+Rate-limiting belongs at the reverse proxy, which is the only place that sees
+every worker's traffic. A working configuration is committed at
+[`deploy/nginx.conf`](deploy/nginx.conf) — it is a file rather than a snippet in
+this README because a limit described in prose enforces nothing.
+
+The app bounds a single request on its own: 256 KB of body, 200 URLs, and a 45
+second deadline after which unfinished mods come back as rows saying so. Those
+are per-request; only the proxy can cap requests per caller. Keep the proxy's
+`proxy_read_timeout` above the app's deadline so the app returns its own partial
+answer instead of the proxy cutting the connection.
+
+The response cache is capped at 256 MB (`CACHE_MAX_BYTES`) and evicts
+oldest-first, but give `cache/` a bounded volume anyway so a full disk cannot
+take the host down with it.
+
 #### Command Line
 
 The CLI gives the same answer as the web UI — same checking, same verdict, same wording.

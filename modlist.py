@@ -5,28 +5,34 @@ Shared by both interfaces so they cannot drift: `web.py` serves this over HTTP,
 could not be resolved returns an `error` entry rather than disappearing.
 """
 
+import logging
 import os
 import shutil
-from concurrent.futures import ThreadPoolExecutor
-from urllib.parse import urlparse
+from concurrent.futures import ThreadPoolExecutor, wait
 
-from providers import PROVIDERS, detect_provider
+from providers import CACHE_ROOT, PROVIDERS, detect_provider
+from providers.http import ProviderError
+
+log = logging.getLogger(__name__)
 
 MAX_WORKERS = 8
-CACHE_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache")
+
+# A whole check is bounded, not just its length. Without this, 200 URLs against
+# unresponsive upstreams held one worker for ~14 minutes, and four such requests
+# denied the service to everyone else. The browser gives up at 60s, so finish first.
+CHECK_DEADLINE = 45
 
 NOT_A_MOD_LINK = "Not a CurseForge or Modrinth link"
+TOOK_TOO_LONG = "This mod took too long to check"
 
 
 def is_valid_mod_url(url):
-    try:
-        parsed = urlparse(url)
-        if parsed.scheme not in ("http", "https") or not parsed.netloc:
-            return False
-        host = parsed.netloc.lower()
-        return "curseforge.com" in host or "modrinth.com" in host
-    except Exception:
-        return False
+    """A URL is valid exactly when a provider claims its host.
+
+    This used to carry its own substring host test, which disagreed with
+    `detect_provider` about what counted as a CurseForge link. One check now.
+    """
+    return detect_provider(url) is not None
 
 
 def fetch_mod_info(url):
@@ -40,16 +46,25 @@ def fetch_mod_info(url):
 
     try:
         mod_info = get_mod_data(url)
-        return {
-            "name": mod_info.get("name"),
-            "provider": mod_info.get("provider"),
-            "id": mod_info.get("id"),
-            "slug": mod_info.get("slug"),
-            "versions": mod_info.get("versions", []),
-            "url": mod_info.get("url") or url,
-        }
-    except Exception as exc:
+    except ProviderError as exc:
+        # The one exception type that means "a sentence written for the person
+        # who pasted the URL". Everything else is internal and gets suppressed.
         return {"url": url, "error": str(exc)}
+    except Exception:
+        # Anything else stringifies with internal detail — an OSError from the
+        # cache write carries the absolute path, which the results table would
+        # render verbatim. Log it; tell the user only what they can act on.
+        log.exception("check failed for %s", url)
+        return {"url": url, "error": "This mod could not be checked right now"}
+
+    return {
+        "name": mod_info.get("name"),
+        "provider": mod_info.get("provider"),
+        "id": mod_info.get("id"),
+        "slug": mod_info.get("slug"),
+        "versions": mod_info.get("versions", []),
+        "url": mod_info.get("url") or url,
+    }
 
 
 def dedupe(results):
@@ -67,18 +82,35 @@ def dedupe(results):
     return out
 
 
-def check_urls(urls, max_workers=MAX_WORKERS):
-    """Check every URL, preserving input order so results are reproducible."""
+def check_urls(urls, max_workers=MAX_WORKERS, deadline=CHECK_DEADLINE):
+    """Check every URL, preserving input order so results are reproducible.
+
+    Bounded in time: a mod still being fetched when the deadline passes comes
+    back as a row saying so. It is never dropped — an unchecked mod stays in the
+    table and in the verdict's denominator (Invariant 1), and "took too long" is
+    a reason like any other.
+    """
     results = [None] * len(urls)
-    jobs = {}
-    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+    pool = ThreadPoolExecutor(max_workers=max_workers)
+    try:
+        jobs = {}
         for i, url in enumerate(urls):
             if is_valid_mod_url(url):
                 jobs[pool.submit(fetch_mod_info, url)] = i
             else:
                 results[i] = {"url": url, "error": NOT_A_MOD_LINK}
+
+        done, _pending = wait(jobs, timeout=deadline)
         for future, i in jobs.items():
-            results[i] = future.result()
+            if future in done:
+                results[i] = future.result()
+            else:
+                future.cancel()
+                results[i] = {"url": urls[i], "error": TOOK_TOO_LONG}
+    finally:
+        # Never wait here: the whole point of the deadline is that the response
+        # does not block on work that has already overrun it. `with` would.
+        pool.shutdown(wait=False, cancel_futures=True)
     return dedupe(results)
 
 

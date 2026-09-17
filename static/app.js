@@ -223,9 +223,12 @@ function postJSON(url, data, signal) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
     signal,
-  }).then((res) => {
-    if (!res.ok) throw new Error(httpProblem(res.status));
-    return res.json();
+  }).then(async (res) => {
+    // The body carries the reason for a refusal; fall back to the status only
+    // when it does not (Werkzeug's own 413 page, for one).
+    const parsed = await res.json().catch(() => null);
+    if (!res.ok) throw new Error((parsed && parsed.error) || httpProblem(res.status));
+    return parsed;
   });
 }
 
@@ -233,6 +236,7 @@ function postJSON(url, data, signal) {
 function httpProblem(status) {
   if (status === 429) return "CurseForge or Modrinth is rate-limiting this check.";
   if (status === 404) return "That address is not available on this server.";
+  if (status === 413) return "That list is too long to check in one go.";
   if (status >= 500) return "The server ran into a problem.";
   return `The server refused the request (${status}).`;
 }
@@ -642,19 +646,6 @@ analyzeBtn.onclick = async () => {
     clearTimeout(deadline);
     inFlight = null;
     hideLoading();
-  }
-};
-
-document.getElementById("clear-cache").onclick = async (e) => {
-  const btn = e.currentTarget;
-  btn.disabled = true;
-  try {
-    await fetch("/clear_cache", { method: "POST" });
-    setStatus("Cache cleared. The next check fetches every mod again.", "ok");
-  } catch (err) {
-    setStatus(`Could not clear the cache. ${requestProblem(err)}`, "error");
-  } finally {
-    btn.disabled = false;
   }
 };
 

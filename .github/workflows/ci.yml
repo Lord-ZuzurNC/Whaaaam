@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      # test_compat.py runs the shipped static/app.js under node to prove the
+      # CLI and the web cannot answer the same mod list differently.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Neither suite makes a network call: test_web.py patches requests.get to
+      # raise, and test_compat.py skips the CurseForge half without CF_API_KEY.
+      - name: Verdict logic and CLI/web parity
+        run: python test_compat.py
+
+      - name: HTTP edge — limits, host matching, error copy, headers
+        run: python test_web.py
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # The manifest and the runtime must agree. A merged Dependabot bump that
+      # never reaches the deployed environment is the failure this catches.
+      - name: Dependencies resolve consistently
+        run: pip check
+
+      - name: Known vulnerabilities
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt

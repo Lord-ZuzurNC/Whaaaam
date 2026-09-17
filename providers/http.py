@@ -19,7 +19,7 @@ class ProviderError(RuntimeError):
 
 
 def request(service, url, *, headers=None, params=None,
-            retries=3, delay=1, timeout=10):
+            retries=2, delay=1, timeout=10):
     """GET `url`, retrying only what is worth retrying.
 
     `service` is the user-facing name ("CurseForge"), used in error messages.

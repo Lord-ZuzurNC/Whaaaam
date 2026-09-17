@@ -11,11 +11,15 @@ Use this section to tell people about which versions of your project are current
 | 3.11   | :white_check_mark:  |
 | 3.12   | :white_check_mark:  |
 
-Only stable Flask 3.1.2+ are supported.
+Only stable Flask 3.1.3+ are supported.
 
-Only stable Flask CORS 6.0.1+ are supported.
+Flask CORS is no longer a dependency — the page and the API are the same origin,
+so the app ships without a CORS layer.
 
-Do only install pip packages that are explicitly described in the [requirements.txt](requirements.txt).
+Do only install pip packages that are explicitly described in the
+[requirements.txt](requirements.txt). Tooling that the application does not
+import belongs in [requirements-dev.txt](requirements-dev.txt) and should not be
+installed alongside a deployment.
 
 ## Reporting a Vulnerability
 

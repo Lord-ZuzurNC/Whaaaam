@@ -1,12 +1,13 @@
 import os
 import time
 import json
-import requests
 import urllib.parse
 import re
 from datetime import timedelta
 from dotenv import load_dotenv
-from providers import cache_path, is_cache_expired
+from providers import (cache_path, canonical_url, enforce_cache_budget,
+                       is_cache_expired, write_cache)
+from providers.http import ProviderError
 from providers.http import request as http_request
 from compat import normalize_loader, is_release_version
 
@@ -36,8 +37,8 @@ def cached_fetch(provider, slug, id, page, url, params):
 
     r = safe_request(url, params=params)
     data = r.json()
-    with open(cache_file, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+    write_cache(cache_file, data)
+    enforce_cache_budget()
     return data, False
 
 
@@ -142,8 +143,10 @@ def paged_pairs(slug, id):
 
 
 def get_mod_data(url: str) -> dict:
-    raw_slug = url.rstrip("/").split("/")[-1]
-    slug = normalize_slug(raw_slug)
+    # From the parsed path, so ?utm_source= on a shared link does not end up
+    # inside the slug we search for.
+    path = urllib.parse.urlparse(url.strip()).path.rstrip("/")
+    slug = normalize_slug(path.split("/")[-1])
 
     # resolve mod id via search
     search_url = f"{API_BASE}/mods/search"
@@ -151,7 +154,10 @@ def get_mod_data(url: str) -> dict:
     resp = safe_request(search_url, params=params)
     mods = resp.json().get("data", [])
     if not mods:
-        raise ValueError(f"No mod called '{slug}' on CurseForge")
+        # ProviderError, not ValueError: the handler in modlist treats that as
+        # "copy written for the user", and ValueError has too large a family
+        # to mean that — JSONDecodeError is one.
+        raise ProviderError(f"No mod called '{slug}' on CurseForge")
 
     best_mod = max(mods, key=lambda m: (m.get("downloadCount", 0), m.get("name", "")))
     id = str(best_mod["id"])
@@ -172,5 +178,8 @@ def get_mod_data(url: str) -> dict:
         "slug": slug,
         "provider": "curseforge",
         "versions": sorted_pairs,
-        "url": url,
+        # Rebuilt, not echoed: the frontend renders this as the link behind the
+        # mod's real name, so anything decorative in the pasted URL would become
+        # a trustworthy-looking link to somewhere else.
+        "url": canonical_url(url),
     }
