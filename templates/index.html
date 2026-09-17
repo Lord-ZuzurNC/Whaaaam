@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="HTML, CSS, JavaScript, Minecraft, Mod, Mods, Modpacks, Curseforge, Modrinth, Github, OpenSource, FOSS, Python">
     <meta name="description" content="Paste your CurseForge and Modrinth mod links. Whaaaam tells you which Minecraft version and loader your whole list has in common.">
     <meta name="author" content="Lord_ZuzurNC">
     <title>Whaaaam</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
     <link rel="icon" type="image/x-icon" href="/static/favico.ico">
     <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+    <!-- Ahead of every stylesheet on purpose: a classic script blocks on any
+         pending sheet before it runs, so placing this after the Google Fonts
+         link would let a slow CDN delay the theme attribute and the first
+         paint. It has no CSS dependency. -->
+    <script src="/static/theme-init.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Subset to the wordmark's own glyphs (W, h, a, m). If the wordmark text
@@ -37,56 +41,73 @@
       </div>
     </header>
 
-    <!-- Input + check block -->
-    <section id="analyze-block" class="input-block" aria-labelledby="mod-urls-label">
-      <label id="mod-urls-label" for="mod-urls">
-        Mod URLs
-        <span class="label-hint">One CurseForge or Modrinth URL per line</span>
-      </label>
-      <textarea
-        id="mod-urls"
-        spellcheck="false"
-        aria-describedby="form-status"
-        placeholder="https://www.curseforge.com/minecraft/mc-mods/jei&#10;https://modrinth.com/mod/sodium"
-      ></textarea>
-      <p id="form-status" class="form-status" role="status" hidden></p>
-      <div class="input-actions">
-        <button id="analyze-btn" type="button" class="btn btn-primary">Check compatibility</button>
-      </div>
-    </section>
+    <main>
+      <!-- Input + check block -->
+      <section id="analyze-block" class="input-block" aria-labelledby="analyze-heading">
+        <h2 id="analyze-heading" class="visually-hidden">Your mod list</h2>
+        <label id="mod-urls-label" for="mod-urls">
+          Mod URLs
+          <span class="label-hint">One CurseForge or Modrinth URL per line</span>
+        </label>
+        <textarea
+          id="mod-urls"
+          spellcheck="false"
+          autocapitalize="none"
+          autocorrect="off"
+          aria-describedby="form-status"
+          placeholder="https://www.curseforge.com/minecraft/mc-mods/jei&#10;https://modrinth.com/mod/sodium"
+        ></textarea>
+        <p id="form-status" class="form-status" hidden></p>
+        <div class="input-actions">
+          <button id="analyze-btn" type="button" class="btn btn-primary">Check compatibility</button>
+        </div>
+      </section>
 
-    <!-- Filters and Exports -->
-    <section id="filter-block" class="filters-block" aria-label="Filter and export">
-      <div class="filters-left">
-        <label for="filter-version">Version</label>
-        <select id="filter-version"><option value="">All</option></select>
-        <label for="filter-loader">Loader</label>
-        <select id="filter-loader"><option value="">All</option></select>
-      </div>
-      <div class="filters-right">
-        <button id="export-md" type="button" class="btn">Export Markdown</button>
-        <button id="export-csv" type="button" class="btn">Export CSV</button>
-      </div>
-    </section>
+      <!-- A real <dialog>, opened with showModal(): the focus trap, Escape and
+           top layer come from the platform. The hand-rolled scrim let Tab walk
+           into the footer links behind an opaque overlay. The spinner and the
+           dots stay aria-hidden because their text is on a timer; #sr-announce
+           carries the state instead. -->
+      <dialog id="loading-overlay" aria-label="Checking mods">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="loading-text" aria-hidden="true">Checking mods</div>
+        <button id="cancel-check" type="button" class="btn">Cancel</button>
+      </dialog>
 
-    <!-- The overlay itself is not aria-hidden any more: it holds a real control.
-         The spinner and the animated dots are, because their text is on a timer
-         and #sr-announce already carries the state. -->
-    <div id="loading-overlay" hidden>
-      <div class="spinner" aria-hidden="true"></div>
-      <div class="loading-text" aria-hidden="true">Checking mods</div>
-      <button id="cancel-check" type="button" class="btn">Cancel</button>
-    </div>
+      <!-- The single live region. Receives one message per state change, so a
+           screen reader hears the verdict rather than the whole results table. -->
+      <p id="sr-announce" class="visually-hidden" role="status" aria-live="polite"></p>
 
-    <!-- The single live region. Receives one message per state change, so a
-         screen reader hears the verdict rather than the whole results table. -->
-    <p id="sr-announce" class="visually-hidden" role="status" aria-live="polite"></p>
+      <!-- The answer. It sits directly under the input, above its own
+           substantiation: PRODUCT.md principle 4, "answer first". -->
+      <section id="results" aria-labelledby="results-heading">
+        <h2 id="results-heading" class="visually-hidden">Result</h2>
+        <p class="results-placeholder">
+          Paste your mod list above to find the Minecraft version and loader they all share.
+        </p>
+      </section>
 
-    <!-- Results -->
-    <main id="results" aria-label="Results">
-      <p class="results-placeholder">
-        Paste your mod list above to find the Minecraft version and loader they all share.
-      </p>
+      <!-- Filters and exports substantiate the answer, so they follow it, and
+           they stay hidden until there is something to filter or export. -->
+      <section id="filter-block" class="filters-block" aria-labelledby="filter-heading" hidden>
+        <h2 id="filter-heading" class="visually-hidden">Filter and export</h2>
+        <div class="filters-left">
+          <label for="filter-version">Version</label>
+          <select id="filter-version"><option value="">All</option></select>
+          <label for="filter-loader">Loader</label>
+          <select id="filter-loader"><option value="">All</option></select>
+          <!-- Shown only when there is something outside the consensus. The
+               label text is rewritten with the live count and version. -->
+          <span id="outside-field" class="outside-field" hidden>
+            <input type="checkbox" id="filter-outside">
+            <label for="filter-outside">Only mods outside the consensus</label>
+          </span>
+        </div>
+        <div class="filters-right">
+          <button id="export-md" type="button" class="btn">Export Markdown</button>
+          <button id="export-csv" type="button" class="btn">Export CSV</button>
+        </div>
+      </section>
     </main>
 
     <script src="/static/app.js"></script>
@@ -111,14 +132,6 @@
           <div class="icons">
             <a href="https://github.com/Lord-ZuzurNC/Whaaaam" target="_blank" rel="noopener noreferrer">
               <img src="/static/github.svg" alt="Whaaaam on GitHub" width="22" height="22" class="github-icon">
-            </a>
-          </div>
-          <div class="w3c">
-            <a href="https://jigsaw.w3.org/css-validator/check/referer" target="_blank" rel="noopener noreferrer">
-              <img
-              width="88" height="31" loading="lazy" decoding="async"
-              src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-              alt="Check this page with the W3C CSS Validator">
             </a>
           </div>
         </div>

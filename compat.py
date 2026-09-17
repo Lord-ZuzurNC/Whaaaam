@@ -15,6 +15,10 @@ import re
 LOADERS = {"neoforge": "NeoForge", "forge": "Forge",
            "fabric": "Fabric", "quilt": "Quilt"}
 
+# The remedy, stated at the moment it is true: a run that ran out of time still
+# warmed the cache, so the next one is cheap. PRODUCT.md principle 3, made visible.
+CACHE_REMEDY = "Everything fetched is cached, so checking again will be quick."
+
 
 def normalize_loader(loader):
     """Providers return loader names in whatever case they please."""
@@ -48,16 +52,46 @@ def was_checked(mod):
     return bool(mod.get("versions"))
 
 
-def compute_compatibility(mods, unchecked_count):
+def compute_compatibility(mods, unchecked_count, timed_out=0):
     """`mods` are those we got versions for; `unchecked_count` is the rest.
 
-    Returns {"type": "good"|"warning"|"bad", "text": str}.
+    `timed_out` is how many of those ran out of time rather than failing. The
+    distinction is the whole point: an unfetched mod is an unanswered question,
+    not an incompatible one. Reporting "No version works for all your mods" for
+    a run that simply did not finish is a confident wrong answer about someone's
+    mod list, and the rational response to it is to go and dismantle a working
+    list. A timed-out run therefore never returns "bad".
+
+    Returns {"type": ..., "text": str, "headline": str}. `headline` is the
+    version+loader figure alone, so the renderer can set the answer at display
+    scale inside the sentence without the sentence being reworded or duplicated.
+    It is "" when there is no figure to name. `keys` carries the same answer as
+    "<version>|<Loader>" strings, so a caller can mark which mods are outside it
+    without re-deriving the intersection and drifting from this function.
     """
     total = len(mods) + unchecked_count
+
+    def outstanding():
+        """Name what is missing without blaming the wrong cause.
+
+        A run can hold both kinds of gap at once — mods that ran out of time and
+        mods that will never resolve — and telling the user to "check again"
+        about a typo'd URL is the same class of wrong answer as calling a slow
+        run incompatible.
+        """
+        if timed_out == unchecked_count:
+            return f"the check ran out of time before {timed_out} could be fetched"
+        return (f"{unchecked_count} could not be checked, {timed_out} of them "
+                f"because the check ran out of time")
+
     if not total:
-        return {"type": "bad", "text": "No mods to check"}
+        return {"type": "bad", "headline": "", "keys": [], "text": "No mods to check"}
     if not mods:
-        return {"type": "bad",
+        if timed_out:
+            return {"type": "warning", "headline": "", "keys": [],
+                    "text": (f"None of your {total} mods were fetched — "
+                             f"{outstanding()}. {CACHE_REMEDY}")}
+        return {"type": "bad", "headline": "", "keys": [],
                 "text": f"None of your {total} mods could be checked — see the reasons below"}
 
     # dict.fromkeys preserves first-seen order the way a JS Set does; a Python
@@ -81,24 +115,36 @@ def compute_compatibility(mods, unchecked_count):
         joined = " & ".join(results)
 
         if not unchecked_count:
-            return {"type": "good",
+            return {"type": "good", "headline": joined, "keys": intersection,
                     "text": f"All your mods are compatible with {joined}"}
-        return {"type": "warning",
+        if timed_out:
+            return {"type": "warning", "headline": joined, "keys": intersection,
+                    "text": (f"{len(mods)} of your {total} mods share: {joined} — "
+                             f"{outstanding()}. {CACHE_REMEDY}")}
+        return {"type": "warning", "headline": joined, "keys": intersection,
                 "text": (f"{len(mods)} of your {total} mods share: {joined}"
                          f" — {unchecked_count} could not be checked")}
+
+    # Before naming a "closest" match: if the run was cut short, the absence of a
+    # consensus is not evidence of one.
+    if timed_out:
+        return {"type": "warning", "headline": "", "keys": [],
+                "text": (f"Only {len(mods)} of your {total} mods were fetched — "
+                         f"{outstanding()}. This is not a full answer yet. "
+                         f"{CACHE_REMEDY}")}
 
     counts = {}
     for keys in per_mod:
         for key in keys:
             counts[key] = counts.get(key, 0) + 1
     if not counts:
-        return {"type": "bad", "text": "No version information for these mods"}
+        return {"type": "bad", "headline": "", "keys": [], "text": "No version information for these mods"}
 
     top_key, top_count = max(counts.items(), key=lambda kv: kv[1])
     version, loader = top_key.split("|")
     if top_count / total >= 0.5:
-        return {"type": "warning",
+        return {"type": "warning", "headline": f"{loader} {version}", "keys": [top_key],
                 "text": f"Most of your mods share: {loader} {version} ({top_count}/{total})"}
-    return {"type": "bad",
+    return {"type": "bad", "headline": f"{loader} {version}", "keys": [top_key],
             "text": (f"No version works for all your mods. "
                      f"The closest is {loader} {version} ({top_count}/{total}).")}

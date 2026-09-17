@@ -331,9 +331,6 @@ backup/
 CLAUDE.md
 .claude*
 
-# Impeccable
-.impeccable/
-
 # Github
 .gitignore
 
@@ -341,5 +338,9 @@ CLAUDE.md
 node_modules/
 package-lock.json
 
+# Skills
+.impeccable/
+
 # Manual
 cache/
+secure-review*

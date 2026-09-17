@@ -13,11 +13,11 @@ colors:
   on-accent: "#1e1e2e"
   visited: "#cba6f7"
   good: "#a6e3a1"
-  good-tint: "#343e40"
+  good-tint: "#3d4b48"
   warn: "#f9e2af"
-  warn-tint: "#413d43"
+  warn-tint: "#575150"
   bad: "#f38ba8"
-  bad-tint: "#402f42"
+  bad-tint: "#7c4e64"
 typography:
   display:
     fontFamily: "Press Start 2P, ui-monospace, monospace"
@@ -35,6 +35,13 @@ typography:
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.55
+  figure:
+    fontFamily: "Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
+    fontSize: "clamp(1.6rem, 1.1rem + 3.2vw, 2.75rem)"
+    fontWeight: 700
+    lineHeight: 1.1
+    letterSpacing: "-0.01em"
+    fontFeature: "tabular-nums"
   label:
     fontFamily: "Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
     fontSize: "0.8125rem"
@@ -118,7 +125,7 @@ Colour comes from Catppuccin, and all four palettes (Latte, Frappé, Macchiato, 
 Catppuccin, applied as roles rather than swatches. Every component reads a token; a raw hex in a component rule is a defect.
 
 ### Primary
-- **Catppuccin Blue** (`{colors.accent}` — Mocha `#89b4fa`, Latte `#1e66f5`, Frappé `#8caaee`, Macchiato `#8aadf4`): the identity colour. It appears on the wordmark and the Analyze button, and as the underline under links, the caret, the text-selection fill, and the focus ring. It is never a background for a region.
+- **Catppuccin Blue** (`{colors.accent}` — Mocha `#89b4fa`, Latte `#1e66f5`, Frappé `#8caaee`, Macchiato `#8aadf4`): the identity colour. It appears on the wordmark and the Check compatibility button, and as the underline under links, the caret, the text-selection fill, and the focus ring. It is never a background for a region.
 - **Accent Ink** (`{colors.on-accent}`): the only foreground permitted on an accent fill. On dark themes it is the theme's own background colour; on Latte it is pure white, because Latte's blue is too light to carry its own base.
 
 ### Secondary
@@ -136,7 +143,16 @@ Catppuccin, applied as roles rather than swatches. Every component reads a token
 
 ### Named Rules
 
-**The One Accent Rule.** Blue appears on the wordmark and the primary action. That is the entire list. Headers, table headings, secondary buttons, and containers are Surface with a Line edge. Rarity is what makes Analyze findable in a page of neutral controls — spend the accent on a fourth thing and you have spent the affordance.
+**The Large Wordmark Rule.** The wordmark floor is 1.5rem, not a smaller
+clamp minimum, and the reason is contrast rather than taste. It carries
+`{colors.accent}` on `--surface`, where Latte's blue measures 4.04:1 — fine
+against WCAG's 3:1 large-text threshold at 24px/400, and a failure against the
+4.5:1 small-text one below it. Shrinking the wordmark silently breaks AA on
+Latte. Measure the accent against `--surface`, never `--bg`: the header is a
+raised surface, and that mistake once shipped a palette deviation that bought
+0.2 and still failed.
+
+**The One Accent Rule.** Blue appears on the wordmark and the primary action. That is the entire list. Headers, table headings, secondary buttons, and containers are Surface with a Line edge. Rarity is what makes the check action findable in a page of neutral controls — spend the accent on a fourth thing and you have spent the affordance.
 
 **The Words-First Rule.** Status is carried by the sentence, then reinforced by colour. The verdict says "All your mods are compatible with Fabric 1.20.1" or "Most of your mods share: Fabric 1.20.1 (8/10)"; the tint and border agree with it. Colour is never the only carrier of a state, and text on a status surface is always `{colors.text}` — never the status hue itself, which fails on the light palette.
 
@@ -200,8 +216,8 @@ Borders are 1px everywhere. There is no thick accent bar, no coloured left rule 
 
 ### Buttons
 - **Shape:** 8px radius (`{rounded.md}`), 44px minimum height so every button is a legal touch target.
-- **Primary:** accent fill, `{colors.on-accent}` label, 600 weight. Exactly one per screen — Analyze.
-- **Secondary:** Surface fill, Text label, 1px Border edge, 500 weight. Clear Cache and both exports.
+- **Primary:** accent fill, `{colors.on-accent}` label, 600 weight. Exactly one per screen — Check compatibility.
+- **Secondary:** Surface fill, Text label, 1px Border edge, 500 weight. Both exports.
 - **Hover:** primary shifts to `{colors.accent-hover}`; secondary keeps its fill and moves its border to the accent. Both are 0.2s.
 - **Focus:** a 2px accent outline at 2px offset, from the global `:focus-visible` rule. Buttons never remove it.
 - **Disabled:** 0.6 opacity with `cursor: progress`, used while a check is in flight.
@@ -226,7 +242,13 @@ Borders are 1px everywhere. There is no thick accent bar, no coloured left rule 
 - **Versions cell:** a native `<details>`/`<summary>` disclosure labelled with the count ("14 versions"), which supplies its own expanded state, keyboard handling, and `aria-expanded`.
 
 ### Verdict Banner
-The signature component. Full width of the results column, tinted background, 1px status border, verdict type, centred and balanced. Three states: `good` (whole list agrees), `warning` (partial consensus, or consensus with unchecked mods), `bad` (no consensus, or nothing could be checked). Text is always `{colors.text}` regardless of state.
+The signature component, and the largest type on the page — the version+loader
+figure is set at `{typography.figure}`, a step above the wordmark, because the
+answer outranks the brand. The figure is emphasised *inside* the sentence rather
+than repeated above it, so the wording PRODUCT.md records ships unchanged. The
+banner is focusable (`tabindex="-1"`) and receives focus when a check finishes,
+which scrolls the answer into view and reads it out in one move — there is no
+second live region duplicating it. Full width of the results column, tinted background, 1px status border, verdict type, centred and balanced. Three states: `good` (whole list agrees), `warning` (partial consensus, or consensus with unchecked mods), `bad` (no consensus, or nothing could be checked). Text is always `{colors.text}` regardless of state.
 
 ### Theme Switcher
 Four 24px circles in a pill, each filled with that palette's literal base colour, inside a `radiogroup` with roving tabindex. The checked swatch takes an accent ring; a sliding `{colors.line}` pill tracks behind it. Absolutely positioned to the header's right edge above 640px, static below it.
@@ -241,7 +263,13 @@ There is none. The product is one screen, and adding a nav would imply there is 
 - **Do** check new foreground/background pairs against all four palettes. Latte is the one that breaks — its accents are mid-lightness, so a colour that reads fine on Mocha may fail there.
 - **Do** put status in words first and colour second.
 - **Do** use `{colors.border}` for anything interactive and `{colors.line}` for anything decorative. They exist as separate tokens because only one of them clears 3:1.
-- **Do** give every new control a 44px minimum touch target.
+- **Do** give every new control a 44px minimum touch target. Under
+  `pointer: coarse` the theme swatches keep their 24px circle inside a 44px hit
+  area rather than growing.
+- **Do** put the answer above its own substantiation: `#results` precedes
+  `#filter-block`, and the filter bar stays `hidden` until there is a result.
+- **Do** mark the mods that fall outside the verdict's consensus in words
+  ("Not on Fabric 1.20.1"), never by colour alone.
 - **Do** keep numeric content on `tabular-nums`.
 - **Do** let wide content scroll inside a labelled, focusable region.
 

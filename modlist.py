@@ -23,7 +23,7 @@ MAX_WORKERS = 8
 CHECK_DEADLINE = 45
 
 NOT_A_MOD_LINK = "Not a CurseForge or Modrinth link"
-TOOK_TOO_LONG = "This mod took too long to check"
+TOOK_TOO_LONG = "Not fetched before the check ran out of time"
 
 
 def is_valid_mod_url(url):
@@ -90,6 +90,11 @@ def check_urls(urls, max_workers=MAX_WORKERS, deadline=CHECK_DEADLINE):
     table and in the verdict's denominator (Invariant 1), and "took too long" is
     a reason like any other.
     """
+    # Deduped up front rather than only in `dedupe()` afterwards: a URL pasted
+    # twice used to cost two outbound requests, and if one copy finished while
+    # the other hit the deadline the same mod produced two rows — one checked,
+    # one not — inflating the verdict's denominator.
+    urls = list(dict.fromkeys(urls))
     results = [None] * len(urls)
     pool = ThreadPoolExecutor(max_workers=max_workers)
     try:
@@ -106,7 +111,9 @@ def check_urls(urls, max_workers=MAX_WORKERS, deadline=CHECK_DEADLINE):
                 results[i] = future.result()
             else:
                 future.cancel()
-                results[i] = {"url": urls[i], "error": TOOK_TOO_LONG}
+                # Flagged, not just worded: the verdict has to tell an unfetched
+                # mod apart from an unresolvable one.
+                results[i] = {"url": urls[i], "error": TOOK_TOO_LONG, "timed_out": True}
     finally:
         # Never wait here: the whole point of the deadline is that the response
         # does not block on work that has already overrun it. `with` would.

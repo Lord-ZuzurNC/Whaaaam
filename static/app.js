@@ -273,12 +273,35 @@ function setStatus(message, tone) {
 // how many were submitted but could not be resolved. Mods we could not check are
 // never dropped from the denominator — an unchecked mod is an unanswered question,
 // not a compatible one.
-function computeCompatibility(mods, uncheckedCount) {
+// Mirror of compat.py. Change one, change the other, and run test_compat.py,
+// which executes THIS function against the same cases as the Python.
+function computeCompatibility(mods, uncheckedCount, timedOut = 0) {
+  // Declared inside the function on purpose: test_compat.py extracts this
+  // function by brace-matching, so anything it depends on must live within it.
+  const CACHE_REMEDY =
+    "Everything fetched is cached, so checking again will be quick.";
+  // Declared inside for the same reason as CACHE_REMEDY: test_compat.py extracts
+  // this function by brace-matching and nothing outside it comes along.
+  const outstanding = () =>
+    timedOut === uncheckedCount
+      ? `the check ran out of time before ${timedOut} could be fetched`
+      : `${uncheckedCount} could not be checked, ${timedOut} of them because the check ran out of time`;
   const total = mods.length + uncheckedCount;
-  if (!total) return { type: "bad", text: "No mods to check" };
+  if (!total) return { type: "bad", headline: "", keys: [], text: "No mods to check" };
   if (!mods.length) {
+    // A run that ran out of time is an incomplete answer, never a negative one.
+    if (timedOut) {
+      return {
+        type: "warning",
+        headline: "",
+        keys: [],
+        text: `None of your ${total} mods were fetched — ${outstanding()}. ${CACHE_REMEDY}`,
+      };
+    }
     return {
       type: "bad",
+      headline: "",
+      keys: [],
       text: `None of your ${total} mods could be checked — see the reasons below`,
     };
   }
@@ -312,14 +335,39 @@ function computeCompatibility(mods, uncheckedCount) {
     if (!uncheckedCount) {
       return {
         type: "good",
+        headline: results.join(" & "),
+        keys: intersection,
         text: `All your mods are compatible with ${results.join(" & ")}`,
+      };
+    }
+    if (timedOut) {
+      return {
+        type: "warning",
+        headline: results.join(" & "),
+        keys: intersection,
+        text: `${mods.length} of your ${total} mods share: ${results.join(
+          " & "
+        )} — ${outstanding()}. ${CACHE_REMEDY}`,
       };
     }
     return {
       type: "warning",
+      headline: results.join(" & "),
+      keys: intersection,
       text: `${mods.length} of your ${total} mods share: ${results.join(
         " & "
       )} — ${uncheckedCount} could not be checked`,
+    };
+  }
+
+  // Before naming a "closest" match: if the run was cut short, the absence of a
+  // consensus is not evidence of one.
+  if (timedOut) {
+    return {
+      type: "warning",
+      headline: "",
+      keys: [],
+      text: `Only ${mods.length} of your ${total} mods were fetched — ${outstanding()}. This is not a full answer yet. ${CACHE_REMEDY}`,
     };
   }
 
@@ -332,18 +380,22 @@ function computeCompatibility(mods, uncheckedCount) {
   });
   const sorted = Object.entries(countMap).sort((a, b) => b[1] - a[1]);
   if (!sorted.length)
-    return { type: "bad", text: "No version information for these mods" };
+    return { type: "bad", headline: "", keys: [], text: "No version information for these mods" };
 
   const [topKey, topCount] = sorted[0];
   const [version, loader] = topKey.split("|");
   if (topCount / total >= 0.5) {
     return {
       type: "warning",
+      headline: `${loader} ${version}`,
+      keys: [topKey],
       text: `Most of your mods share: ${loader} ${version} (${topCount}/${total})`,
     };
   }
   return {
     type: "bad",
+    headline: `${loader} ${version}`,
+    keys: [topKey],
     text: `No version works for all your mods. The closest is ${loader} ${version} (${topCount}/${total}).`,
   };
 }
@@ -352,38 +404,83 @@ function computeCompatibility(mods, uncheckedCount) {
 function renderCompatibilityBanner(container, compatibility) {
   const div = document.createElement("div");
   div.className = `compatibility-summary ${compatibility.type}`;
-  div.textContent = compatibility.text;
+  // Focusable so a finished check can send focus here: that scrolls the answer
+  // into view and reads it out in one move, with no live region to duplicate it.
+  div.tabIndex = -1;
+
+  // The version+loader is set at display scale inside the sentence rather than
+  // repeated above it, so the wording PRODUCT.md records stays exactly as shipped.
+  // Built from text nodes — never innerHTML; these strings come from provider APIs.
+  const figure = compatibility.headline;
+  const at = figure ? compatibility.text.indexOf(figure) : -1;
+  if (at === -1) {
+    div.textContent = compatibility.text;
+  } else {
+    const strong = document.createElement("strong");
+    strong.className = "verdict-figure";
+    strong.textContent = figure;
+    div.append(
+      document.createTextNode(compatibility.text.slice(0, at)),
+      strong,
+      document.createTextNode(compatibility.text.slice(at + figure.length))
+    );
+  }
   container.appendChild(div);
+  return div;
 }
 
 // ---- Loading overlay ----
 const loadingOverlay = document.getElementById("loading-overlay");
 const cancelBtn = document.getElementById("cancel-check");
 const resultsEl = document.getElementById("results");
+const filterBlock = document.getElementById("filter-block");
+const outsideToggle = document.getElementById("filter-outside");
+const outsideField = document.getElementById("outside-field");
+const outsideLabel = document.querySelector('label[for="filter-outside"]');
+
+// How many URLs the user actually submitted, so a silent dedupe can be explained.
+let submittedCount = 0;
 const analyzeBtn = document.getElementById("analyze-btn");
 let loadingInterval;
 
-function showLoading(count) {
-  loadingOverlay.hidden = false;
-  analyzeBtn.disabled = true;
-  // The only reachable control while the scrim is up, so focus belongs on it.
-  cancelBtn.focus();
-  announce(`Checking ${count} ${count === 1 ? "mod" : "mods"}…`);
+let heartbeat = null;
 
+function showLoading(count) {
+  // showModal() supplies the focus trap, the Escape handling and the top layer
+  // that a hand-rolled scrim never had: Tab used to walk into the footer links
+  // behind an opaque overlay, and filters stayed operable against stale results.
+  loadingOverlay.showModal();
+  analyzeBtn.disabled = true;
+  const noun = count === 1 ? "mod" : "mods";
+  announce(`Checking ${count} ${noun}…`);
+
+  // How many is the one reassuring fact during the wait, so it is on screen and
+  // not only in the live region.
   const loadingText = loadingOverlay.querySelector(".loading-text");
+  const base = `Checking ${count} ${noun}`;
+  loadingText.textContent = base;
   let dots = 0;
   loadingInterval = setInterval(() => {
     dots = (dots + 1) % 4;
-    loadingText.textContent = "Checking mods" + ".".repeat(dots);
+    loadingText.textContent = base + ".".repeat(dots);
   }, 500);
+
+  // The dots are aria-hidden because their text is on a timer, which left a
+  // screen reader with silence for the whole check. One heartbeat, not a stream.
+  heartbeat = setInterval(() => announce(`Still checking your ${noun}…`), 20000);
 }
 
-function hideLoading() {
-  loadingOverlay.hidden = true;
+function hideLoading(focusTarget) {
+  if (loadingOverlay.open) loadingOverlay.close();
   analyzeBtn.disabled = false;
-  analyzeBtn.focus();
+  // The answer earns focus, not the button that asked for it: focusing the
+  // verdict scrolls it into view and reads it out, which is what a user who
+  // just waited actually wants. Falls back to the button when there is no answer.
+  (focusTarget || analyzeBtn).focus();
   clearInterval(loadingInterval);
+  clearInterval(heartbeat);
   loadingInterval = null;
+  heartbeat = null;
 }
 
 // Deduplicate mods by provider + slug. Failed lookups have neither, so they key
@@ -415,6 +512,11 @@ function wasChecked(mod) {
 
 // ---- Rendering ----
 function renderTable(results) {
+  // renderTable rebuilds the table from scratch, which silently collapsed every
+  // open version list on any filter change. Remember what was open first.
+  const wasOpen = new Set(
+    [...resultsEl.querySelectorAll("details[open]")].map((d) => d.dataset.mod)
+  );
   resultsEl.replaceChildren();
 
   const versionSelect = document.getElementById("filter-version");
@@ -427,8 +529,33 @@ function renderTable(results) {
 
   // The verdict answers for the whole submitted list, so it is computed before
   // any filtering. Filters narrow the table below it, never the answer above it.
-  const verdict = computeCompatibility(checked, unchecked.length);
-  renderCompatibilityBanner(resultsEl, verdict);
+  const timedOut = unchecked.filter((mod) => mod.timed_out).length;
+  const verdict = computeCompatibility(checked, unchecked.length, timedOut);
+  const banner = renderCompatibilityBanner(resultsEl, verdict);
+
+  // The mods that break the consensus are the answer's fine print, and the
+  // product promises they are visible rather than implied. `verdict.keys` is
+  // the same intersection the sentence names, so the marks cannot disagree
+  // with the verdict above them.
+  const consensus = new Set(verdict.keys || []);
+  const isOutside = (mod) =>
+    consensus.size > 0 &&
+    !(mod.versions || []).some(([v, l]) =>
+      consensus.has(`${v}|${normalizeLoader(l)}`)
+    );
+  const outsideMods = checked.filter(isOutside);
+
+  // The toggle only exists when it would do something.
+  outsideField.hidden = outsideMods.length === 0;
+  if (outsideMods.length === 0) {
+    outsideToggle.checked = false;
+  } else {
+    outsideLabel.textContent = `Only the ${outsideMods.length} outside ${verdict.headline}`;
+  }
+
+  // Nothing to filter or export until there is a result. Four dead controls on
+  // the first screen are four decisions the user cannot make yet.
+  filterBlock.hidden = !results.length;
 
   // Filter options come from every checked mod, not from the current selection,
   // so narrowing one filter can never strand the other.
@@ -447,9 +574,11 @@ function renderTable(results) {
   );
   fillSelect(loaderSelect, [...allLoaders].sort(), selectedLoader);
 
-  const rows = checked
+  const pool = outsideToggle.checked ? outsideMods : checked;
+  const rows = pool
     .map((mod) => ({
       ...mod,
+      outside: isOutside(mod),
       versions: mod.versions.filter(
         ([v, l]) =>
           (!selectedVersion || v === selectedVersion) &&
@@ -458,11 +587,32 @@ function renderTable(results) {
     }))
     .filter((mod) => mod.versions.length > 0);
 
-  const isFiltered = Boolean(selectedVersion || selectedLoader);
+  const isFiltered = Boolean(selectedVersion || selectedLoader || outsideToggle.checked);
+  const merged = results.length ? Math.max(0, submittedCount - results.length) : 0;
+  const notes = [];
   if (isFiltered && rows.length !== checked.length) {
+    // "checked mods" is the honest denominator: mods that could not be checked
+    // are appended below regardless of the filter, so counting them here made
+    // the number above the table disagree with the rows in it.
+    notes.push(`Showing ${rows.length} of ${checked.length} checked mods.`);
+    if (unchecked.length) {
+      notes.push(
+        `${unchecked.length} that could not be checked ${
+          unchecked.length === 1 ? "is" : "are"
+        } always listed.`
+      );
+    }
+  }
+  if (merged > 0) {
+    // A 60-line paste that renders 57 rows used to explain nothing.
+    notes.push(
+      `${merged} duplicate ${merged === 1 ? "URL was" : "URLs were"} merged.`
+    );
+  }
+  if (notes.length) {
     const caption = document.createElement("p");
     caption.className = "filter-note";
-    caption.textContent = `Showing ${rows.length} of ${checked.length} checked mods.`;
+    caption.textContent = notes.join(" ");
     resultsEl.appendChild(caption);
   }
 
@@ -473,7 +623,7 @@ function renderTable(results) {
       ? 'No mods match this filter. Set it back to "All" to see every mod.'
       : "No mods to show.";
     resultsEl.appendChild(empty);
-    return { verdict, shown: 0, checked: checked.length };
+    return { verdict, banner, shown: 0, checked: checked.length };
   }
 
   const scroller = document.createElement("div");
@@ -523,11 +673,21 @@ function renderTable(results) {
     } else {
       nameCell.textContent = mod.name || "Unknown";
     }
+    if (mod.outside) {
+      const note = document.createElement("span");
+      note.className = "outside-note";
+      // Words first, colour second — and it names what is missing, not just that
+      // something is.
+      note.textContent = `Not on ${verdict.headline}`;
+      nameCell.appendChild(note);
+    }
 
     // <details> carries its own expanded state, keyboard handling and
     // aria-expanded, so none of that is reimplemented here.
     const versionsCell = document.createElement("td");
     const details = document.createElement("details");
+    details.dataset.mod = `${mod.provider || "?"}|${mod.slug || mod.id || mod.url}`;
+    details.open = wasOpen.has(details.dataset.mod);
     const summary = document.createElement("summary");
     const list = document.createElement("ul");
     list.className = "version-list";
@@ -583,7 +743,7 @@ function renderTable(results) {
   scroller.appendChild(table);
   resultsEl.appendChild(scroller);
 
-  return { verdict, shown: rows.length, checked: checked.length };
+  return { verdict, banner, shown: rows.length, checked: checked.length };
 }
 
 // ---- Main ----
@@ -598,10 +758,21 @@ function cancelCheck() {
 
 cancelBtn.onclick = cancelCheck;
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !loadingOverlay.hidden) {
+// Escape fires the dialog's own cancel event. Abort the request rather than
+// letting the dialog close out from under an in-flight check; the finally
+// branch closes it once the abort lands.
+loadingOverlay.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  cancelCheck();
+});
+
+const urlsField = document.getElementById("mod-urls");
+
+// Paste, then submit without leaving the keyboard.
+urlsField.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && (event.metaKey || event.ctrlKey) && !analyzeBtn.disabled) {
     event.preventDefault();
-    cancelCheck();
+    analyzeBtn.click();
   }
 });
 
@@ -624,13 +795,23 @@ analyzeBtn.onclick = async () => {
   inFlight = controller;
   // Pass a reason so the two abort paths can be told apart in the message.
   const deadline = setTimeout(() => controller.abort("timeout"), CHECK_TIMEOUT_MS);
+  let focusAfter = null;
   try {
     const results = await postJSON("/analyze", { urls }, controller.signal);
     if (results && results.error) throw new Error(results.error);
+    submittedCount = urls.length;
     lastResults = dedupeMods(Array.isArray(results) ? results : []);
-    const { verdict } = renderTable(lastResults);
-    announce(verdict.text);
+    // No announce() here: focus moves to the banner, which reads it out once.
+    // Doing both spoke every verdict twice.
+    focusAfter = renderTable(lastResults).banner;
   } catch (err) {
+    // The previous run's verdict, table and exports must not survive a failed
+    // re-check: they are the answer to a different question, and the loudest
+    // thing on the page would otherwise be stale data presented as current.
+    lastResults = [];
+    resultsEl.replaceChildren();
+    filterBlock.hidden = true;
+
     if (err && err.name === "AbortError") {
       const message = controller.signal.reason === "timeout"
         ? "Check cancelled — it took longer than a minute. Try a shorter list."
@@ -645,7 +826,7 @@ analyzeBtn.onclick = async () => {
   } finally {
     clearTimeout(deadline);
     inFlight = null;
-    hideLoading();
+    hideLoading(focusAfter);
   }
 };
 
@@ -656,17 +837,28 @@ function applyFilters() {
 
 document.getElementById("filter-version").onchange = applyFilters;
 document.getElementById("filter-loader").onchange = applyFilters;
+outsideToggle.onchange = applyFilters;
 
 document.getElementById("export-md").onclick = () => exportMD(lastResults);
 document.getElementById("export-csv").onclick = () => exportCSV(lastResults);
 
 // ---- Export helpers ----
+// A readable local timestamp: four exports in a row used to produce four epoch
+// filenames that sorted correctly and meant nothing.
+function stamp() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}-${pad(
+    d.getHours()
+  )}${pad(d.getMinutes())}`;
+}
+
 function download(text, type, extension) {
   const blob = new Blob([text], { type });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `mods-${Date.now()}.${extension}`;
+  a.download = `mods-${stamp()}.${extension}`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }

@@ -212,7 +212,12 @@ between palettes and move focus with them.
   Latte is the one that breaks: its accents are mid-lightness, so a colour that
   passes on Mocha can fail there. Verify, don't assume.
 - `#sr-announce` is the page's **only** live region. It receives one finished
-  sentence per state change. Do not add `aria-live` to a container that re-renders
+  sentence per state change — with one deliberate exception: the verdict. A
+  finished check moves focus to the banner (`tabindex="-1"`), which both scrolls
+  the answer into view and reads it out. Announcing it as well spoke every
+  verdict twice, so `renderTable`'s caller does not call `announce()` on success.
+  Filters, errors, cancellation and the mid-check heartbeat still go through
+  `#sr-announce`. Do not add `aria-live` to a container that re-renders
   in bulk, and never to an element whose text is on a timer — the loading overlay
   animates its dots, which is why it is `aria-hidden`.
 - Controls need a visible `:focus-visible` ring and a 24px minimum target (44px

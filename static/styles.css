@@ -34,11 +34,11 @@
   --on-accent: #1e1e2e;
   --visited: #cba6f7;
   --good: #a6e3a1;
-  --good-tint: #343e40;
+  --good-tint: #3d4b48;
   --warn: #f9e2af;
-  --warn-tint: #413d43;
+  --warn-tint: #575150;
   --bad: #f38ba8;
-  --bad-tint: #402f42;
+  --bad-tint: #7c4e64;
   --scrim: rgba(30, 30, 46, 0.88);
   --shadow: rgba(0, 0, 0, 0.4);
 }
@@ -55,11 +55,11 @@
   --on-accent: #ffffff;
   --visited: #8738ed;
   --good: #398e26;
-  --good-tint: #dde7e0;
+  --good-tint: #dae7dd;
   --warn: #b07017;
-  --warn-tint: #e9e4df;
+  --warn-tint: #eacfac;
   --bad: #d20f39;
-  --bad-tint: #ecdae2;
+  --bad-tint: #e8b8c6;
   --scrim: rgba(239, 241, 245, 0.88);
   --shadow: rgba(76, 79, 105, 0.16);
 }
@@ -78,11 +78,11 @@
   --on-accent: #303446;
   --visited: #cda4e8;
   --good: #a6d189;
-  --good-tint: #434d51;
+  --good-tint: #3e474e;
   --warn: #e5c890;
-  --warn-tint: #4d4c52;
+  --warn-tint: #4f4d53;
   --bad: #e78284;
-  --bad-tint: #4d4050;
+  --bad-tint: #704f5c;
   --scrim: rgba(48, 52, 70, 0.88);
   --shadow: rgba(0, 0, 0, 0.32);
 }
@@ -99,11 +99,11 @@
   --on-accent: #24273a;
   --visited: #c6a0f6;
   --good: #a6da95;
-  --good-tint: #394449;
+  --good-tint: #3d494b;
   --warn: #eed49f;
-  --warn-tint: #44434a;
+  --warn-tint: #524f51;
   --bad: #ed8796;
-  --bad-tint: #443649;
+  --bad-tint: #764e60;
   --scrim: rgba(36, 39, 58, 0.88);
   --shadow: rgba(0, 0, 0, 0.36);
 }
@@ -120,11 +120,11 @@
   --on-accent: #1e1e2e;
   --visited: #cba6f7;
   --good: #a6e3a1;
-  --good-tint: #343e40;
+  --good-tint: #3d4b48;
   --warn: #f9e2af;
-  --warn-tint: #413d43;
+  --warn-tint: #575150;
   --bad: #f38ba8;
-  --bad-tint: #402f42;
+  --bad-tint: #7c4e64;
   --scrim: rgba(30, 30, 46, 0.88);
   --shadow: rgba(0, 0, 0, 0.4);
 }
@@ -140,7 +140,13 @@
   --step--1: 0.8125rem;   /* labels, metadata */
   --step-0: 1rem;         /* body */
   --step-2: clamp(1.05rem, 0.9rem + 0.9vw, 1.35rem);  /* verdict */
-  --step-3: clamp(1.15rem, 0.7rem + 2.6vw, 2rem);     /* wordmark */
+  /* 1.5rem floor is deliberate: at 24px/400 the wordmark is WCAG "large text",
+     so the accent only needs 3:1 and Catppuccin's Latte blue passes on --surface
+     (4.04:1) with no deviation from the stock palette. Below 24px it would need
+     4.5:1, which that blue does not reach on any light surface. */
+  --step-3: clamp(1.5rem, 0.7rem + 2.6vw, 2rem);      /* wordmark */
+  /* Kept clear of the wordmark at both ends so the answer still outranks it. */
+  --step-4: clamp(1.9rem, 1.1rem + 3.2vw, 2.75rem);   /* the answer */
 
   --radius: 8px;
   --radius-sm: 6px;
@@ -175,7 +181,6 @@ body {
   color: var(--text);
   caret-color: var(--accent);
   scrollbar-color: var(--border) var(--surface);
-  transition: background 0.5s ease, color 0.5s ease;
 }
 
 main {
@@ -261,6 +266,11 @@ h1 {
   right: var(--gutter);
   top: 50%;
   transform: translateY(-50%);
+  /* The indicator is z-index:-1, which only paints above this element's own
+     background inside a stacking context. Above 640px `transform` created one
+     by accident; below it the transform is removed and the pill vanished behind
+     the background. `isolation` makes the context explicit at every width. */
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -452,7 +462,32 @@ h1 {
 .filters-right {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+/* The exceptions are what the user came to find, so the control that isolates
+   them sits with the filters rather than behind a menu. */
+.outside-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.outside-field input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+/* A mod that misses the consensus says so in words; colour is not the carrier.
+   DESIGN.md forbids a status hue as text, which fails on Latte. */
+.outside-note {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--subtext);
 }
 
 .filters-left label {
@@ -476,20 +511,34 @@ h1 {
    7. LOADING
    ============================================================ */
 
+/* A <dialog> in the top layer. The scrim is the dialog's own full-viewport
+   background rather than ::backdrop, because custom properties did not inherit
+   into ::backdrop until recently and the palette has to reach it. */
 #loading-overlay {
   position: fixed;
   inset: 0;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
   background: var(--scrim);
   backdrop-filter: blur(2px);
   font-size: var(--step--1);
   font-weight: 600;
   color: var(--text);
+}
+
+/* Scoped to [open]: the UA keeps a closed dialog display:none, and an
+   unconditional display:flex would leave the scrim up permanently. */
+#loading-overlay[open] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+#loading-overlay::backdrop {
+  background: transparent;
 }
 
 /* The one control reachable while the scrim is up. */
@@ -573,6 +622,33 @@ h1 {
 .compatibility-summary.bad {
   background: var(--bad-tint);
   border-color: var(--bad);
+}
+
+/* The product's one output. It is set a step above the wordmark because the
+   answer, not the brand, is what the page exists to deliver — and on its own
+   line so it survives the sentence wrapping around it. Not Press Start 2P:
+   DESIGN.md reserves the display face for the wordmark alone. */
+.verdict-figure {
+  display: block;
+  margin: 0.15em 0 0.1em;
+  font-size: var(--step-4);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  text-wrap: balance;
+}
+
+/* Focus lands here after a check, which scrolls the answer into view and reads
+   it out in one move. The ring is suppressed for that programmatic move and
+   kept for a real keyboard visit. */
+.compatibility-summary:focus {
+  outline: none;
+}
+
+.compatibility-summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* ===== Table ===== */
@@ -661,6 +737,46 @@ details > summary {
 }
 
 @media (pointer: coarse) {
+  /* DESIGN.md: every control gets a 44px minimum target. The swatch stays 24px;
+     the hit area around it grows. */
+  .theme-option {
+    width: 44px;
+    height: 44px;
+  }
+
+  .theme-circle {
+    position: absolute;
+    inset: 0;
+    width: 24px;
+    height: 24px;
+    margin: auto;
+  }
+
+  /* The whole field is the target, control and label together, so the 44px is
+     real rather than 10px of dead span above a 24px box. */
+  .outside-field {
+    min-height: 44px;
+  }
+
+  .outside-field input {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+  }
+
+  .outside-field label {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* The pill is positioned from the option's box, so it grows with it. */
+  .theme-indicator {
+    width: 44px;
+    height: 44px;
+    top: calc(50% - 22px);
+  }
+
   details > summary {
     min-height: 44px;
   }
@@ -731,8 +847,7 @@ details[open] > summary {
   gap: 0.5rem;
 }
 
-.footer-col .icons a,
-.footer-col .w3c a {
+.footer-col .icons a {
   display: inline-flex;
   padding: 4px;
   border-radius: var(--radius-sm);
@@ -741,12 +856,6 @@ details[open] > summary {
 .footer-col .icons img {
   height: 22px;
   width: auto;
-}
-
-.footer-col .w3c img {
-  height: 24px;
-  width: auto;
-  opacity: 0.75;
 }
 
 /* ============================================================
@@ -767,6 +876,10 @@ details[open] > summary {
   /* A two-column grid keeps each label bound to its own select. Letting the
      selects flex instead pushed "Loader" onto the first row, away from its
      control. */
+  .outside-field {
+    grid-column: 1 / -1;
+  }
+
   .filters-left {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -789,6 +902,28 @@ details[open] > summary {
 }
 
 @media (max-width: 640px) {
+  /* "Versions / Loaders" is the answer, and a 34rem floor pushed it off-screen
+     behind a horizontal swipe while a 20px provider mark kept 3.5rem. The
+     disclosure summary is short ("14 versions"), so the table fits once the
+     floor is lifted. */
+  table {
+    min-width: 0;
+  }
+
+  /* th is nowrap by default here, and "VERSIONS / LOADERS" uppercase with
+     tracking is wider than the column gets on a small phone. */
+  th {
+    white-space: normal;
+  }
+
+  .col-source {
+    width: 2.25rem;
+  }
+
+  .col-name {
+    width: 40%;
+  }
+
   header {
     flex-direction: column;
     gap: 0.9rem;
@@ -800,11 +935,6 @@ details[open] > summary {
   .theme-switcher {
     position: static;
     transform: none;
-  }
-
-  .theme-option {
-    width: 28px;
-    height: 28px;
   }
 
   .input-actions {

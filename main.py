@@ -68,7 +68,15 @@ def filter_versions(mod, want_version, want_loader):
     ]
 
 
-def render_table(checked, want_version, want_loader, expand):
+def outside_consensus(mod, keys):
+    """True when a mod carries none of the verdict's consensus pairs."""
+    if not keys:
+        return False
+    return not any(f"{version}|{normalize_loader(loader)}" in keys
+                   for version, loader in (mod.get("versions") or []))
+
+
+def render_table(checked, want_version, want_loader, expand, keys=()):
     """The web collapses a mod's versions behind a disclosure showing the count.
     The default here matches that: a 60-mod list should not print 2,000 rows."""
     rows = []
@@ -83,9 +91,12 @@ def render_table(checked, want_version, want_loader, expand):
             cell = "\n".join(seen)
         else:
             cell = f"{len(seen)} version{'' if len(seen) == 1 else 's'}"
+        name = mod.get("name") or mod.get("url") or "Unknown"
+        if outside_consensus(mod, keys):
+            name = f"{name}  (outside)"
         rows.append([
             (mod.get("provider") or "?").title().replace("Curseforge", "CurseForge"),
-            mod.get("name") or mod.get("url") or "Unknown",
+            name,
             cell,
         ])
     return rows
@@ -184,14 +195,15 @@ def main():
 
     # Invariant: the verdict answers for the whole submitted list. Filters narrow
     # the table below it, never the answer above it.
-    verdict = compute_compatibility(checked, len(unchecked))
+    timed_out = sum(1 for m in unchecked if m.get("timed_out"))
+    verdict = compute_compatibility(checked, len(unchecked), timed_out)
     print()
     print(paint(verdict["text"], verdict["type"], sys.stdout))
     print()
 
     filtered = bool(args.mc_version or args.loader)
     rows = render_table(checked, args.mc_version, args.loader,
-                        args.show_versions or filtered)
+                        args.show_versions or filtered, set(verdict.get("keys") or ()))
     if rows:
         print(tabulate(rows, headers=["Source", "Mod Name", "Versions / Loaders"],
                        tablefmt="grid"))
@@ -217,7 +229,13 @@ def main():
         if path:
             print(f"\nWrote {path}")
 
-    return 0 if verdict["type"] != "bad" else 2
+    # A timed-out run is a warning, not a pass: before the timeout fix it
+    # returned "bad" and exited 2, so leaving it on 0 would tell a script the
+    # list is fine when nothing was answered. Genuine partial consensus keeps
+    # its existing 0 so the contract for everything else is unchanged.
+    if verdict["type"] == "bad":
+        return 2
+    return 1 if timed_out else 0
 
 
 if __name__ == "__main__":
