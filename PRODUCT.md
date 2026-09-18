@@ -26,7 +26,7 @@ Whaaaam takes a pasted list of CurseForge and Modrinth mod URLs and returns the 
 - Two interfaces ship today: web (`python web.py`, Flask, `localhost:5000`) and CLI (`python main.py`, tabulated output).
 - Version data is fetched per mod from each platform's API — 8 in parallel on the web path — and cached on disk for 24h under `cache/{provider}/{slug}_{id}/`. Clearing it is an operator action, `python main.py --clear-cache`; the web UI has no clear action, since it would let any visitor wipe the shared cache.
 - Results are filterable by MC version and by loader, and exportable as Markdown or CSV. Export is how a checked list leaves the tool and enters a server's own notes or install process.
-- `CF_API_KEY` is **required**, resolved by observation: `providers/curseforge.py` raises `EnvironmentError` at import time, so the app will not start without it — not even for a Modrinth-only list. README and CLAUDE.md now both say so.
+- `CF_API_KEY` is **needed only to check CurseForge mods** (decided by the user). Without it the app starts and Modrinth-only lists work; each CurseForge URL is reported as a mod that could not be checked, with the reason, and still counts toward the verdict.
 
 ## Capabilities and Constraints
 

@@ -14,10 +14,6 @@ import shutil
 import tempfile
 import time
 
-# curseforge.py reads CF_API_KEY at import time and raises without one. A dummy
-# is enough: no request is ever made.
-os.environ.setdefault("CF_API_KEY", "test-key-not-used")
-
 import modlist
 import providers
 import providers.http
@@ -195,6 +191,32 @@ def check_error_copy():
     print("error copy: internal detail logged not returned, provider copy preserved")
 
 
+def check_optional_api_key():
+    """CF_API_KEY is only needed to check a CurseForge mod. Without it the app
+    still imports, a Modrinth-only list still works, and a CurseForge URL comes
+    back as a row saying why rather than taking the whole app down."""
+    import subprocess
+    import sys
+    # Empty, not absent: python-dotenv never overrides a variable that is already
+    # set, so a developer's .env cannot slip a real key into the child.
+    env = dict(os.environ, CF_API_KEY="",
+               PYTHONPATH=os.path.dirname(os.path.abspath(__file__)))
+    started = subprocess.run([sys.executable, "-c", "import web"],
+                             env=env, cwd=tempfile.gettempdir(), capture_output=True, text=True)
+    assert started.returncode == 0, f"app did not start without a key:\n{started.stderr}"
+
+    saved = os.environ.pop("CF_API_KEY", None)
+    try:
+        row = modlist.fetch_mod_info("https://www.curseforge.com/minecraft/mc-mods/jei")
+    finally:
+        if saved is not None:
+            os.environ["CF_API_KEY"] = saved
+    # _no_network would surface as the generic sentence; this proves the
+    # missing key was caught before any request was attempted.
+    assert "no CurseForge API key" in row["error"], row
+    print("api key: optional at startup, required only for a CurseForge mod")
+
+
 def check_slug_validation():
     """A slug that is not a slug never reaches the URL builder."""
     from providers.modrinth import slug_from_url
@@ -316,6 +338,7 @@ if __name__ == "__main__":
     check_host_allowlist()
     check_canonical_url()
     check_error_copy()
+    check_optional_api_key()
     check_slug_validation()
     check_routes_and_headers()
     check_deadline()

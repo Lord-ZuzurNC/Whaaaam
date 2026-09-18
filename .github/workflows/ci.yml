@@ -27,8 +27,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Neither suite makes a network call: test_web.py patches requests.get to
-      # raise, and test_compat.py skips the CurseForge half without CF_API_KEY.
+      # Neither suite makes a network call (test_web.py patches requests.get to
+      # raise) and neither needs CF_API_KEY: the key is only read per request.
       - name: Verdict logic and CLI/web parity
         run: python test_compat.py
 

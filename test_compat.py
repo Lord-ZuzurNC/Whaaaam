@@ -247,11 +247,7 @@ def check_contrast():
 def check_curseforge_pairs():
     """A file we cannot attribute contributes nothing — it must never become
     a loader called "Unknown", which once shipped in the verdict."""
-    try:
-        from providers.curseforge import index_pairs, loaders_for_file
-    except Exception as exc:  # needs CF_API_KEY at import time
-        print(f"curseforge helpers: skipped ({type(exc).__name__})")
-        return
+    from providers.curseforge import index_pairs, loaders_for_file
 
     assert loaders_for_file({"gameVersions": ["1.20.1", "Fabric"]}) == {"Fabric"}
     assert loaders_for_file({"gameVersions": ["1.20.1", "NeoForge"]}) == {"NeoForge"}

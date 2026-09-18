@@ -16,15 +16,23 @@ API_BASE = "https://api.curseforge.com/v1"
 GAME_ID = 432
 CACHE_TTL = timedelta(hours=24)
 
-API_KEY = os.getenv("CF_API_KEY")
-if not API_KEY:
-    raise EnvironmentError("Missing CF_API_KEY in environment")
-
-HEADERS = {"Accept": "application/json", "x-api-key": API_KEY}
+# Read per request, not at import: a Modrinth-only list must work on a server
+# with no CurseForge key. It used to raise EnvironmentError here and the whole
+# app refused to start.
+NO_KEY = ("This server has no CurseForge API key (CF_API_KEY), so CurseForge mods "
+          "cannot be checked; Modrinth links still work")
 
 
 def safe_request(url, params=None, retries=3, delay=1, timeout=10):
-    return http_request("CurseForge", url, headers=HEADERS, params=params,
+    # Every CurseForge call goes through here, so this is the one place the key
+    # is required. ProviderError: the row says why, and nothing is sent upstream.
+    # That holds because get_mod_data's search is uncached and runs first; put a
+    # cache in front of it and keyless checks would half-succeed from disk.
+    key = (os.getenv("CF_API_KEY") or "").strip()
+    if not key:
+        raise ProviderError(NO_KEY)
+    headers = {"Accept": "application/json", "x-api-key": key}
+    return http_request("CurseForge", url, headers=headers, params=params,
                         retries=retries, delay=delay, timeout=timeout)
 
 
