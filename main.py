@@ -155,18 +155,46 @@ def export(results, fmt, out):
 
 def build_parser():
     parser = argparse.ArgumentParser(
-        prog="whaaaam",
+        prog="python main.py",
         description="Find the Minecraft version and loader your whole mod list has in common.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""\
+input:
+  URLs are read from the arguments, else --file, else a pipe. With none of
+  those, it asks you to paste them, one per line; an empty line checks.
+
+examples:
+  python main.py https://modrinth.com/mod/sodium https://www.curseforge.com/minecraft/mc-mods/jei
+  python main.py --file mods.txt --loader fabric
+  cat mods.txt | python main.py --export csv --out mods.csv
+  python main.py --file mods.txt --export md --out -
+
+exit status:
+  0  the list shares a version (fully, or as a majority consensus)
+  1  no URLs were given, or some mods were not fetched before the deadline
+  2  the list shares no version, or nothing could be checked
+
+environment (also read from a .env file next to the code):
+  CF_API_KEY  CurseForge API key; only needed to check CurseForge mods
+  NO_COLOR    any value turns off the coloured verdict
+
+Filters narrow the table; they never change the verdict above it.""",
     )
-    parser.add_argument("urls", nargs="*", help="CurseForge or Modrinth mod URLs")
-    parser.add_argument("-f", "--file", help="read URLs from a file, one per line")
-    parser.add_argument("--version", dest="mc_version",
-                        help="only show rows for this Minecraft version")
-    parser.add_argument("--loader", help="only show rows for this loader")
+    parser.add_argument("urls", nargs="*", metavar="URL",
+                        help="CurseForge or Modrinth mod page URLs")
+    parser.add_argument("-f", "--file", metavar="PATH",
+                        help="read URLs from a file, one per line")
+    parser.add_argument("--version", dest="mc_version", metavar="MC_VERSION",
+                        help="only show rows for this Minecraft version, e.g. 1.20.1")
+    parser.add_argument("--loader", metavar="LOADER",
+                        help="only show rows for this loader: Forge, Fabric, NeoForge or Quilt")
     parser.add_argument("--show-versions", action="store_true",
                         help="list every version instead of a count (implied by a filter)")
-    parser.add_argument("--export", choices=["md", "csv"], help="write the results to a file")
-    parser.add_argument("--out", help="export destination, or - for stdout")
+    parser.add_argument("--export", choices=["md", "csv"],
+                        help="write the results as Markdown or CSV")
+    parser.add_argument("--out", metavar="PATH",
+                        help="export destination, or - for stdout "
+                             "(default: mods-<timestamp>.md or .csv here)")
     parser.add_argument("--clear-cache", action="store_true",
                         help="delete the cached version data and exit")
     return parser

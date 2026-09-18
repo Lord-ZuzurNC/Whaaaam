@@ -43,8 +43,9 @@ source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Give it your CurseForge API key (skip this for Modrinth-only lists)
-echo "CF_API_KEY=your-key-here" > .env
+# Settings: then put your CurseForge API key in .env (leave it empty for
+# Modrinth-only lists)
+cp .env.example .env
 ```
 
 Without a key the app still runs: Modrinth mods check normally and each
@@ -63,7 +64,7 @@ python web.py
 Open your browser to `http://localhost:5000`, paste your mod URLs (one per line), and click **Check compatibility**. The verdict appears first; the per-mod table, filters and exports sit underneath it.
 
 `web.py` binds `127.0.0.1` and starts Flask's development server. Set `HOST` and
-`PORT` to move it, but do not expose that server directly — it has no
+`PORT` in `.env` (or the environment) to move it, but do not expose that server directly — it has no
 request-size or slow-client protection of its own.
 
 #### Command Line
@@ -84,6 +85,7 @@ python main.py
 
 | Option             | What it does                                       |
 | ------------------ | -------------------------------------------------- |
+| `-h`, `--help`     | show every option, exit codes and examples         |
 | `-f`, `--file`     | read URLs from a file, one per line                |
 | `--version 1.20.1` | only show table rows for that Minecraft version    |
 | `--loader fabric`  | only show table rows for that loader               |
@@ -215,7 +217,12 @@ Without it, a Modrinth-only list works normally and each CurseForge URL comes
 back as a row reading "This server has no CurseForge API key (CF_API_KEY), so
 CurseForge mods cannot be checked; Modrinth links still work" — counted in the verdict like any other mod
 that could not be checked, and no request is sent to CurseForge. Set it in your
-environment or in a `.env` file. `.env` is git-ignored; keep it that way.
+environment or in a `.env` file.
+
+All four can go in a `.env` file next to the code; `cp .env.example .env` gives
+you a commented starting point. A variable already set in the environment wins
+over `.env`. `.env` is git-ignored; keep it that way. `HOST` and `PORT` only
+apply to `python web.py` — under gunicorn, the `-b` flag decides.
 
 ## Development
 

@@ -10,7 +10,12 @@ rather than somewhere down in a provider.
 
 import os
 
+from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request
+
+# Loaded here rather than relied on from a provider's import: HOST and PORT are
+# read below, and CF_API_KEY is now only read per request.
+load_dotenv()
 
 import modlist
 
