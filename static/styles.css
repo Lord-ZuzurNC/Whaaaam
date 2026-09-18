@@ -712,10 +712,24 @@ th {
 }
 
 /* Rows for mods that could not be checked. They stay in the table and
-   say why — they are never dropped from the list or the count. */
+   say why — they are never dropped from the list or the count. The mark is
+   a drawn icon, not text: a status hue is legal on a graphic (3:1, lowest is
+   Frappé at 3.57:1) where it would fail as type. The words carry the state. */
 .row-unchecked .col-source {
   color: var(--bad);
-  font-weight: 700;
+}
+
+.unchecked-mark {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* A pasted URL breaks at its slashes and dots (app.js inserts <wbr>), not
+   mid-word: `anywhere` split "modrinth.com" across three lines on a phone. */
+.col-name.cell-url {
+  overflow-wrap: break-word;
 }
 
 .cell-reason {
@@ -930,10 +944,14 @@ details[open] > summary {
     padding-block: 1rem;
   }
 
-  /* Static below this width: absolutely positioned, the switcher
-     overlaps the wordmark on narrow viewports. */
+  /* In flow below this width: absolutely positioned, the switcher overlaps
+     the wordmark on narrow viewports. Relative, not static — the sliding
+     indicator is absolutely positioned against the switcher, and `static`
+     sent it looking for the next positioned ancestor, off its swatch. */
   .theme-switcher {
-    position: static;
+    position: relative;
+    right: auto;
+    top: auto;
     transform: none;
   }
 
@@ -1008,7 +1026,7 @@ details[open] > summary {
     border-style: double;
   }
 
-  .row-unchecked .col-source {
-    font-weight: 700;
+  .unchecked-mark {
+    color: CanvasText;
   }
 }

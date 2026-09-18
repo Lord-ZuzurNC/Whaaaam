@@ -306,6 +306,7 @@ package-lock.json
 
 # Skills
 .impeccable/
+security-audit-skill/
 
 # Manual
 cache/

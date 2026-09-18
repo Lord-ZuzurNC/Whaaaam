@@ -234,7 +234,10 @@ function postJSON(url, data, signal) {
 
 // A status code is a cause, not a message. Name what it means for the user.
 function httpProblem(status) {
-  if (status === 429) return "CurseForge or Modrinth is rate-limiting this check.";
+  // A 429 on /analyze is this server's own per-connection limit (deploy/
+  // nginx.conf). An upstream limit never surfaces here: it arrives as a
+  // per-mod row, "CurseForge is rate-limiting requests".
+  if (status === 429) return "Too many checks from your connection. Wait a moment, then check again.";
   if (status === 404) return "That address is not available on this server.";
   if (status === 413) return "That list is too long to check in one go.";
   if (status >= 500) return "The server ran into a problem.";
@@ -510,6 +513,40 @@ function wasChecked(mod) {
   return Array.isArray(mod.versions) && mod.versions.length > 0;
 }
 
+// The mark on a row that could not be checked: a drawn alert, in the row's
+// status colour via currentColor. Decorative — the visually-hidden sentence
+// beside it is what a screen reader hears.
+function uncheckedMark() {
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("class", "unchecked-mark");
+  svg.setAttribute("viewBox", "0 0 20 20");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  const shapes = [
+    ["circle", { cx: 10, cy: 10, r: 8.25, fill: "none", stroke: "currentColor", "stroke-width": 1.75 }],
+    ["line", { x1: 10, y1: 5.75, x2: 10, y2: 11, stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round" }],
+    ["circle", { cx: 10, cy: 14.25, r: 1.15, fill: "currentColor" }],
+  ];
+  shapes.forEach(([tag, attrs]) => {
+    const el = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+    svg.appendChild(el);
+  });
+  return svg;
+}
+
+// A URL with a line-break opportunity after each "/" and ".", built from text
+// nodes and <wbr> — the string is user input and never goes through innerHTML.
+// Breaking after "." too keeps the longest piece ("https://") near the width of
+// an ordinary word, so the URL cannot widen the column past the versions cell.
+function appendBreakableURL(cell, url) {
+  url.split(/(?<=[/.])/).forEach((part, i) => {
+    if (i) cell.appendChild(document.createElement("wbr"));
+    cell.appendChild(document.createTextNode(part));
+  });
+}
+
 // ---- Rendering ----
 function renderTable(results) {
   // renderTable rebuilds the table from scratch, which silently collapsed every
@@ -719,17 +756,21 @@ function renderTable(results) {
 
     const providerCell = document.createElement("td");
     providerCell.className = "col-source";
-    const mark = document.createElement("span");
-    mark.setAttribute("aria-hidden", "true");
-    mark.textContent = "—";
     const spoken = document.createElement("span");
     spoken.className = "visually-hidden";
     spoken.textContent = "Could not be checked";
-    providerCell.append(mark, spoken);
+    providerCell.append(uncheckedMark(), spoken);
 
     const nameCell = document.createElement("td");
     nameCell.className = "col-name";
-    nameCell.textContent = mod.name || mod.url || "Unknown mod";
+    if (mod.name) {
+      nameCell.textContent = mod.name;
+    } else if (mod.url) {
+      nameCell.classList.add("cell-url");
+      appendBreakableURL(nameCell, mod.url);
+    } else {
+      nameCell.textContent = "Unknown mod";
+    }
 
     const reasonCell = document.createElement("td");
     reasonCell.className = "cell-reason";

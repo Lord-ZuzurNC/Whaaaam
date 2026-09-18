@@ -177,6 +177,9 @@ def main():
 
     if args.clear_cache:
         removed = modlist.clear_cache()
+        if not removed:
+            print("The cache was already empty.")
+            return 0
         print(f"Cache cleared ({removed} provider "
               f"{'directory' if removed == 1 else 'directories'}). "
               "The next check fetches every mod again.")

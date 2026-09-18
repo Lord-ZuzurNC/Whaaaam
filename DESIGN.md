@@ -238,7 +238,7 @@ Borders are 1px everywhere. There is no thick accent bar, no coloured left rule 
 ### Data Table
 - **Headings:** Surface background, Subtext colour, Label type uppercase with 0.06em tracking, and a 1px Border bottom rule — the heavier bottom edge is what separates the head from the body, not a fill.
 - **Rows:** 1px Line separators, dropped on the last row. Cells are top-aligned, because the versions cell can be tall.
-- **Failed rows:** carry a `!` in the source column in `{colors.bad}` and the failure reason as Label-sized Subtext in place of versions. They stay in the table. A mod that could not be checked is an unanswered question, never a silent omission.
+- **Failed rows:** carry a drawn alert icon (circle and exclamation, 20px, the provider marks' size) in the source column in `{colors.bad}`, and the failure reason as Label-sized Subtext in place of versions. The icon is a graphic, so the status hue is legal there (3:1 non-text; lowest is Frappé at 3.57:1) where it would not be as type; it is `aria-hidden`, and a visually-hidden "Could not be checked" carries the state. A failed URL shown as the name breaks at its slashes, not mid-word. They stay in the table. A mod that could not be checked is an unanswered question, never a silent omission.
 - **Versions cell:** a native `<details>`/`<summary>` disclosure labelled with the count ("14 versions"), which supplies its own expanded state, keyboard handling, and `aria-expanded`.
 
 ### Verdict Banner
