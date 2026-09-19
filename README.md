@@ -291,9 +291,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Thanks to the [CurseForge](https://www.curseforge.com/) and [Modrinth](https://modrinth.com/) teams for their APIs.
-- Built with [Flask](https://flask.palletsprojects.com/) and love.
+- [Mojang Studios](https://www.minecraft.net/) and [Microsoft](https://www.microsoft.com/) for Minecraft, the game all of this exists for.
+- [CurseForge](https://www.curseforge.com/) and [Modrinth](https://modrinth.com/) for hosting the mod libraries and for the API access that makes checking them possible.
+- [Catppuccin](https://catppuccin.com/) for the Latte, Frappé, Macchiato and Mocha palettes behind the four themes.
+
+Whaaaam is not an official Minecraft product and is not approved by or associated with Mojang or Microsoft.
 
 ---
 
-Made with love by [Lord_ZuzurNC](https://github.com/Lord-ZuzurNC)
+Made with AI by [Lord_ZuzurNC](https://github.com/Lord-ZuzurNC)
