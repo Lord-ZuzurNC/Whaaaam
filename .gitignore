@@ -309,6 +309,9 @@ package-lock.json
 .impeccable/
 security-audit-skill/
 
+# Aikido review
+aikido*
+
 # Manual
 cache/
 secure-review-*
