@@ -459,13 +459,13 @@ function showLoading(count) {
 
   // How many is the one reassuring fact during the wait, so it is on screen and
   // not only in the live region.
-  const loadingText = loadingOverlay.querySelector(".loading-text");
-  const base = `Checking ${count} ${noun}`;
-  loadingText.textContent = base;
+  loadingOverlay.querySelector(".loading-label").textContent = `Checking ${count} ${noun}`;
+  const loadingDots = loadingOverlay.querySelector(".loading-dots");
+  loadingDots.textContent = "";
   let dots = 0;
   loadingInterval = setInterval(() => {
     dots = (dots + 1) % 4;
-    loadingText.textContent = base + ".".repeat(dots);
+    loadingDots.textContent = ".".repeat(dots);
   }, 500);
 
   // The dots are aria-hidden because their text is on a timer, which left a

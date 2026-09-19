@@ -28,8 +28,6 @@ Paste your CurseForge and Modrinth mod URLs, and see which Minecraft versions an
 apt install -y git python3 python3-venv python3-pip
 ```
 
-- A CurseForge API key, if you check CurseForge mods — request one at [console.curseforge.com](https://console.curseforge.com/). Modrinth needs none.
-
 ### Installation
 
 ```bash
@@ -48,10 +46,11 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
+- A CurseForge API key, if you check CurseForge mods — request one at [console.curseforge.com](https://console.curseforge.com/). Modrinth needs none.
+
 Without a key the app still runs: Modrinth mods check normally and each
 CurseForge URL is listed as could not be checked, with the reason — see
-[Configuration](#configuration). There is no frontend build step:
-`static/styles.css` is served as authored.
+[Configuration](#configuration).
 
 ### Usage
 
@@ -96,11 +95,11 @@ python main.py
 Filters narrow the table; they never change the verdict above it. Exit status, so
 it composes into scripts:
 
-| Status | Meaning                                                              |
-| ------ | -------------------------------------------------------------------- |
-| `0`    | the list shares a version (fully, or as a majority consensus)        |
+| Status | Meaning                                                               |
+| ------ | --------------------------------------------------------------------- |
+| `0`    | the list shares a version (fully, or as a majority consensus)         |
 | `1`    | no URLs were given, or some mods were not fetched before the deadline |
-| `2`    | the list shares no version, or nothing could be checked              |
+| `2`    | the list shares no version, or nothing could be checked               |
 
 Set `NO_COLOR` to turn off the coloured verdict.
 
@@ -185,8 +184,8 @@ Whaaaam ships the four Catppuccin palettes; the switcher sits in the page header
 - **Macchiato** - Darker theme
 - **Mocha** - Deepest dark theme (default)
 
-| Latte                                                  | Mocha                                                |
-| ------------------------------------------------------ | ---------------------------------------------------- |
+| Latte                                                    | Mocha                                                   |
+| -------------------------------------------------------- | ------------------------------------------------------- |
 | ![Whaaaam in the Latte theme](docs/screenshot_light.png) | ![Whaaaam in the Mocha theme](docs/screenshot_dark.png) |
 
 Your choice is saved in the browser and can be shared via URL (e.g., `?theme=latte`).
@@ -205,11 +204,11 @@ To customize or extend themes, see the [Development](#development) section below
 
 ### Environment Variables
 
-| Variable     | Description                                  | Default     |
-| ------------ | -------------------------------------------- | ----------- |
+| Variable     | Description                                   | Default     |
+| ------------ | --------------------------------------------- | ----------- |
 | `CF_API_KEY` | CurseForge API key, for CurseForge mods only  | None        |
-| `HOST`       | address `python web.py` binds to             | `127.0.0.1` |
-| `PORT`       | port `python web.py` listens on              | `5000`      |
+| `HOST`       | address `python web.py` binds to              | `127.0.0.1` |
+| `PORT`       | port `python web.py` listens on               | `5000`      |
 | `NO_COLOR`   | any value turns off the CLI's coloured output | unset       |
 
 `CF_API_KEY` is read only when a CurseForge mod is checked, never at startup.
