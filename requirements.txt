@@ -3,7 +3,3 @@ python-dotenv==1.2.3
 Requests==2.34.2
 tabulate==0.10.0
 gunicorn==26.2.0
-python-dotenv==1.2.3
-Requests==2.34.2
-tabulate==0.10.0
-gunicorn==23.0.0
