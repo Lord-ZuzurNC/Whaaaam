@@ -23,15 +23,16 @@ NO_KEY = ("This server has no CurseForge API key (CF_API_KEY), so CurseForge mod
           "cannot be checked; Modrinth links still work")
 
 
-def safe_request(url, params=None, retries=3, delay=1, timeout=10):
-    # Every CurseForge call goes through here, so this is the one place the key
-    # is required. ProviderError: the row says why, and nothing is sent upstream.
-    # That holds because get_mod_data's search is uncached and runs first; put a
-    # cache in front of it and keyless checks would half-succeed from disk.
+def api_key():
+    # ProviderError: the row says why, and nothing is sent upstream.
     key = (os.getenv("CF_API_KEY") or "").strip()
     if not key:
         raise ProviderError(NO_KEY)
-    headers = {"Accept": "application/json", "x-api-key": key}
+    return key
+
+
+def safe_request(url, params=None, retries=3, delay=1, timeout=10):
+    headers = {"Accept": "application/json", "x-api-key": api_key()}
     return http_request("CurseForge", url, headers=headers, params=params,
                         retries=retries, delay=delay, timeout=timeout)
 
@@ -157,10 +158,16 @@ def get_mod_data(url: str) -> dict:
     slug = normalize_slug(path.split("/")[-1])
 
     # resolve mod id via search
+    # The search is the whole check now (latestFilesIndexes rides on it), so it
+    # is cached like any page; left uncached, a CurseForge mod never touched the
+    # disk. The id is not known yet, so it caches under "{slug}_search". The key
+    # is checked first so a keyless server reports it instead of answering from
+    # a cache someone else's key filled.
+    api_key()
     search_url = f"{API_BASE}/mods/search"
     params = {"gameId": GAME_ID, "slug": slug}
-    resp = safe_request(search_url, params=params)
-    mods = resp.json().get("data", [])
+    data, _ = cached_fetch("curseforge", slug, "search", 0, search_url, params)
+    mods = data.get("data", [])
     if not mods:
         # ProviderError, not ValueError: the handler in modlist treats that as
         # "copy written for the user", and ValueError has too large a family

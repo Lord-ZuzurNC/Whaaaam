@@ -333,6 +333,46 @@ def check_cache_containment_and_budget():
         shutil.rmtree(tmp_root, ignore_errors=True)
 
 
+def check_curseforge_is_cached():
+    """A CurseForge check is one search request, so that search is what gets
+    cached. It used to be uncached, and a re-check went back to the network."""
+    from providers import curseforge
+
+    class Reply:
+        def json(self):
+            return {"data": [{"id": 238222, "name": "JEI",
+                              "latestFilesIndexes": [{"gameVersion": "1.20.1", "modLoader": 1}]}]}
+
+    calls = []
+    real_request, real_root = curseforge.safe_request, providers.CACHE_ROOT
+    saved_key = os.environ.get("CF_API_KEY")
+    tmp_root = tempfile.mkdtemp(prefix="whaaaam-cache-")
+    providers.CACHE_ROOT = tmp_root
+    curseforge.safe_request = lambda *a, **k: calls.append(a) or Reply()
+    os.environ["CF_API_KEY"] = "test"
+    url = "https://www.curseforge.com/minecraft/mc-mods/jei"
+    try:
+        first, second = curseforge.get_mod_data(url), curseforge.get_mod_data(url)
+        assert len(calls) == 1, f"re-check made {len(calls)} requests, expected 1"
+        assert first == second and first["versions"] == [("1.20.1", "Forge")]
+
+        # The cache is warm, but a keyless server still says it has no key.
+        os.environ["CF_API_KEY"] = ""
+        try:
+            curseforge.get_mod_data(url)
+            raise AssertionError("keyless check answered from the cache")
+        except providers.http.ProviderError as exc:
+            assert "no CurseForge API key" in str(exc)
+        print("curseforge: search cached, key still required")
+    finally:
+        curseforge.safe_request, providers.CACHE_ROOT = real_request, real_root
+        if saved_key is None:
+            os.environ.pop("CF_API_KEY", None)
+        else:
+            os.environ["CF_API_KEY"] = saved_key
+        shutil.rmtree(tmp_root, ignore_errors=True)
+
+
 if __name__ == "__main__":
     check_input_limits()
     check_host_allowlist()
@@ -343,4 +383,5 @@ if __name__ == "__main__":
     check_routes_and_headers()
     check_deadline()
     check_cache_containment_and_budget()
+    check_curseforge_is_cached()
     print("ok")
