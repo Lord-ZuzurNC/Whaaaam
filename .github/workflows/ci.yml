@@ -19,7 +19,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       # test_compat.py runs the shipped static/app.js under node to prove the
       # CLI and the web cannot answer the same mod list differently.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "20"
 
