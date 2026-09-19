@@ -1,0 +1,36 @@
+name: Bug report
+description: Whaaaam gave a wrong verdict, crashed, or showed something broken
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: urls
+    attributes:
+      label: Mod URLs
+      description: The list you checked, one URL per line. This is usually what reproduces it.
+      render: text
+  - type: textarea
+    id: output
+    attributes:
+      label: Verdict or error shown
+      description: Copy the verdict sentence or error message exactly.
+      render: text
+  - type: dropdown
+    id: interface
+    attributes:
+      label: Interface
+      options: [Web, CLI, Both]
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Whaaaam version, Python version, OS; browser and theme for web issues.
+      placeholder: v1.0.0, Python 3.12, Ubuntu 24.04, Firefox, Latte

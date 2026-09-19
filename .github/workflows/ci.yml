@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
@@ -29,6 +30,11 @@ jobs:
 
       # Neither suite makes a network call (test_web.py patches requests.get to
       # raise) and neither needs CF_API_KEY: the key is only read per request.
+      # No build artifact exists; this catches a syntax error in any module,
+      # including ones no test imports.
+      - name: Build (byte-compile)
+        run: python -m compileall -q main.py web.py compat.py modlist.py providers
+
       - name: Verdict logic and CLI/web parity
         run: python test_compat.py
 

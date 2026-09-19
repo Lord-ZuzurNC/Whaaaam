@@ -277,6 +277,30 @@ Latte is the strict one — its accents are mid-lightness, so a colour that pass
 Mocha can fail there. The page has a single live region (`#sr-announce`), a
 `prefers-reduced-motion` path, and a `forced-colors` path.
 
+## Roadmap
+
+### Hosted version
+
+Today Whaaaam runs on your own machine. The next step is a public instance, so
+checking a mod list needs only a browser.
+
+**Trade-off.** Right now everything stays local: your mod list, the cache and your
+CurseForge key never leave your machine. On the hosted version the URLs you paste
+go to a server we run, which queries CurseForge and Modrinth for you. Self-hosting
+stays fully supported for anyone who would rather keep it local.
+
+Planned:
+
+- [ ] Public instance behind the committed [`deploy/nginx.conf`](deploy/nginx.conf)
+      rate limit, with TLS
+- [ ] Shared CurseForge key on the server, so visitors need no key of their own
+- [ ] Privacy note on the page: what is sent, what is logged (no mod lists), and
+      how long the version cache keeps data (24 hours)
+- [ ] Shareable result link that encodes the URL list in the link itself, not in
+      server storage
+- [ ] Container image, so that self-hosting and the hosted instance run the same
+      build
+
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
