@@ -87,15 +87,25 @@
         </p>
       </section>
 
-      <!-- Filters and exports substantiate the answer, so they follow it, and
-           they stay hidden until there is something to filter or export. -->
+      <!-- Filters and exports sit between the answer and the table they narrow,
+           so changing a filter never moves them. Hidden until there is
+           something to filter or export. -->
       <section id="filter-block" class="filters-block" aria-labelledby="filter-heading" hidden>
         <h2 id="filter-heading" class="visually-hidden">Filter and export</h2>
         <div class="filters-left">
           <label for="filter-version">Version</label>
           <select id="filter-version"><option value="">All</option></select>
+          <!-- Force makes that filter narrow the verdict too, not only the table. -->
+          <span class="check-field">
+            <input type="checkbox" id="force-version">
+            <label for="force-version">Force<span class="visually-hidden"> the verdict to this version</span></label>
+          </span>
           <label for="filter-loader">Loader</label>
           <select id="filter-loader"><option value="">All</option></select>
+          <span class="check-field">
+            <input type="checkbox" id="force-loader">
+            <label for="force-loader">Force<span class="visually-hidden"> the verdict to this loader</span></label>
+          </span>
           <!-- Shown only when there is something outside the consensus. The
                label text is rewritten with the live count and version. -->
           <span id="outside-field" class="outside-field" hidden>
@@ -108,6 +118,9 @@
           <button id="export-csv" type="button" class="btn">Export CSV</button>
         </div>
       </section>
+
+      <!-- The table and its notes: the substantiation, below its controls. -->
+      <div id="result-table"></div>
     </main>
 
     <script src="/static/app.js"></script>

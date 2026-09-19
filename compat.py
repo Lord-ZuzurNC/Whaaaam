@@ -6,7 +6,9 @@ carries a mirror of this logic for the web UI, so the two must stay identical â€
 
 The invariants (also in CLAUDE.md):
   1. A mod that could not be checked is never dropped from the denominator.
-  2. The verdict is computed before any filtering.
+  2. The verdict is computed before any filtering, unless the user forces it:
+     `only_version` / `only_loader` narrow every mod's pairs first, and a mod
+     left with none still counts in the denominator.
   3. "All your mods are compatible" requires zero unchecked mods.
 """
 
@@ -52,7 +54,13 @@ def was_checked(mod):
     return bool(mod.get("versions"))
 
 
-def compute_compatibility(mods, unchecked_count, timed_out=0):
+def forced_label(only_version=None, only_loader=None):
+    """What a forced verdict is limited to, e.g. "Forge 1.21.11"."""
+    return " ".join(p for p in (normalize_loader(only_loader), only_version) if p)
+
+
+def compute_compatibility(mods, unchecked_count, timed_out=0,
+                          only_version=None, only_loader=None):
     """`mods` are those we got versions for; `unchecked_count` is the rest.
 
     `timed_out` is how many of those ran out of time rather than failing. The
@@ -96,8 +104,12 @@ def compute_compatibility(mods, unchecked_count, timed_out=0):
 
     # dict.fromkeys preserves first-seen order the way a JS Set does; a Python
     # set would reorder and change which loader is named first.
+    # Forcing narrows each mod's pairs, never the list: a mod with nothing left
+    # stays in per_mod as an empty entry, so it still counts against the total.
     per_mod = [list(dict.fromkeys(
         f"{v}|{normalize_loader(l)}" for v, l in (m.get("versions") or [])
+        if (not only_version or v == only_version)
+        and (not only_loader or normalize_loader(l) == normalize_loader(only_loader))
     )) for m in mods]
 
     first = per_mod[0]
@@ -137,6 +149,9 @@ def compute_compatibility(mods, unchecked_count, timed_out=0):
     for keys in per_mod:
         for key in keys:
             counts[key] = counts.get(key, 0) + 1
+    if not counts and (only_version or only_loader):
+        return {"type": "bad", "headline": "", "keys": [],
+                "text": f"None of your mods have {forced_label(only_version, only_loader)} (0/{total})"}
     if not counts:
         return {"type": "bad", "headline": "", "keys": [], "text": "No version information for these mods"}
 

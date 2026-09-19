@@ -90,6 +90,33 @@ CASES = [
 ]
 
 
+# Forced filters: (mods, unchecked, timed_out, only_version, only_loader, type, text).
+# Every mod stays in the denominator even when nothing of it survives the filter.
+_WIDE = mod(("1.21.11", "fabric"), ("1.21.11", "neoforge"), ("1.21.1", "fabric"),
+           ("1.21.1", "forge"), ("1.21.1", "neoforge"), ("1.20.1", "forge"))
+_NARROW = mod(("1.21.1", "fabric"), ("1.21.1", "neoforge"), ("1.20.1", "forge"))
+FORCED = [
+    ([_WIDE, _NARROW], 0, 0, "", "", "good",
+     "All your mods are compatible with Fabric 1.21.1 & Forge 1.20.1 & NeoForge 1.21.1"),
+    ([_WIDE, _NARROW], 0, 0, "", "Forge", "good",
+     "All your mods are compatible with Forge 1.20.1"),
+    ([_WIDE, _NARROW], 0, 0, "1.21.11", "", "warning",
+     "Most of your mods share: Fabric 1.21.11 (1/2)"),
+    ([_WIDE, _NARROW], 0, 0, "1.21.11", "forge", "bad",
+     "None of your mods have Forge 1.21.11 (0/2)"),
+    ([_NARROW], 1, 0, "1.21.11", "", "bad",
+     "None of your mods have 1.21.11 (0/2)"),
+]
+
+
+def check_forced():
+    for mods, unchecked, timed_out, version, loader, want_type, want_text in FORCED:
+        got = compute_compatibility(mods, unchecked, timed_out, version, loader)
+        assert (got["type"], got["text"]) == (want_type, want_text), (
+            f"expected {want_text!r}\n     got {got['text']!r}")
+    print(f"forced: {len(FORCED)} cases pass")
+
+
 def check_python():
     for mods, unchecked, timed_out, want_type, want_text in CASES:
         got = compute_compatibility(mods, unchecked, timed_out)
@@ -135,9 +162,10 @@ def check_js_agrees():
         _extract(src, "function normalizeLoader("),
         _extract(src, "function computeCompatibility("),
         "const cases = JSON.parse(process.argv[2]);",
-        "console.log(JSON.stringify(cases.map(c => computeCompatibility(c[0], c[1], c[2]))));",
+        "console.log(JSON.stringify(cases.map(c => computeCompatibility(c[0], c[1], c[2], c[3], c[4]))));",
     ])
-    payload = json.dumps([[m, u, t] for m, u, t, _, _ in CASES])
+    cases = [(m, u, t, "", "") for m, u, t, _, _ in CASES] + [c[:5] for c in FORCED]
+    payload = json.dumps(cases)
     with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as fh:
         fh.write(harness)
         path = fh.name
@@ -146,8 +174,9 @@ def check_js_agrees():
     finally:
         Path(path).unlink(missing_ok=True)
     js = json.loads(out.stdout)
-    for (mods, unchecked, timed_out, _, want_text), got in zip(CASES, js):
-        py = compute_compatibility(mods, unchecked, timed_out)
+    for (mods, unchecked, timed_out, version, loader), got in zip(cases, js):
+        py = compute_compatibility(mods, unchecked, timed_out, version, loader)
+        want_text = py["text"]
         assert got["text"] == py["text"], (
             f"CLI and web disagree.\n  python: {py['text']!r}\n  js    : {got['text']!r}")
         # The whole verdict, not just its sentence: `headline` drives the display
@@ -157,7 +186,7 @@ def check_js_agrees():
             assert got[field] == py[field], (
                 f"{field} mismatch for {want_text!r}\n"
                 f"  python: {py[field]!r}\n  js    : {got[field]!r}")
-    print(f"js parity: {len(CASES)} cases identical to python")
+    print(f"js parity: {len(cases)} cases identical to python")
 
 
 def check_vocabulary():
@@ -271,6 +300,7 @@ def check_curseforge_pairs():
 
 if __name__ == "__main__":
     check_python()
+    check_forced()
     check_vocabulary()
     check_contrast()
     check_curseforge_pairs()

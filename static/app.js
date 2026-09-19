@@ -278,7 +278,7 @@ function setStatus(message, tone) {
 // not a compatible one.
 // Mirror of compat.py. Change one, change the other, and run test_compat.py,
 // which executes THIS function against the same cases as the Python.
-function computeCompatibility(mods, uncheckedCount, timedOut = 0) {
+function computeCompatibility(mods, uncheckedCount, timedOut = 0, onlyVersion = "", onlyLoader = "") {
   // Declared inside the function on purpose: test_compat.py extracts this
   // function by brace-matching, so anything it depends on must live within it.
   const CACHE_REMEDY =
@@ -309,9 +309,19 @@ function computeCompatibility(mods, uncheckedCount, timedOut = 0) {
     };
   }
 
+  // Forcing narrows each mod's pairs, never the list: a mod with nothing left
+  // stays as an empty set, so it still counts against the total.
   const perModSets = mods.map(
     (m) =>
-      new Set((m.versions || []).map(([v, l]) => `${v}|${normalizeLoader(l)}`))
+      new Set(
+        (m.versions || [])
+          .filter(
+            ([v, l]) =>
+              (!onlyVersion || v === onlyVersion) &&
+              (!onlyLoader || normalizeLoader(l) === normalizeLoader(onlyLoader))
+          )
+          .map(([v, l]) => `${v}|${normalizeLoader(l)}`)
+      )
   );
 
   const intersection = [...perModSets[0]].filter((x) =>
@@ -382,6 +392,10 @@ function computeCompatibility(mods, uncheckedCount, timedOut = 0) {
     });
   });
   const sorted = Object.entries(countMap).sort((a, b) => b[1] - a[1]);
+  if (!sorted.length && (onlyVersion || onlyLoader)) {
+    const label = [onlyLoader && normalizeLoader(onlyLoader), onlyVersion].filter(Boolean).join(" ");
+    return { type: "bad", headline: "", keys: [], text: `None of your mods have ${label} (0/${total})` };
+  }
   if (!sorted.length)
     return { type: "bad", headline: "", keys: [], text: "No version information for these mods" };
 
@@ -437,9 +451,13 @@ const loadingOverlay = document.getElementById("loading-overlay");
 const cancelBtn = document.getElementById("cancel-check");
 const resultsEl = document.getElementById("results");
 const filterBlock = document.getElementById("filter-block");
+// The table lives below the filters, the verdict above them.
+const tableEl = document.getElementById("result-table");
 const outsideToggle = document.getElementById("filter-outside");
 const outsideField = document.getElementById("outside-field");
 const outsideLabel = document.querySelector('label[for="filter-outside"]');
+const forceVersion = document.getElementById("force-version");
+const forceLoader = document.getElementById("force-loader");
 
 // How many URLs the user actually submitted, so a silent dedupe can be explained.
 let submittedCount = 0;
@@ -552,9 +570,10 @@ function renderTable(results) {
   // renderTable rebuilds the table from scratch, which silently collapsed every
   // open version list on any filter change. Remember what was open first.
   const wasOpen = new Set(
-    [...resultsEl.querySelectorAll("details[open]")].map((d) => d.dataset.mod)
+    [...tableEl.querySelectorAll("details[open]")].map((d) => d.dataset.mod)
   );
   resultsEl.replaceChildren();
+  tableEl.replaceChildren();
 
   const versionSelect = document.getElementById("filter-version");
   const loaderSelect = document.getElementById("filter-loader");
@@ -565,9 +584,16 @@ function renderTable(results) {
   const unchecked = results.filter((mod) => !wasChecked(mod));
 
   // The verdict answers for the whole submitted list, so it is computed before
-  // any filtering. Filters narrow the table below it, never the answer above it.
+  // any filtering. Filters narrow the table below it, never the answer above it,
+  // unless the user ticks Force next to one: then that filter narrows every
+  // mod's versions for the verdict too, and every mod still counts.
+  const forcedVersion = forceVersion.checked ? selectedVersion : "";
+  const forcedLoader = forceLoader.checked ? selectedLoader : "";
+  const forced = Boolean(forcedVersion || forcedLoader);
   const timedOut = unchecked.filter((mod) => mod.timed_out).length;
-  const verdict = computeCompatibility(checked, unchecked.length, timedOut);
+  const verdict = computeCompatibility(
+    checked, unchecked.length, timedOut, forcedVersion, forcedLoader
+  );
   const banner = renderCompatibilityBanner(resultsEl, verdict);
 
   // The mods that break the consensus are the answer's fine print, and the
@@ -627,6 +653,10 @@ function renderTable(results) {
   const isFiltered = Boolean(selectedVersion || selectedLoader || outsideToggle.checked);
   const merged = results.length ? Math.max(0, submittedCount - results.length) : 0;
   const notes = [];
+  if (forced) {
+    const label = [forcedLoader, forcedVersion].filter(Boolean).join(" ");
+    notes.push(`The verdict counts only ${label}, because Force is ticked.`);
+  }
   if (isFiltered && rows.length !== checked.length) {
     // "checked mods" is the honest denominator: mods that could not be checked
     // are appended below regardless of the filter, so counting them here made
@@ -650,7 +680,7 @@ function renderTable(results) {
     const caption = document.createElement("p");
     caption.className = "filter-note";
     caption.textContent = notes.join(" ");
-    resultsEl.appendChild(caption);
+    tableEl.appendChild(caption);
   }
 
   if (!rows.length && !unchecked.length) {
@@ -659,8 +689,8 @@ function renderTable(results) {
     empty.textContent = isFiltered
       ? 'No mods match this filter. Set it back to "All" to see every mod.'
       : "No mods to show.";
-    resultsEl.appendChild(empty);
-    return { verdict, banner, shown: 0, checked: checked.length };
+    tableEl.appendChild(empty);
+    return { verdict, banner, shown: 0, checked: checked.length, forced };
   }
 
   const scroller = document.createElement("div");
@@ -782,9 +812,9 @@ function renderTable(results) {
 
   table.appendChild(tbody);
   scroller.appendChild(table);
-  resultsEl.appendChild(scroller);
+  tableEl.appendChild(scroller);
 
-  return { verdict, banner, shown: rows.length, checked: checked.length };
+  return { verdict, banner, shown: rows.length, checked: checked.length, forced };
 }
 
 // ---- Main ----
@@ -851,6 +881,7 @@ analyzeBtn.onclick = async () => {
     // thing on the page would otherwise be stale data presented as current.
     lastResults = [];
     resultsEl.replaceChildren();
+    tableEl.replaceChildren();
     filterBlock.hidden = true;
 
     if (err && err.name === "AbortError") {
@@ -872,13 +903,17 @@ analyzeBtn.onclick = async () => {
 };
 
 function applyFilters() {
-  const { shown, checked } = renderTable(lastResults);
-  announce(`Showing ${shown} of ${checked} checked mods.`);
+  const { shown, checked, verdict, forced } = renderTable(lastResults);
+  // A forced filter changes the answer, so the answer is what gets said.
+  const count = `Showing ${shown} of ${checked} checked mods.`;
+  announce(forced ? `${verdict.text}. ${count}` : count);
 }
 
 document.getElementById("filter-version").onchange = applyFilters;
 document.getElementById("filter-loader").onchange = applyFilters;
 outsideToggle.onchange = applyFilters;
+forceVersion.onchange = applyFilters;
+forceLoader.onchange = applyFilters;
 
 document.getElementById("export-md").onclick = () => exportMD(lastResults);
 document.getElementById("export-csv").onclick = () => exportCSV(lastResults);

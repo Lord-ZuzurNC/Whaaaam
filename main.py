@@ -15,7 +15,7 @@ import time
 from tabulate import tabulate
 
 import modlist
-from compat import compute_compatibility, normalize_loader, was_checked
+from compat import compute_compatibility, forced_label, normalize_loader, was_checked
 
 # The verdict is the only thing allowed to be loud — the same rule the web UI
 # follows. Colour is dropped when piped, or when NO_COLOR is set.
@@ -178,7 +178,9 @@ environment (also read from a .env file next to the code):
   CF_API_KEY  CurseForge API key; only needed to check CurseForge mods
   NO_COLOR    any value turns off the coloured verdict
 
-Filters narrow the table; they never change the verdict above it.""",
+Filters narrow the table; they never change the verdict above it, unless
+--force names them: --force l limits the verdict to --loader, --force v to
+--version, --force lv to both. Every mod still counts toward the total.""",
     )
     parser.add_argument("urls", nargs="*", metavar="URL",
                         help="CurseForge or Modrinth mod page URLs")
@@ -188,6 +190,9 @@ Filters narrow the table; they never change the verdict above it.""",
                         help="only show rows for this Minecraft version, e.g. 1.20.1")
     parser.add_argument("--loader", metavar="LOADER",
                         help="only show rows for this loader: Forge, Fabric, NeoForge or Quilt")
+    parser.add_argument("--force", choices=["l", "v", "lv", "vl"], metavar="{l,v,lv}",
+                        help="make the --loader (l) and/or --version (v) filter "
+                             "narrow the verdict too, not only the table")
     parser.add_argument("--show-versions", action="store_true",
                         help="list every version instead of a count (implied by a filter)")
     parser.add_argument("--export", choices=["md", "csv"],
@@ -201,7 +206,15 @@ Filters narrow the table; they never change the verdict above it.""",
 
 
 def main():
-    args = build_parser().parse_args()
+    parser = build_parser()
+    args = parser.parse_args()
+    force = args.force or ""
+    if "l" in force and not args.loader:
+        parser.error("--force l needs --loader to say which loader")
+    if "v" in force and not args.mc_version:
+        parser.error("--force v needs --version to say which version")
+    forced_version = args.mc_version if "v" in force else None
+    forced_loader = args.loader if "l" in force else None
 
     if args.clear_cache:
         removed = modlist.clear_cache()
@@ -225,11 +238,15 @@ def main():
     unchecked = [m for m in results if not was_checked(m)]
 
     # Invariant: the verdict answers for the whole submitted list. Filters narrow
-    # the table below it, never the answer above it.
+    # the table below it, never the answer above it, unless --force names them.
     timed_out = sum(1 for m in unchecked if m.get("timed_out"))
-    verdict = compute_compatibility(checked, len(unchecked), timed_out)
+    verdict = compute_compatibility(checked, len(unchecked), timed_out,
+                                    forced_version, forced_loader)
     print()
     print(paint(verdict["text"], verdict["type"], sys.stdout))
+    if forced_version or forced_loader:
+        print(f"The verdict counts only {forced_label(forced_version, forced_loader)}, "
+              f"because of --force {force}.")
     print()
 
     filtered = bool(args.mc_version or args.loader)

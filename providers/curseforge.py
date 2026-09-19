@@ -5,7 +5,8 @@ import urllib.parse
 import re
 from datetime import timedelta
 from dotenv import load_dotenv
-from providers import (cache_path, canonical_url, enforce_cache_budget,
+import providers
+from providers import (cache_path, canonical_url, enforce_cache_budget, safe_name,
                        is_cache_expired, write_cache)
 from providers.http import ProviderError
 from providers.http import request as http_request
@@ -151,30 +152,53 @@ def paged_pairs(slug, id):
     return pairs
 
 
+SEARCH_FILE = "search.json"
+
+
+def cached_search(slug):
+    """The search result for `slug`, or None when CurseForge has no such mod.
+
+    The search is the whole check (latestFilesIndexes rides on it), so it is
+    cached in the mod's own folder, {slug}_{id}, beside any file pages. The id
+    is only known once the search has run, so a hit is found by slug. A miss is
+    not cached: a typo'd slug should not stay "not found" for a day.
+    """
+    base = os.path.join(providers.CACHE_ROOT, "curseforge")
+    prefix = f"{safe_name(slug)}_"
+    names = os.listdir(base) if os.path.isdir(base) else []
+    for name in names:
+        if name.startswith(prefix) and name[len(prefix):].isdigit():
+            path = os.path.join(base, name, SEARCH_FILE)
+            if os.path.exists(path) and not is_cache_expired(path, 24):
+                with open(path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+
+    params = {"gameId": GAME_ID, "slug": slug}
+    mods = safe_request(f"{API_BASE}/mods/search", params=params).json().get("data", [])
+    if not mods:
+        return None
+    best = max(mods, key=lambda m: (m.get("downloadCount", 0), m.get("name", "")))
+    write_cache(os.path.join(cache_path("curseforge", slug, str(best["id"])), SEARCH_FILE), best)
+    enforce_cache_budget()
+    return best
+
+
 def get_mod_data(url: str) -> dict:
     # From the parsed path, so ?utm_source= on a shared link does not end up
     # inside the slug we search for.
     path = urllib.parse.urlparse(url.strip()).path.rstrip("/")
     slug = normalize_slug(path.split("/")[-1])
 
-    # resolve mod id via search
-    # The search is the whole check now (latestFilesIndexes rides on it), so it
-    # is cached like any page; left uncached, a CurseForge mod never touched the
-    # disk. The id is not known yet, so it caches under "{slug}_search". The key
-    # is checked first so a keyless server reports it instead of answering from
-    # a cache someone else's key filled.
+    # The key is checked before the cache is read, so a keyless server reports
+    # it instead of answering from a cache someone else's key filled.
     api_key()
-    search_url = f"{API_BASE}/mods/search"
-    params = {"gameId": GAME_ID, "slug": slug}
-    data, _ = cached_fetch("curseforge", slug, "search", 0, search_url, params)
-    mods = data.get("data", [])
-    if not mods:
+    best_mod = cached_search(slug)
+    if best_mod is None:
         # ProviderError, not ValueError: the handler in modlist treats that as
         # "copy written for the user", and ValueError has too large a family
         # to mean that — JSONDecodeError is one.
         raise ProviderError(f"No mod called '{slug}' on CurseForge")
 
-    best_mod = max(mods, key=lambda m: (m.get("downloadCount", 0), m.get("name", "")))
     id = str(best_mod["id"])
     mod_name = best_mod.get("name", slug)
 

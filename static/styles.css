@@ -455,7 +455,7 @@ h1 {
   align-items: center;
   gap: 1rem;
   width: min(100% - (2 * var(--gutter)), var(--shell));
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1rem;
 }
 
 .filters-left,
@@ -468,13 +468,21 @@ h1 {
 
 /* The exceptions are what the user came to find, so the control that isolates
    them sits with the filters rather than behind a menu. */
-.outside-field {
+.outside-field,
+.check-field {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-.outside-field input {
+/* Each Force box belongs to the select before it, so it keeps its distance
+   from the next label. */
+.check-field {
+  margin-inline-end: 0.75rem;
+}
+
+.outside-field input,
+.check-field input {
   width: 18px;
   height: 18px;
   accent-color: var(--accent);
@@ -599,13 +607,22 @@ h1 {
    8. RESULTS
    ============================================================ */
 
-#results {
+#results,
+#result-table {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   width: min(100% - (2 * var(--gutter)), var(--shell));
   margin: 0 auto;
+}
+
+/* The verdict, then its controls close beneath it, then the table. */
+#results {
+  padding-bottom: 1rem;
+}
+
+#result-table {
   padding-bottom: 2.5rem;
 }
 
@@ -804,11 +821,13 @@ details > summary {
 
   /* The whole field is the target, control and label together, so the 44px is
      real rather than 10px of dead span above a 24px box. */
-  .outside-field {
+  .outside-field,
+  .check-field {
     min-height: 44px;
   }
 
-  .outside-field input {
+  .outside-field input,
+  .check-field input {
     width: 24px;
     height: 24px;
     margin: 0;
@@ -923,16 +942,16 @@ details[open] > summary {
     gap: 0.75rem;
   }
 
-  /* A two-column grid keeps each label bound to its own select. Letting the
-     selects flex instead pushed "Loader" onto the first row, away from its
-     control. */
+  /* A label | select | Force grid keeps each label bound to its own select.
+     Letting the selects flex instead pushed "Loader" onto the first row, away
+     from its control. */
   .outside-field {
     grid-column: 1 / -1;
   }
 
   .filters-left {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: 0.5rem 0.75rem;
   }
@@ -940,6 +959,10 @@ details[open] > summary {
   .filters-left select {
     width: 100%;
     min-width: 0;
+  }
+
+  .check-field {
+    margin-inline-end: 0;
   }
 
   .filters-right {

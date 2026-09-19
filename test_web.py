@@ -355,6 +355,10 @@ def check_curseforge_is_cached():
         first, second = curseforge.get_mod_data(url), curseforge.get_mod_data(url)
         assert len(calls) == 1, f"re-check made {len(calls)} requests, expected 1"
         assert first == second and first["versions"] == [("1.20.1", "Forge")]
+        # Named by the mod's id like every other cache folder, not "{slug}_search".
+        folder = os.path.join(tmp_root, "curseforge")
+        assert os.listdir(folder) == ["jei_238222"], os.listdir(folder)
+        assert os.path.exists(os.path.join(folder, "jei_238222", "search.json"))
 
         # The cache is warm, but a keyless server still says it has no key.
         os.environ["CF_API_KEY"] = ""
