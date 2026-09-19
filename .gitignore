@@ -291,6 +291,7 @@ backup/
 *.vsix
 
 # VS Code Workspace
+.vscode/
 *.code-workspace
 
 # Claude Code
