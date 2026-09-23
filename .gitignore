@@ -280,7 +280,7 @@ pip-selfcheck.json
 backup/
 
 # Visual Studio Code
-.vscode/*
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -291,7 +291,6 @@ backup/
 *.vsix
 
 # VS Code Workspace
-.vscode/
 *.code-workspace
 
 # Claude Code
@@ -310,8 +309,24 @@ package-lock.json
 .impeccable/
 security-audit-skill/
 
+# Gortex
+.gortex/
+
 # Aikido review
 aikido*
+
+# Manual
+cache/
+secure-review-*
+
+# Node / SvelteKit
+node_modules/
+.svelte-kit/
+build/
+.vite/
+
+# Brag
+brag*/
 
 # Manual
 cache/
