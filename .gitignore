@@ -315,9 +315,6 @@ backup/
 CLAUDE.md
 .claude*
 
-# Github
-.gitignore
-
 # Node.js
 node_modules/
 package-lock.json
